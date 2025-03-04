@@ -1,126 +1,143 @@
+DROP DATABASE IF EXISTS BTL_LTW;
+
 CREATE DATABASE BTL_LTW
-	CHARACTER SET utf8
-  	COLLATE utf8_unicode_ci;
-    
-use BTL_LTW;
+CHARACTER SET utf8
+COLLATE utf8_unicode_ci;
 
-CREATE TABLE Users (
-	UserID int AUTO_INCREMENT PRIMARY KEY,
-    Username varchar(255) NOT NULL UNIQUE,
-    Password varchar(100) not null,
-    JoinDate DATETIME not null default current_timestamp(),
-    Email varchar(255) not null unique, 
-    isAdmin BOOLEAN DEFAULT FALSE 
-);
-create table Admin (
-	UserID int PRIMARY KEY,
-    constraint refAdminID_Admin FOREIGN KEY (UserID) REFERENCES Users(UserID) on DELETE CASCADE on UPDATE CASCADE
-);
-create table Customer (
-	UserID int PRIMARY KEY,
-    AvatarURL varchar(255) not null,
-    constraint refCustomerID_Customer FOREIGN KEY (UserID) REFERENCES Users(UserID) on DELETE CASCADE on UPDATE CASCADE
-);
-create table BlogPost (
-	BlogID int PRIMARY KEY AUTO_INCREMENT,
-    AdminID int not null,
-    PostDate DATE DEFAULT CURRENT_DATE,
-    Content varchar(255) not null,
-    Title varchar(255) not null,
-    constraint refAdminID_BlogPost FOREIGN KEY (AdminID) REFERENCES Admin(UserID) on DELETE CASCADE on UPDATE CASCADE
-);
-create table Likes (
-	BlogID int,
-    UserID int,
-    constraint refBlogID_Likes FOREIGN KEY (BlogID) REFERENCES BlogPost(BlogID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refUserID_Likes FOREIGN KEY (UserID) REFERENCES Users(UserID) on DELETE CASCADE on UPDATE CASCADE,
-	PRIMARY KEY (BlogID, UserID)
-);
-create table BlogComment (
-	BlogID int,
-    UserID int,
-    constraint refBlogID_BlogComment FOREIGN KEY (BlogID) REFERENCES BlogPost(BlogID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refUserID_BlogComment FOREIGN KEY (UserID) REFERENCES Users(UserID) on DELETE CASCADE on UPDATE CASCADE,
-    CommentDate DATE DEFAULT CURRENT_DATE,
-    Content varchar(255) not null,
-    PRIMARY KEY (BlogID, UserID, CommentDate)
-);
-create table QnAEntry (
-	QnAID int PRIMARY KEY
-);
-create table msg (
-	msgID int PRIMARY KEY,
-    sendDate date DEFAULT CURRENT_DATE,
-    QnAID int not null,
-    UserID int,
-    constraint refQnAID_msg FOREIGN KEY (QnAID) REFERENCES QnAEntry(QnAID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refUserID_msg FOREIGN KEY (UserID) REFERENCES Users(UserID) on DELETE SET NULL on UPDATE CASCADE
-);
-create table Contact (
-	contactID int PRIMARY KEY AUTO_INCREMENT,
-    name varchar(255) not null,
-    phone varchar(12),
-    address varchar(255),
-    CustomerID int not null,
-    constraint refCustomerID_Contact FOREIGN KEY (CustomerID) REFERENCES Customer(UserID) on DELETE CASCADE on UPDATE CASCADE
-);
-create table Orders (
-	orderID int AUTO_INCREMENT PRIMARY KEY,
-    status varchar(255),
-    totalCost int,
-    orderDate date DEFAULT CURRENT_DATE,
-    customerID int,
-    contactID int,
-    constraint refCustomerID_Order FOREIGN KEY (customerID) REFERENCES Customer(userID) on DELETE SET NULL on UPDATE CASCADE,
-    constraint refContactID_Order FOREIGN KEY (contactID) REFERENCES Contact(contactID) on DELETE SET NULL on UPDATE CASCADE
-);
-create table Category (
-	cateID int PRIMARY KEY AUTO_INCREMENT,
-    name varchar(255) not null
-);
-create table Manufacturer (
-	mfgID int PRIMARY KEY AUTO_INCREMENT,
-    name varchar(255) not null,
-    country varchar(50) not null
-);
-create table Product (
-	productID int PRIMARY KEY AUTO_INCREMENT,
-    name varchar(255) not null,
-    price int,
-    description varchar(255),
-    avgRating float(2,1),
-    bought int,
-    mfgID int not null,
-    stock varchar(255) not null,
-    cateID int not null,
-    constraint refCategoryID_Product FOREIGN KEY (cateID) REFERENCES Category(cateID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refMfgID_Product FOREIGN KEY (mfgID) REFERENCES Manufacturer(mfgID) on DELETE CASCADE on UPDATE CASCADE
-);
-CREATE TABLE HasProduct(
-	orderID int,
-    productID int, 
-    amount int not null,
-    PRIMARY KEY(orderID, productID),
-    constraint refOrderID_HasProduct FOREIGN KEY (orderID) REFERENCES Orders(orderID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refProductID_HasProduct FOREIGN KEY (productID) REFERENCES Product(productID) on DELETE CASCADE on UPDATE CASCADE
-);
-CREATE TABLE RateProduct(
-	orderID int,
-    productID int, 
-    rating int not null,
-    comment varchar(255) not null,
-    ratingDate date DEFAULT CURRENT_DATE,
-    PRIMARY KEY(orderID, productID),
-    constraint refOrderID_RateProduct FOREIGN KEY (orderID) REFERENCES Orders(orderID) on DELETE CASCADE on UPDATE CASCADE,
-    constraint refProductID_RateProduct FOREIGN KEY (productID) REFERENCES Product(productID) on DELETE CASCADE on UPDATE CASCADE
-);
-create table FAQEntry (
-	faqID int PRIMARY KEY AUTO_INCREMENT,
-    answer varchar(255) not null,
-    question varchar(255) not null
+USE BTL_LTW;
+
+CREATE TABLE User (
+userid int AUTO_INCREMENT PRIMARY KEY,
+username varchar(255) NOT NULL UNIQUE,
+password varchar(100) NOT NULL,
+joindate DATETIME NOT NULL DEFAULT current_timestamp(),
+email varchar(255) NOT NULL UNIQUE,
+isadmin BOOLEAN DEFAULT FALSE
 );
 
-INSERT INTO Users (Username, Password, Email, isAdmin) VALUES
+CREATE TABLE Admin (
+userid int PRIMARY KEY,
+CONSTRAINT refadminid_admin FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Customer (
+userid int PRIMARY KEY,
+avatarurl varchar(255) NOT NULL,
+CONSTRAINT refcustomerid_customer FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE BlogPost (
+blogid int PRIMARY KEY AUTO_INCREMENT,
+adminid int NOT NULL,
+postdate DATE DEFAULT CURRENT_DATE,
+content varchar(255) NOT NULL,
+title varchar(255) NOT NULL,
+CONSTRAINT refadminid_blogpost FOREIGN KEY (adminid) REFERENCES Admin(userid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `Like` (
+blogid int,
+userid int,
+CONSTRAINT refblogid_like FOREIGN KEY (blogid) REFERENCES BlogPost(blogid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refuserid_like FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE,
+PRIMARY KEY (blogid, userid)
+);
+
+CREATE TABLE BlogComment (
+blogid int,
+userid int,
+CONSTRAINT refblogid_blogcomment FOREIGN KEY (blogid) REFERENCES BlogPost(blogid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refuserid_blogcomment FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE,
+commentdate DATE DEFAULT CURRENT_DATE,
+content varchar(255) NOT NULL,
+PRIMARY KEY (blogid, userid, commentdate)
+);
+
+CREATE TABLE QnaEntry (
+qnaid int PRIMARY KEY
+);
+
+CREATE TABLE Message (
+msgid int PRIMARY KEY,
+senddate date DEFAULT CURRENT_DATE,
+qnaid int NOT NULL,
+userid int,
+CONSTRAINT refqnaid_msg FOREIGN KEY (qnaid) REFERENCES QnaEntry(qnaid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refuserid_msg FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE Contact (
+contactid int PRIMARY KEY AUTO_INCREMENT,
+name varchar(255) NOT NULL,
+phone varchar(12),
+address varchar(255),
+customerid int NOT NULL,
+CONSTRAINT refcustomerid_contact FOREIGN KEY (customerid) REFERENCES Customer(userid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `Order` (
+orderid int AUTO_INCREMENT PRIMARY KEY,
+status varchar(255),
+totalcost int,
+orderdate date DEFAULT CURRENT_DATE,
+customerid int,
+contactid int,
+CONSTRAINT refcustomerid_order FOREIGN KEY (customerid) REFERENCES Customer(userid) ON DELETE SET NULL ON UPDATE CASCADE,
+CONSTRAINT refcontactid_order FOREIGN KEY (contactid) REFERENCES Contact(contactid) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE Category (
+cateid int PRIMARY KEY AUTO_INCREMENT,
+name varchar(255) NOT NULL
+);
+
+CREATE TABLE Manufacturer (
+mfgid int PRIMARY KEY AUTO_INCREMENT,
+name varchar(255) NOT NULL,
+country varchar(50) NOT NULL
+);
+
+CREATE TABLE Product (
+productid int PRIMARY KEY AUTO_INCREMENT,
+name varchar(255) NOT NULL,
+price int,
+description varchar(255),
+avgrating float(2,1),
+bought int,
+mfgid int NOT NULL,
+stock varchar(255) NOT NULL,
+cateid int NOT NULL,
+CONSTRAINT refcategoryid_product FOREIGN KEY (cateid) REFERENCES Category(cateid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refmfgid_product FOREIGN KEY (mfgid) REFERENCES Manufacturer(mfgid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE HasProduct (
+orderid int,
+productid int,
+amount int NOT NULL,
+PRIMARY KEY(orderid, productid),
+CONSTRAINT reforderid_hasproduct FOREIGN KEY (orderid) REFERENCES `Order`(orderid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refproductid_hasproduct FOREIGN KEY (productid) REFERENCES Product(productid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE RateProduct (
+orderid int,
+productid int,
+rating int NOT NULL,
+comment varchar(255) NOT NULL,
+ratingdate date DEFAULT CURRENT_DATE,
+PRIMARY KEY(orderid, productid),
+CONSTRAINT reforderid_rateproduct FOREIGN KEY (orderid) REFERENCES `Order`(orderid) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT refproductid_rateproduct FOREIGN KEY (productid) REFERENCES Product(productid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE FaqEntry (
+faqid int PRIMARY KEY AUTO_INCREMENT,
+answer varchar(255) NOT NULL,
+question varchar(255) NOT NULL
+);
+
+INSERT INTO User (username, password, email, isadmin) VALUES
 ('admin1', 'hashedpassword1', 'admin1@example.com', TRUE),
 ('admin2', 'hashedpassword2', 'admin2@example.com', TRUE),
 ('admin3', 'hashedpassword3', 'admin3@example.com', TRUE),
@@ -133,10 +150,90 @@ INSERT INTO Users (Username, Password, Email, isAdmin) VALUES
 ('user7', 'hashedpassword10', 'user7@example.com', FALSE);
 
 -- Insert admins into the Admin table
-INSERT INTO Admin (UserID)
-SELECT UserID FROM Users WHERE isAdmin = TRUE;
+INSERT INTO Admin (userid)
+SELECT userid FROM User WHERE isadmin = TRUE;
 
 -- Insert customers into the Customer table
-INSERT INTO Customer (UserID, AvatarURL)
-SELECT UserID, CONCAT('https://example.com/avatars/', Username, '.png')
-FROM Users WHERE isAdmin = FALSE;
+INSERT INTO Customer (userid, avatarurl)
+SELECT userid, null
+FROM User WHERE isadmin = FALSE;
+
+-- Insert random data into the BlogPost table
+INSERT INTO BlogPost (adminid, content, title) VALUES
+(1, 'Content for blog post 1', 'Title 1'),
+(2, 'Content for blog post 2', 'Title 2'),
+(3, 'Content for blog post 3', 'Title 3');
+
+-- Insert random data into the Like table
+INSERT INTO `Like` (blogid, userid) VALUES
+(1, 4),
+(1, 5),
+(2, 6),
+(3, 7);
+
+-- Insert random data into the BlogComment table
+INSERT INTO BlogComment (blogid, userid, content) VALUES
+(1, 4, 'Comment 1 on blog post 1'),
+(1, 5, 'Comment 2 on blog post 1'),
+(2, 6, 'Comment 1 on blog post 2'),
+(3, 7, 'Comment 1 on blog post 3');
+
+-- Insert random data into the QnaEntry table
+INSERT INTO QnaEntry (qnaid) VALUES
+(1),
+(2),
+(3);
+
+-- Insert random data into the Message table
+INSERT INTO Message (msgid, qnaid, userid) VALUES
+(1, 1, 4),
+(2, 2, 5),
+(3, 3, 6);
+
+-- Insert random data into the Contact table
+INSERT INTO Contact (name, phone, address, customerid) VALUES
+('Customer 1', '1234567890', 'Address 1', 4),
+('Customer 2', '0987654321', 'Address 2', 5),
+('Customer 3', '1122334455', 'Address 3', 6);
+
+-- Insert random data into the Order table
+INSERT INTO `Order` (status, totalcost, customerid, contactid) VALUES
+('Pending', 100, 4, 1),
+('Shipped', 200, 5, 2),
+('Delivered', 300, 6, 3);
+
+-- Insert random data into the Category table
+INSERT INTO Category (name) VALUES
+('Category 1'),
+('Category 2'),
+('Category 3');
+
+-- Insert random data into the Manufacturer table
+INSERT INTO Manufacturer (name, country) VALUES
+('Manufacturer 1', 'Country 1'),
+('Manufacturer 2', 'Country 2'),
+('Manufacturer 3', 'Country 3');
+
+-- Insert random data into the Product table
+INSERT INTO Product (name, price, description, avgrating, bought, mfgid, stock, cateid) VALUES
+('Product 1', 10, 'Description 1', 4.5, 100, 1, 'In Stock', 1),
+('Product 2', 20, 'Description 2', 4.0, 200, 2, 'In Stock', 2),
+('Product 3', 30, 'Description 3', 3.5, 300, 3, 'In Stock', 3);
+
+-- Insert random data into the HasProduct table
+INSERT INTO HasProduct (orderid, productid, amount) VALUES
+(1, 1, 2),
+(2, 2, 3),
+(3, 3, 1);
+
+-- Insert random data into the RateProduct table
+INSERT INTO RateProduct (orderid, productid, rating, comment) VALUES
+(1, 1, 5, 'Great product!'),
+(2, 2, 4, 'Good product!'),
+(3, 3, 3, 'Average product.');
+
+-- Insert random data into the FaqEntry table
+INSERT INTO FaqEntry (answer, question) VALUES
+('Answer 1', 'Question 1'),
+('Answer 2', 'Question 2'),
+('Answer 3', 'Question 3');
