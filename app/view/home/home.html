@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="valentine">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- icons -->
+    <script src="https://kit.fontawesome.com/d2a9bab36d.js" crossorigin="anonymous"></script>
+    <!-- daisyui -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0/themes.css" rel="stylesheet" type="text/css" />
+    <!-- tailwindcss -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Penguin UI -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style type="text/tailwindcss">
+        .brand-name {
+            @apply text-gray-500;
+        }
+
+        .product-name {
+            @apply text-lg font-semibold text-black;
+        }
+
+        .price {
+            @apply text-xl text-red-700;
+        }
+
+        .sold-amt {
+            @apply text-sm text-gray-500;
+        }
+
+        @media (max-width: 768px) {
+            #search-nav {
+                display: none;
+            }
+
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="bg-pink-200 py-4">
+        <!-- logo, search, login, cart -->
+        <div class="flex flex-row gap-20 justify-between items-center w-3/4 mx-auto">
+            <!-- logo -->
+            <div id="logo-header" class="flex-none">
+                <img src="./img/header-logo2-nobg.png" alt="header logo" width="250">
+            </div>
+
+            <!-- search, cate dropdown, navigation -->
+            <div id="search-nav" class="flex flex-col gap-6 flex-4 justify-between">
+                <!-- search bar -->
+                <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between w-full">
+                    <input type="text" placeholder="Search for products" class="input border-0 w-full" />
+                    <button type="submit" class="btn btn-primary rounded-lg px-6">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+
+                <div class="flex flex-row items-center">
+                    <!-- category dropdown -->
+                    <div class="flex-1 dropdown dropdown-start">
+                        <div tabindex="0" role="button" class="btn btn-neutral rounded-md">
+                            <!-- <i class="fa-solid fa-list fa-xl"></i> -->
+                            Categories
+                        </div>
+                        <ul tabindex="0"
+                            class="dropdown-content menu bg-base-100 rounded-md z-1 w-52 p-2 shadow-sm mt-2">
+                            <li><a>Item 1</a></li>
+                            <li><a>Item 2</a></li>
+                        </ul>
+                    </div>
+
+                    <nav class="flex-5 flex flex-row gap-8 justify-center">
+                        <a href="#">HOME</a>
+                        <a href="#">ABOUT</a>
+                        <a href="#">QNA</a>
+                        <a href="#">NEWS</a>
+                    </nav>
+                </div>
+
+            </div>
+
+            <!-- profile/login, cart -->
+            <div id="profile-cart" class="flex flex-col gap-4 items-center">
+                <!-- profile -->
+                <!-- <div class="dropdown">
+                    <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
+                        <div class="avatar">
+                            <div class="w-12 rounded-full">
+                                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                            </div>
+                        </div>
+
+                        <div class="username flex gap-2 items-center">
+                            <span>Linh Thinh</span>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li>
+                            <a class="justify-between">
+                                Profile
+                                <span class="badge">New</span>
+                            </a>
+                        </li>
+                        <li><a>Settings</a></li>
+                        <li><a>Logout</a></li>
+                    </ul>
+                </div> -->
+                <!-- login / register (replaced by profile after logged in) -->
+                <div class="flex-none flex items-center gap-6 justify-center">
+                    <a href="#">Login</a>
+                    <a href="#" class="btn btn-primary rounded-md">Register</a>
+                </div>
+
+                <!-- cart -->
+                <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
+                    <i class="fas fa-shopping-cart"></i>
+                    Cart
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="body" class="mx-6 md:w-3/4 md:mx-auto">
+        <div class="my-10 carousel-container">
+            <div x-data="{            
+                slides: [                
+                    {
+                        imgSrc: './img/banner-1.jpg',
+                        imgAlt: 'banner image',                
+                    },                
+                    {                    
+                        imgSrc: './img/banner-2.jpg',                    
+                        imgAlt: 'banner image',                
+                    },                
+                    {                    
+                        imgSrc: './img/banner-3.jpg',                    
+                        imgAlt: 'banner image',                
+                    },            
+                ],            
+                currentSlideIndex: 1,
+                previous() {                
+                    if (this.currentSlideIndex > 1) {                    
+                        this.currentSlideIndex = this.currentSlideIndex - 1                
+                    } else {   
+                        // If it's the first slide, go to the last slide           
+                        this.currentSlideIndex = this.slides.length                
+                    }            
+                },            
+                next() {                
+                    if (this.currentSlideIndex < this.slides.length) {                    
+                        this.currentSlideIndex = this.currentSlideIndex + 1                
+                    } else {                 
+                        // If it's the last slide, go to the first slide    
+                        this.currentSlideIndex = 1                
+                    }            
+                },        
+            }" class="relative w-full overflow-hidden rounded-md">
+
+                <!-- previous button -->
+                <button type="button"
+                    class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-neutral-600 transition hover:bg-white/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:outline-offset-0 dark:bg-neutral-950/40 dark:text-neutral-300 dark:hover:bg-neutral-950/60 dark:focus-visible:outline-white"
+                    aria-label="previous slide" x-on:click="previous()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none"
+                        stroke-width="3" class="size-5 md:size-6 pr-0.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+
+                <!-- next button -->
+                <button type="button"
+                    class="absolute right-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-neutral-600 transition hover:bg-white/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:outline-offset-0 dark:bg-neutral-950/40 dark:text-neutral-300 dark:hover:bg-neutral-950/60 dark:focus-visible:outline-white"
+                    aria-label="next slide" x-on:click="next()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none"
+                        stroke-width="3" class="size-5 md:size-6 pl-0.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+
+                <!-- slides -->
+                <!-- Change min-h-[50svh] to your preferred height size -->
+                <div class="relative min-h-[50svh] w-full">
+                    <template x-for="(slide, index) in slides">
+                        <div x-show="currentSlideIndex == index + 1" class="absolute inset-0"
+                            x-transition.opacity.duration.1000ms>
+                            <img class="absolute w-full h-full inset-0 object-cover text-neutral-600 dark:text-neutral-300"
+                                x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt" />
+                        </div>
+                    </template>
+                </div>
+
+                <!-- indicators -->
+                <div class="absolute rounded-sm bottom-3 md:bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-4 md:gap-3 px-1.5 py-1 md:px-2"
+                    role="group" aria-label="slides">
+                    <template x-for="(slide, index) in slides">
+                        <button class="size-2 rounded-full transition" x-on:click="currentSlideIndex = index + 1"
+                            x-bind:class="[currentSlideIndex === index + 1 ? 'bg-neutral-300' : 'bg-neutral-300/50']"
+                            x-bind:aria-label="'slide ' + (index + 1)"></button>
+                    </template>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="content" class="my-10 rounded-lg flex flex-col gap-6">
+            <h2 class="text-3xl font-bold">OUR PRODUCTS</h2>
+            <div class="tabs tabs-lift">
+                <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Newest" checked="checked" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">
+                    <!-- products grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- product card -->
+                        <div class="card bg-base-100 shadow-sm relative w-full">
+                            <a href="#">
+                                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                                    alt="product img" />
+                                <div class="card-body">
+                                    <p class="brand-name">CALBEE</p>
+                                    <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                    <p class="price">139,000đ</p>
+
+                                    <div class="flex items-center">
+                                        <p class="sold-amt">Đã bán: 206</p>
+                                        <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-outline px-8">View all</button>
+                    </div>
+                </div>
+
+                <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Top rating" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">
+                </div>
+
+                <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Best seller" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+    <footer class="footer sm:footer-horizontal bg-base-300 text-base-content p-10 lg:px-40">
+        <nav>
+            <h6 class="footer-title">Services</h6>
+            <a class="link link-hover">Branding</a>
+            <a class="link link-hover">Design</a>
+            <a class="link link-hover">Marketing</a>
+            <a class="link link-hover">Advertisement</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Company</h6>
+            <a class="link link-hover">About us</a>
+            <a class="link link-hover">Contact</a>
+            <a class="link link-hover">Jobs</a>
+            <a class="link link-hover">Press kit</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Social</h6>
+            <div class="grid grid-flow-col gap-4">
+                <a>
+                    <i class="fa-solid fa-map-location-dot fa-2xl"></i>
+                </a>
+                <a>
+                    <i class="fa-brands fa-instagram fa-2xl"></i>
+                </a>
+                <a>
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                </a>
+            </div>
+        </nav>
+    </footer>
+
+</body>
+
+</html>
