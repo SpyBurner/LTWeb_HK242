@@ -12,7 +12,7 @@ if (empty($route)) {
 else {
     switch($route) {
         case 'contact':
-            require_once(__DIR__.'/../app/view/contact/contact.php');
+            require_once(__DIR__.'/../app/view/about/contact.php');
             break;
         default:
             require_once(__DIR__.'/../app/view/404.php');
