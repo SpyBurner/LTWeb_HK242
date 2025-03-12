@@ -3,7 +3,7 @@
 ?>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cakezone💖</title>
+<title>💖Cakezone💖</title>
 
 <!-- icons -->
 <script src="https://kit.fontawesome.com/d2a9bab36d.js" crossorigin="anonymous"></script>
@@ -42,31 +42,5 @@
 
 </style>
 
-<script>
-    // toggle sidebar
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
-    const toggleBtn = document.getElementById("toggleSidebar");
-    const closeBtn = document.getElementById("closeSidebar");
-
-    function openSidebar() {
-        sidebar.classList.remove("-translate-x-full");
-        overlay.classList.remove("hidden");
-    }
-
-    function closeSidebar() {
-        sidebar.classList.add("-translate-x-full");
-        overlay.classList.add("hidden");
-    }
-
-    toggleBtn.addEventListener("click", openSidebar);
-    closeBtn.addEventListener("click", closeSidebar);
-    overlay.addEventListener("click", closeSidebar);
-
-    // Close sidebar on Escape key press
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeSidebar();
-    });
-</script>
 <?php
 ?>
