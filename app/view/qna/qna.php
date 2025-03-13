@@ -95,26 +95,36 @@
     <section class="max-w-5xl mx-auto p-6">
         <h2 class="text-3xl font-bold text-center mb-6">Questions And Answers</h2>
         <div class="space-y-4">
-            <!-- FAQ Item 1 -->
+            <!-- QNA Item 1 -->
             <div class="card bg-base-100 shadow-md">
                 <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
                     What is DaisyUI?
                 </div>
             </div>
 
-            <!-- FAQ Item 2 -->
+            <!-- QNA Item 2 -->
             <div class="card bg-base-100 shadow-md">
                 <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
                     How do I install DaisyUI?
                 </div>
             </div>
 
-            <!-- FAQ Item 3 -->
+            <!-- QNA Item 3 -->
             <div class="card bg-base-100 shadow-md">
                 <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
                     Is DaisyUI free to use?
                 </div>
             </div>
+        </div>
+        <div class="join flex justify-center mt-6">
+            <button class="join-item btn">«</button>
+            <button class="join-item btn">‹</button>
+            <button class="join-item btn btn-primary">1</button>
+            <button class="join-item btn">2</button>
+            <button class="join-item btn">3</button>
+            <button class="join-item btn btn-disabled">...</button>
+            <button class="join-item btn">›</button>
+            <button class="join-item btn">»</button>
         </div>
     </section>
 
