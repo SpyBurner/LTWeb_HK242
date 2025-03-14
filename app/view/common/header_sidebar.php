@@ -82,6 +82,9 @@
             <div id="login-register" class="flex-none flex items-center gap-6 justify-center">
                 <a href="#">Login</a>
                 <a href="#" class="btn btn-primary rounded-md">Register</a>
+                <div class="flex items-center gap-2">
+                    <button class="btn" onclick="toggleAdminMode()"><i id="edit-icon" class="fa-regular fa-pen-to-square"></i></button>
+                </div>
             </div>
 
             <!-- cart -->
@@ -89,6 +92,7 @@
                 <i class="fas fa-shopping-cart"></i>
                 Cart
             </a>
+
         </div>
     </div>
 </header>
@@ -140,4 +144,12 @@
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeSidebar();
     });
+
+    function toggleAdminMode(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const isAdminMode = urlParams.get("edit") === "true";
+
+        urlParams.set("edit", isAdminMode? "false" : "true");
+        window.location.search = urlParams.toString();
+    }
 </script>
