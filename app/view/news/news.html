@@ -170,32 +170,47 @@
                 </button>
             </form>
             <div class="mt-4">
-                <div class="card-body rounded-lg bg-white mt-2">
+                <a href="#" class="card-body rounded-lg bg-white mt-2">
                     <h2 class="card-title">Title 1</h2>
                     <p class="italic">DD/MM/YYYY</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </div>
-                <div class="card-body rounded-lg bg-white mt-2">
+                </a>
+                <a href="#" class="card-body rounded-lg bg-white mt-2">
                     <h2 class="card-title">Title 2</h2>
                     <p class="italic">DD/MM/YYYY</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </div>
-                <div class="card-body rounded-lg bg-white mt-2">
+                </a>
+                <a href="#" class="card-body rounded-lg bg-white mt-2">
                     <h2 class="card-title">Title 3</h2>
                     <p class="italic">DD/MM/YYYY</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </div>
+                </a>
+                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
+                    <h2 class="card-title">Title 4</h2>
+                    <p class="italic">DD/MM/YYYY</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
+                </a>
+                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
+                    <h2 class="card-title">Title 5</h2>
+                    <p class="italic">DD/MM/YYYY</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
+                </a>
+                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
+                    <h2 class="card-title">Title 6</h2>
+                    <p class="italic">DD/MM/YYYY</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
+                </a>
             </div>
             <div class="flex justify-center mt-4 gap-4">
-                <input
+                <button id="page-1" onclick="pagination('page-1')"><input
                   class="join-item btn btn-square"
                   type="radio"
                   name="options"
                   aria-label="1"
-                  checked="checked" />
-                <input class="join-item btn btn-square" type="radio" name="options" aria-label="2" />
-                <input class="join-item btn btn-square" type="radio" name="options" aria-label="3" />
-                <input class="join-item btn btn-square" type="radio" name="options" aria-label="4" />
+                  checked="checked" /></button>
+                <button id="page-2" onclick="pagination('page-2')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="2" /></button>
+                <button id="page-3" onclick="pagination('page-3')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="3" /></button>
+                <button id="page-4" onclick="pagination('page-4')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="4" /></button>
             </div>
         </div>
     </div>
@@ -257,6 +272,22 @@
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeSidebar();
         });
+
+        function pagination(idName) {
+            let buttons = document.getElementById(idName);
+
+            let idNum = parseInt(idName.replace("page-", ""))
+
+            let allCards = document.querySelectorAll(".card-body");
+
+            allCards.forEach(card => {
+                card.classList.add("hidden");
+            });
+
+            for (let i = (idNum - 1) * 3; i < idNum * 3; i++) {
+                allCards[i].classList.remove("hidden");
+            }
+        }
     </script>
 
 </body>
