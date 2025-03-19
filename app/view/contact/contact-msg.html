@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="garden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Contact</title>
+
+    <!-- icons -->
+    <script src="https://kit.fontawesome.com/d2a9bab36d.js" crossorigin="anonymous"></script>
+    <!-- daisyui -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0/themes.css" rel="stylesheet" type="text/css" />
+    <!-- tailwindcss -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style type="text/tailwindcss">
+        @media (max-width: 768px) {
+            #nav {
+                display: none;
+            }
+
+            #header-content {
+                @apply gap-2 w-11/12;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="bg-base-300 py-4">
+        <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
+            <!-- Sidebar Toggle Button -->
+            <button id="toggleSidebar" class="btn btn-primary rounded-lg btn-lg md:hidden">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- logo -->
+            <div id="logo-header">
+                <img src="../img/header-logo2-nobg.png" alt="header logo" width="150">
+            </div>
+
+            <!-- navigation -->
+            <nav id="nav" class="flex-5 flex flex-row flex-wrap justify-center">
+                <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">HOME</a>
+                <a href="../about/about.html" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
+                <a href="../about/about.html" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">CONTACT</a>
+                <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">QNA</a>
+                <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">NEWS</a>
+            </nav>
+
+            <!-- profile/login, cart -->
+            <div id="profile" class="min-w-fit flex flex-col gap-4 items-center">
+                <!-- profile -->
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
+                        <div class="avatar">
+                            <div class="w-12 rounded-full">
+                                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                            </div>
+                        </div>
+
+                        <div class="username flex gap-2 items-center">
+                            <span>Linh Thinh</span>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li>
+                            <a class="justify-between">
+                                Profile
+                                <!-- <span class="badge">New</span> -->
+                            </a>
+                        </li>
+                        <li><a>Settings</a></li>
+                        <li><a>Logout</a></li>
+                    </ul>
+                </div>
+
+
+                <!-- login / register (replaced by profile after logged in) -->
+                <!-- <div id="login-register" class="flex-none flex items-center gap-6 justify-center">
+                    <a href="../account/login.html">Login</a>
+                    <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
+                </div> -->
+
+                <!-- cart -->
+                <!-- <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
+                    <i class="fas fa-shopping-cart"></i>
+                    Cart
+                </a> -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div id="sidebar"
+        class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+        <div class="border-b flex justify-between items-center p-4">
+            <h2 class="text-lg font-bold">MENU</h2>
+            <button id="closeSidebar" class="btn btn-ghost">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="flex flex-col">
+            <a href="../home/home.html" class="btn btn-ghost rounded-none py-6">Home</a>
+            <a href="../about/about.html" class="btn btn-ghost rounded-none py-6">About</a>
+            <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
+            <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
+            <a href="../account/login.html" class="btn btn-outline mx-4 my-2">Login</a>
+            <a href="../account/register.html" class="btn mx-4 my-2">Register</a>
+        </nav>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="hidden fixed inset-0 z-40"></div>
+
+    <div id="body" class="m-6 md:w-3/4 md:mx-auto flex flex-col gap-8">
+        <h2 class="text-3xl font-bold text-center">Contact Messages</h2>
+        <!-- <h3 class="text-xl font-semibold text-center text-secondary">CONTACT</h3> -->
+
+        <!-- Filter Section -->
+        <div class="flex justify-between items-center mb-4">
+            <label class="font-semibold mr-2">Filter by Status:</label>
+            <select id="statusFilter" onchange="renderMessages()" class="select select-bordered select-secondary">
+                <!-- Options will be dynamically inserted here -->
+            </select>
+        </div>
+
+        <!-- Messages Table -->
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <thead>
+                    <tr class="bg-primary text-primary-content">
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Email</th>
+                        <th>Message Preview</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="messagesTable">
+                    <!-- Messages will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Message View Modal -->
+        <dialog id="messageModal" class="modal">
+            <div class="modal-box flex flex-col gap-4">
+                <h3 class="font-bold text-xl text-center text-secondary">Message Details</h3>
+                <p><strong>Name:</strong> <span id="modalName"></span></p>
+                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                <p><strong>Message:</strong></p>
+                <p id="modalMessage" class="bg-secondary text-secondary-content p-3 rounded"></p>
+
+                <!-- Mark as Read/Replied Buttons -->
+                <div class="flex gap-2">
+                    <button id="markReadBtn" class="btn btn-outline btn-info w-1/2" onclick="markAsRead()">Mark as
+                        Read</button>
+                    <button id="markRepliedBtn" class="btn btn-outline btn-success w-1/2" onclick="markAsReplied()">Mark as Replied</button>
+                </div>
+
+                <div class="modal-action">
+                    <button onclick="closeMessageModal()" class="btn">Close</button>
+                </div>
+            </div>
+        </dialog>
+
+        <!-- JavaScript -->
+        <script>
+            let messages = [
+                { id: 1, date: "2024-03-10", name: "John Doe", email: "john@example.com", phone: "123-456-7890", message: "I need a custom cake for my wedding next month. Can you help?", status: "Unread" },
+                { id: 2, date: "2024-03-11", name: "Jane Smith", email: "jane@example.com", phone: "123-456-7890", message: "Do you deliver to remote areas? I live quite far and wanted to check.", status: "Read" },
+                { id: 3, date: "2024-03-12", name: "Alex Brown", email: "alex@example.com", phone: "123-456-7890", message: "Great service! I loved the cake and will definitely order again!", status: "Replied" }
+            ];
+
+            let currentMessageId = null;
+
+            function updateFilterDropdown() {
+                let filterDropdown = document.getElementById("statusFilter");
+                // Save the selected value (if exists), else default to "All"
+                let selectedValue = filterDropdown.value || "All";
+        
+                let unreadCount = messages.filter(m => m.status === "Unread").length;
+                let readCount = messages.filter(m => m.status === "Read").length;
+                let repliedCount = messages.filter(m => m.status === "Replied").length;
+        
+                filterDropdown.innerHTML = `
+                    <option value="All">All (${messages.length})</option>
+                    <option value="Unread">Unread (${unreadCount})</option>
+                    <option value="Read">Read (${readCount})</option>
+                    <option value="Replied">Replied (${repliedCount})</option>
+                `;
+
+                filterDropdown.value = selectedValue; 
+            }
+
+            function renderMessages() {
+                let tableBody = document.getElementById("messagesTable");
+                let filter = document.getElementById("statusFilter").value;
+                tableBody.innerHTML = "";
+
+                messages
+                    .filter(msg => filter === "All" || msg.status === filter)
+                    .forEach((msg, index) => {
+                        tableBody.innerHTML += `
+                        <tr class="${msg.status === 'Unread' ? 'bg-white font-bold' : msg.status === 'Replied' ? 'bg-green-100' : 'bg-base-200'}">
+                            <td>${index + 1}</td>
+                            <td>${msg.date}</td>
+                            <td>${msg.email}</td>
+                            <td>${msg.message.split(" ").slice(0, 5).join(" ")}...</td>
+                            <td class="flex gap-1 flex-wrap">
+                                <button onclick="viewMessage(${msg.id})" class="btn btn-sm btn-info min-w-10"><i class="fa-solid fa-info"></i></button>
+                                <button onclick="deleteMessage(${msg.id})" class="btn btn-sm btn-error min-w-10"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                    });
+
+                updateFilterDropdown();
+            }
+
+            function viewMessage(id) {
+                let msg = messages.find(m => m.id === id);
+                if (!msg) return;
+
+                currentMessageId = id;
+
+                document.getElementById("modalName").innerText = msg.name;
+                document.getElementById("modalEmail").innerText = msg.email;
+                document.getElementById("modalMessage").innerText = msg.message;
+                document.getElementById("modalPhone").innerText = msg.phone;
+                document.getElementById("modalStatus").innerText = msg.status;
+
+                // Set button visibility based on status
+                document.getElementById("markReadBtn").style.display = msg.status === "Unread" ? "block" : "none";
+                document.getElementById("markRepliedBtn").style.display = msg.status !== "Replied" ? "block" : "none";
+
+                document.getElementById("messageModal").showModal();
+            }
+
+            function markAsRead() {
+                if (currentMessageId !== null) {
+                    let msg = messages.find(m => m.id === currentMessageId);
+                    if (msg) {
+                        msg.status = "Read";
+                        renderMessages();
+                        closeMessageModal();
+                    }
+                }
+            }
+
+            function markAsReplied() {
+                if (currentMessageId !== null) {
+                    let msg = messages.find(m => m.id === currentMessageId);
+                    if (msg) {
+                        msg.status = "Replied";
+                        renderMessages();
+                        closeMessageModal();
+                    }
+                }
+            }
+
+            function closeMessageModal() {
+                document.getElementById("messageModal").close();
+            }
+
+            function deleteMessage(id) {
+                messages = messages.filter(m => m.id !== id);
+                renderMessages();
+            }
+
+            // Initial Render
+            updateFilterDropdown();
+            renderMessages();
+        </script>
+
+
+
+
+        <script>
+            // toggle sidebar
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            const toggleBtn = document.getElementById("toggleSidebar");
+            const closeBtn = document.getElementById("closeSidebar");
+
+            function openSidebar() {
+                sidebar.classList.remove("-translate-x-full");
+                overlay.classList.remove("hidden");
+            }
+
+            function closeSidebar() {
+                sidebar.classList.add("-translate-x-full");
+                overlay.classList.add("hidden");
+            }
+
+            toggleBtn.addEventListener("click", openSidebar);
+            closeBtn.addEventListener("click", closeSidebar);
+            overlay.addEventListener("click", closeSidebar);
+
+            // Close sidebar on Escape key press
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeSidebar();
+            });
+        </script>
+
+</body>
+
+</html>
