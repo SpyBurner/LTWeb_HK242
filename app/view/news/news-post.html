@@ -19,6 +19,13 @@
             #sidebar {
                 display: none;
             }
+            #container {
+                overflow: hidden;
+            }
+            .other-posts {
+                box-sizing: border-box;
+                width: calc((100% - 1rem * 2) / 3) !important;
+            }
         }
         @media (max-width: 768px) {
             #search-nav, #login-register {
@@ -33,11 +40,14 @@
             #related-posts {
                 @apply hidden;
             }
-            .other-posts:not(:first-child) {
-                @apply hidden;
+            #container {
+                overflow: hidden;
+            }
+            .other-posts{
+                box-sizing: border-box;
+                @apply w-full;
             }
         }
-
     </style>
 </head>
 
@@ -173,36 +183,101 @@
                 <p class="mt-4">Content</p>
             </div>
         </div>
+        <div class="flex justify-end mt-8">
+            <a href="#"><i class="fa-solid fa-thumbs-up h-full text-2xl"></i></a>
+            <p class="text-xl ml-1">1</p>
+        </div>
+        <div class="mt-8 p-4 border rounded-md shadow-md bg-base-100 w-full">                
+            <div class="flex items-start space-x-3">
+              <!-- User Avatar -->
+              <div class="avatar">
+                <div class="w-10 rounded-full">
+                  <img src="https://i.pravatar.cc/100" alt="User Avatar">
+                </div>
+              </div>
+          
+              <!-- Comment Input -->
+              <div class="flex-1">
+                <textarea class="textarea textarea-bordered w-full" placeholder="Viết bình luận"></textarea>
+                
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-2 mt-2">
+                  <button class="btn btn-ghost btn-md">Cancel</button>
+                  <button class="btn btn-primary btn-md">Post</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="font-bold mt-6 text-2xl">Tất cả bình luận</h2>
+            <div class="flex items-start mt-4 space-x-3">
+                <!-- User Avatar -->
+                <div class="avatar">
+                    <div class="w-10 rounded-full">
+                    <img src="https://i.pravatar.cc/100" alt="User Avatar">
+                    </div>
+                </div>
+            
+                <!-- Comment Content -->
+                <div class="flex-1">
+                    <div class="flex items center justify-between">
+                        <h6 class="font-bold">User 1</h6>
+                        <p class="text-sm text-gray-500">DD/MM/YYYY</p>
+                    </div>
+                    <p class="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                </div>
+            </div>
+        </div>
         <div class="mt-8">
             <h1 class="text-2xl text-center font-bold mt-4">Bài viết liên quan</h1>
-            <div class="flex gap-4 mt-6 max-h-64 box-border">
-                <div class="flex-1 bg-white card-body rounded-lg other-posts">
-                    <h2 class="card-title">Title 1</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                    Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                    Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                    Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                    Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+            <div class="flex items-center gap-4 mt-6 max-h-64 box-border">
+                <button class="btn btn-circle" id="slider-left">❮</button>
+                <div class="flex gap-4" id="container">
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post1">
+                        <h2 class="card-title">Title 1</h2>
+                        <p class="italic">DD/MM/YYYY</p>
+                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
+                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
+                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
+                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
+                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                    </div>
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post2">
+                        <h2 class="card-title">Title 2</h2>
+                        <p class="italic">DD/MM/YYYY</p>
+                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
+                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
+                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
+                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
+                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                    </div>
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post3">
+                        <h2 class="card-title">Title 3</h2>
+                        <p class="italic">DD/MM/YYYY</p>
+                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
+                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
+                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
+                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
+                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                    </div>
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post4">
+                        <h2 class="card-title">Title 4</h2>
+                        <p class="italic">DD/MM/YYYY</p>
+                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
+                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
+                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
+                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
+                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                    </div>
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post5">
+                        <h2 class="card-title">Title 4</h2>
+                        <p class="italic">DD/MM/YYYY</p>
+                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
+                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
+                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
+                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
+                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                    </div>
                 </div>
-                <div class="flex-1 bg-white card-body rounded-lg other-posts">
-                    <h2 class="card-title">Title 2</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                    Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                    Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                    Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                    Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                </div>
-                <div class="flex-1 bg-white card-body rounded-lg other-posts">
-                    <h2 class="card-title">Title 3</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                    Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                    Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                    Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                    Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                </div>
+                <button class="btn btn-circle" id="slider-right">❯</button>
             </div>
         </div>
     </div>
@@ -263,6 +338,99 @@
         // Close sidebar on Escape key press
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeSidebar();
+        });
+
+        document.getElementById("slider-right").addEventListener("click", () => {
+            let all = document.querySelectorAll('[id^="post"]')
+
+            const boxWidth = document.getElementById("container").offsetWidth
+            const container = document.getElementById("container");
+
+            if (screen.width > 768) {
+                let idName = all[2].id
+                let idNum = parseInt(idName.replace("post", ""))
+
+                if (idNum === all.length) return;
+                for (let i = 0; i < all.length; i++) {
+                    all[i].style.transition = "transform 0.6s ease";
+                    all[i].style.transform = `translateX(-${(boxWidth - 16 * 2) / 3 + 16}px)`;
+                }
+
+                setTimeout(() => {
+                    container.appendChild(all[0]);
+
+                    for (let i = 0; i < all.length; i++) {
+                        all[i].style.transition = "";
+                        all[i].style.transform = "";
+                    }
+                }, 600);
+            }
+            else {
+                let idName = all[0].id
+                let idNum = parseInt(idName.replace("post", ""))
+
+                if (idNum === all.length) return;
+                
+                for (let i = 0; i < all.length; i++) {
+                    all[i].style.transition = "transform 0.3s ease";
+                    all[i].style.transform = `translateX(-${boxWidth}px)`;
+                }
+                setTimeout(() => {
+                    container.appendChild(all[0]);
+
+                    for (let i = 0; i < all.length; i++) {
+                        all[i].style.transition = "";
+                        all[i].style.transform = "";
+                    }
+                }, 300);
+            }
+        });
+
+        document.getElementById("slider-left").addEventListener("click", () => {
+            let all = document.querySelectorAll('[id^="post"]')
+            let idName = all[0].id
+            let idNum = parseInt(idName.replace("post", ""))
+
+            if (idNum === 1) return;
+
+            const boxWidth = document.getElementById("container").offsetWidth
+            const container = document.getElementById("container");
+
+            if(screen.width > 768) {
+                for (let i = all.length - 1; i >= 0; i--) {
+                    all[i].style.transform = `translateX(-${(boxWidth - 16 * 2) / 3 + 16}px)`;
+                }
+            }
+            else {
+                for (let i = all.length - 1; i >= 0; i--) {
+                    all[i].style.transform = `translateX(-${boxWidth}px)`;
+                }
+            }
+
+            container.insertBefore(all[all.length - 1], container.firstChild);
+
+            setTimeout(() => {
+                for (let i = 0; i < all.length; i++) {
+                    all[i].style.transform = "";
+                    if(screen.width > 768) all[i].style.transition = "transform 0.6s ease";
+                    else all[i].style.transition = "transform 0.3s ease";
+                }
+            }, 10);
+
+            if(screen.width > 768) {
+                setTimeout(() => {
+                    for (let i = 0; i < all.length; i++) {
+                        all[i].style.transition = "";
+                    }
+                }, 590);
+            }
+            else {
+                setTimeout(() => {
+                    for (let i = 0; i < all.length; i++) {
+                        all[i].style.transition = "";
+                    }
+                }, 290);
+            }
         });
     </script>
 
