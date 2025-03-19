@@ -1,7 +1,3 @@
-<?php
-    $qnaPage = (isset($_GET['qnaPage']))? (int)$_GET['qnaPage'] : 1;
-?>
-
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
@@ -17,6 +13,7 @@
     $admin_edit = isset($_GET['edit']) && $_GET['edit'] === 'true';
     echo $admin_edit;
 ?>
+
     <script>
         function openModal(id) {
             document.getElementById(id).showModal();
