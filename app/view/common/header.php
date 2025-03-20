@@ -7,9 +7,12 @@
             <i class="fa-solid fa-bars"></i>
         </button>
 
+        <?php
+            require_once __DIR__."/serve-image.php";
+        ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="../img/header-logo2-nobg.png" alt="header logo" width="150">
+            <img src="<?php echo get_image_path('/../img/header-logo2-nobg.png') ?>" alt="header logo" width="150">
         </div>
 
         <!-- search, cate dropdown, navigation -->

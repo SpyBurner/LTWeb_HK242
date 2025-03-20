@@ -258,3 +258,8 @@ INSERT INTO ContactMessage (name, email, title, message, status) VALUES
 ('Liam Johnson', 'liam.johnson@example.com', 'Feature Request', 'Would love to see a dark mode option.', 'Read'),
 ('Emily Davis', 'emily.davis@example.com', 'Account Help', 'I forgot my password, need assistance.', 'Unread'),
 ('Noah White', 'noah.white@example.com', 'Other', 'Just saying hi, love the content!', 'Read');
+
+
+CREATE USER 'user'@'localhost' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
