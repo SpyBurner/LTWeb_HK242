@@ -7,12 +7,21 @@
     <?php
         require_once __DIR__."/../common/head.php";
     ?>
-
 </head>
 
 <body>
     <?php
         require_once __DIR__."/../common/header.php";
+
+        //    TEST ZONE
+        require_once __DIR__ . '/../../model/UserModel.php';
+        $users = User::findAll();
+
+        for ($i = 0; $i < count($users); $i++) {
+            echo $users[$i]->getName() . "<br>";
+        }
+
+        //
     ?>
 
 

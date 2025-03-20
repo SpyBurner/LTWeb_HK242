@@ -1,24 +1,43 @@
 <?php
-class Model
+
+require_once __DIR__ . "/../core/Database.php";
+interface IModel
 {
-    public function save()
-    {
-        // Implement database save logic here
-    }
-
-    public function delete()
-    {
-        // Implement database delete logic here
-    }
-
-    public static function findById($id)
-    {
-        // Implement find by ID logic here
-    }
-
-    public static function findAll()
-    {
-        // Implement find all users logic here
-    }
+//    CREATE & UPDATE
+/* @return number of rows updated/added
+ *
+ */
+    public function save();
+//    READ
+/* @return object of the class
+ *
+ */
+    public static function findById($id);
+/* @return array of objects of the class
+ *
+ */
+    public static function findAll();
+//    Delete
+/* @return number of rows deleted
+ *
+ */
+    public function delete();
+/* @return number of rows deleted
+ *
+ */
+    public static function deleteById($id);
+/* Creates an object of the class from a row in the database (result of a find())
+ * @param $row - a row from the database
+ * @return object of the class
+ */
+    public static function toObject($row);
+/* Creates an array of objects of the class, for whatever reason
+ *
+ */
+    public static function toArray($obj);
+/* @return string representation of the object, mostly for debugging
+ *
+ */
+    public function __toString();
 
 }
