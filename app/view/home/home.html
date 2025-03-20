@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CakeZone | Home</title>
 
     <!-- icons -->
     <script src="https://kit.fontawesome.com/d2a9bab36d.js" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
         }
 
         .price {
-            @apply text-xl text-red-700;
+            @apply text-xl;
         }
 
         .sold-amt {
@@ -45,7 +45,7 @@
 </head>
 
 <body>
-    <header class="bg-pink-200 py-4">
+    <header class="bg-base-300 py-4">
         <!-- logo, search, login, cart -->
         <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
             <!-- Sidebar Toggle Button -->
@@ -54,12 +54,12 @@
             </button>
 
             <!-- logo -->
-            <div id="logo-header" class="max-w-50">
-                <img src="../img/header-logo2-nobg.png" alt="header logo" width="250">
+            <div id="logo-header">
+                <img src="../img/header-logo2-nobg.png" alt="header logo" width="150">
             </div>
 
             <!-- search, cate dropdown, navigation -->
-            <div id="search-nav" class="flex flex-col gap-6 justify-between w-full">
+            <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between">
                 <!-- search bar -->
                 <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between">
                     <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
@@ -82,9 +82,9 @@
                         </ul>
                     </div>
 
-                    <nav class="flex-5 flex flex-row justify-center">
+                    <nav class="flex-5 flex flex-row flex-wrap justify-center">
                         <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">HOME</a>
-                        <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
+                        <a href="../about/about.html" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
                         <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">QNA</a>
                         <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">NEWS</a>
                     </nav>
@@ -94,7 +94,7 @@
 
             <!-- profile/login, cart -->
             <div id="profile-cart" class="flex flex-col gap-4 items-center">
-                <!-- profile -->
+                <!-- PROFILE -->
                 <!-- <div class="dropdown">
                     <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                         <div class="avatar">
@@ -124,8 +124,8 @@
 
                 <!-- login / register (replaced by profile after logged in) -->
                 <div id="login-register" class="flex-none flex items-center gap-6 justify-center">
-                    <a href="#">Login</a>
-                    <a href="#" class="btn btn-primary rounded-md">Register</a>
+                    <a href="../account/login.html">Login</a>
+                    <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
                 </div>
 
                 <!-- cart -->
@@ -147,21 +147,21 @@
         </div>
 
         <nav class="flex flex-col">
-            <a href="#" class="btn btn-ghost rounded-none py-6">Home</a>
-            <a href="#" class="btn btn-ghost rounded-none py-6">About</a>
+            <a href="../home/home.html" class="btn btn-ghost rounded-none py-6">Home</a>
+            <a href="../about/about.html" class="btn btn-ghost rounded-none py-6">About</a>
             <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
             <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
-            <a href="#" class="btn btn-outline mx-4 my-2">Login</a>
-            <a href="#" class="btn mx-4 my-2">Register</a>
+            <a href="../account/login.html" class="btn btn-outline mx-4 my-2">Login</a>
+            <a href="../account/register.html" class="btn mx-4 my-2">Register</a>
         </nav>
     </div>
 
     <!-- Overlay -->
     <div id="overlay" class="hidden fixed inset-0 z-40"></div>
 
-    <div id="body" class="mx-6 md:w-3/4 md:mx-auto">
+    <div id="body" class="m-6 md:w-3/4 md:mx-auto flex flex-col gap-10">
         <!-- carousel -->
-        <div class="relative w-full mx-auto overflow-hidden my-10 rounded-lg">
+        <div class="relative w-full mx-auto overflow-hidden rounded-lg">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
                 <img src="../img/banner-1.jpg" class="w-full flex-shrink-0" />
@@ -185,8 +185,8 @@
             </div>
         </div>
 
-
-        <div id="content" class="my-10 rounded-lg flex flex-col gap-6">
+        <!-- products -->
+        <div id="content" class="rounded-lg flex flex-col gap-6">
             <h2 class="text-3xl font-bold">OUR PRODUCTS</h2>
             <div class="tabs tabs-lift">
                 <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Newest" checked="checked" />
@@ -201,7 +201,7 @@
                                 <div class="card-body">
                                     <p class="brand-name">CALBEE</p>
                                     <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
-                                    <p class="price">139,000đ</p>
+                                    <p class="price text-error">139,000đ</p>
 
                                     <div class="flex items-center">
                                         <p class="sold-amt">Đã bán: 206</p>
@@ -226,6 +226,52 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- contact info -->
+        <div class="hero bg-base-200 p-10">
+            <div class="hero-content flex-col lg:flex-row-reverse">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-5xl font-bold">Contact us!</h1>
+                    <p class="py-6">
+                        We are always here to help you with your sweetest dreams. Leave us a message and we will get
+                        back
+                        to you as soon as possible.
+                        <br><br>
+                        <strong>
+                            Or you can visit us at our bakery at 123 Sweet Street, Sweetville, Sweetland.
+                        </strong>
+                    </p>
+                </div>
+                <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                    <div class="card-body">
+                        <fieldset class="fieldset">
+                            <label class="input rounded-md w-full">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="input" required placeholder="name"/>
+                            </label>
+
+
+                            <label class="input validator rounded-md w-full">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" placeholder="mail@site.com" required />
+                            </label>
+                            <div class="validator-hint hidden">Enter valid email address</div>
+
+                            <label class="input validator rounded-md w-full">
+                                <i class="fa-solid fa-phone"></i>
+                                <input type="tel" class="tabular-nums" required placeholder="Phone" pattern="[0-9]*"
+                                    maxlength="11" title="Must be less than 12 digits" />
+                            </label>
+                            <p class="validator-hint hidden">Must be less than 12 digits</p>
+
+                            <textarea class="textarea rounded-md w-full" placeholder="Message"></textarea>
+
+                            <button class="btn btn-neutral mt-6 w-3/4 mx-auto">Send</button>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

@@ -2,24 +2,10 @@
 
 session_start();
 
-$route = isset($_GET['route']) ? trim($_GET['route'], '/') : '';
+// Get the URI and remove the leading slash
+$route = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-// echo $route;
-
-if (empty($route)) {
-    require_once(__DIR__.'/../app/view/home/home.php');
-}
-else {
-    switch($route) {
-        case 'contact':
-            require_once(__DIR__.'/../app/view/contact/contact.php');
-            break;
-        default:
-            require_once(__DIR__.'/../app/view/404.php');
-            break;
-    }
-}
-
-
+// Include the router
+require_once(__DIR__ . '/../app/router.php');
 
 ?>
