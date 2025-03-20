@@ -1,3 +1,9 @@
+<?php
+    $qnaPage = 1;
+    if (isset($_GET['qnaPage'])) $qnaPage = $_GET['qnaPage'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
