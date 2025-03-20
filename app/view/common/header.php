@@ -1,9 +1,7 @@
-<!--PLACE THIS ON THE BEGINNING OF <body> TAG-->
-<?php
-?>
+<!-- place this at the top of <body> -->
 <header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->
-    <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
+    <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto max-md:gap-2 max-md:w-11/12">
         <!-- Sidebar Toggle Button -->
         <button id="toggleSidebar" class="btn btn-primary rounded-lg btn-lg md:hidden">
             <i class="fa-solid fa-bars"></i>
@@ -15,7 +13,7 @@
         </div>
 
         <!-- search, cate dropdown, navigation -->
-        <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between">
+        <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between max-md:hidden">
             <!-- search bar -->
             <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between">
                 <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
@@ -79,7 +77,7 @@
 
 
             <!-- login / register (replaced by profile after logged in) -->
-            <div id="login-register" class="flex-none flex items-center gap-6 justify-center">
+            <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
                 <a href="../account/login.html">Login</a>
                 <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
             </div>
