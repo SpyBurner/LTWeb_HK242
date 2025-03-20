@@ -137,6 +137,15 @@ answer varchar(255) NOT NULL,
 question varchar(255) NOT NULL
 );
 
+CREATE TABLE ContactMessage(
+    contactid int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    email varchar(255) NOT NULL,
+    title varchar(255),
+    message varchar(255) NOT NULL,
+    status varchar(20) DEFAULT 'Unread'
+);
+
 INSERT INTO User (username, password, email, isadmin) VALUES
 ('admin1', 'hashedpassword1', 'admin1@example.com', TRUE),
 ('admin2', 'hashedpassword2', 'admin2@example.com', TRUE),
@@ -237,3 +246,15 @@ INSERT INTO FaqEntry (answer, question) VALUES
 ('Answer 1', 'Question 1'),
 ('Answer 2', 'Question 2'),
 ('Answer 3', 'Question 3');
+
+INSERT INTO ContactMessage (name, email, title, message, status) VALUES
+('Alice Smith', 'alice.smith@example.com', 'Inquiry', 'I would like to know more about your services.', 'Unread'),
+('John Doe', 'john.doe@example.com', 'Support Request', 'Having trouble logging into my account.', 'Unread'),
+('Emma Brown', 'emma.brown@example.com', 'Feedback', 'Great experience with your website!', 'Read'),
+('Michael Lee', 'michael.lee@example.com', 'Bug Report', 'Found a bug on the checkout page.', 'Unread'),
+('Sophia Wilson', 'sophia.wilson@example.com', 'Partnership', 'Interested in collaborating with your company.', 'Read'),
+('Daniel Martinez', 'daniel.martinez@example.com', 'Complaint', 'My order has not arrived yet.', 'Unread'),
+('Olivia Taylor', 'olivia.taylor@example.com', 'General Question', 'Do you ship internationally?', 'Unread'),
+('Liam Johnson', 'liam.johnson@example.com', 'Feature Request', 'Would love to see a dark mode option.', 'Read'),
+('Emily Davis', 'emily.davis@example.com', 'Account Help', 'I forgot my password, need assistance.', 'Unread'),
+('Noah White', 'noah.white@example.com', 'Other', 'Just saying hi, love the content!', 'Read');
