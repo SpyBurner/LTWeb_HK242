@@ -1,3 +1,5 @@
+<?php
+?>
 <header class="bg-base-300 py-4">
     <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
         <!-- Sidebar Toggle Button -->

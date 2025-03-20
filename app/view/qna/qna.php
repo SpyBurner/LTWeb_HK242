@@ -7,14 +7,16 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
+
 <?php
     require_once(__DIR__.'/../common/head.php');
 ?>
+
 </head>
 
 <body>
 <?php
-    require_once(__DIR__.'/../common/header_sidebar.php');
+    require_once(__DIR__ . '/../common/header-sidebar.php');
 
     $admin_edit = isset($_GET['edit']) && $_GET['edit'] === 'true';
     echo $admin_edit;
