@@ -78,8 +78,8 @@
 
             <!-- login / register (replaced by profile after logged in) -->
             <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
-                <a href="../account/login.html">Login</a>
-                <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
+                <a href="../account/login.php">Login</a>
+                <a href="../account/register.php" class="btn btn-primary rounded-md">Register</a>
             </div>
 
             <!-- cart -->
