@@ -1,7 +1,7 @@
 <!--PLACE THIS ON THE BEGINNING OF <body> TAG-->
 <?php
 ?>
-<header class="bg-pink-200 py-4">
+<header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->
     <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
         <!-- Sidebar Toggle Button -->
@@ -10,12 +10,12 @@
         </button>
 
         <!-- logo -->
-        <div id="logo-header" class="max-w-50">
-            <img src="../img/header-logo2-nobg.png" alt="header logo" width="250">
+        <div id="logo-header">
+            <img src="../img/header-logo2-nobg.png" alt="header logo" width="150">
         </div>
 
         <!-- search, cate dropdown, navigation -->
-        <div id="search-nav" class="flex flex-col gap-6 justify-between w-full">
+        <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between">
             <!-- search bar -->
             <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between">
                 <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
@@ -38,9 +38,9 @@
                     </ul>
                 </div>
 
-                <nav class="flex-5 flex flex-row justify-center">
+                <nav class="flex-5 flex flex-row flex-wrap justify-center">
                     <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">HOME</a>
-                    <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
+                    <a href="../about/about.html" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
                     <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">QNA</a>
                     <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">NEWS</a>
                 </nav>
@@ -50,7 +50,7 @@
 
         <!-- profile/login, cart -->
         <div id="profile-cart" class="flex flex-col gap-4 items-center">
-            <!-- profile -->
+            <!-- PROFILE -->
             <!-- <div class="dropdown">
                 <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                     <div class="avatar">
@@ -80,11 +80,8 @@
 
             <!-- login / register (replaced by profile after logged in) -->
             <div id="login-register" class="flex-none flex items-center gap-6 justify-center">
-                <a href="#">Login</a>
-                <a href="#" class="btn btn-primary rounded-md">Register</a>
-                <div class="flex items-center gap-2">
-                    <button class="btn" onclick="toggleAdminMode()"><i id="edit-icon" class="fa-regular fa-pen-to-square"></i></button>
-                </div>
+                <a href="../account/login.html">Login</a>
+                <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
             </div>
 
             <!-- cart -->
@@ -92,7 +89,6 @@
                 <i class="fas fa-shopping-cart"></i>
                 Cart
             </a>
-
         </div>
     </div>
 </header>
@@ -107,17 +103,18 @@
     </div>
 
     <nav class="flex flex-col">
-        <a href="#" class="btn btn-ghost rounded-none py-6">Home</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">About</a>
+        <a href="../home/home.html" class="btn btn-ghost rounded-none py-6">Home</a>
+        <a href="../about/about.html" class="btn btn-ghost rounded-none py-6">About</a>
         <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
         <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="#" class="btn btn-outline mx-4 my-2">Login</a>
-        <a href="#" class="btn mx-4 my-2">Register</a>
+        <a href="../account/login.html" class="btn btn-outline mx-4 my-2">Login</a>
+        <a href="../account/register.html" class="btn mx-4 my-2">Register</a>
     </nav>
 </div>
 
 <!-- Overlay -->
 <div id="overlay" class="hidden fixed inset-0 z-40"></div>
+
 
 <script>
     // toggle sidebar
@@ -144,12 +141,4 @@
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeSidebar();
     });
-
-    function toggleAdminMode(){
-        const urlParams = new URLSearchParams(window.location.search);
-        const isAdminMode = urlParams.get("edit") === "true";
-
-        urlParams.set("edit", isAdminMode? "false" : "true");
-        window.location.search = urlParams.toString();
-    }
 </script>
