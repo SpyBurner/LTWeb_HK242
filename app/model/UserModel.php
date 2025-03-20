@@ -3,15 +3,15 @@ require_once __DIR__ . "/../../core/Model.php";
 
 class User implements IModel{
     private $userid;
-    private $name;
+    private $username;
     private $email;
     private $password;
     private $joindate;
     private $isadmin;
 
-    public function __construct($id, $name, $email, $password, $joindate = null, $isadmin = false) {
+    public function __construct($id, $username, $email, $password, $joindate = null, $isadmin = false) {
         $this->userid = $id;
-        $this->name = $name;
+        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->joindate = $joindate;
@@ -22,8 +22,8 @@ class User implements IModel{
         return $this->userid;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getUsername() {
+        return $this->username;
     }
 
     public function getEmail() {
@@ -43,8 +43,8 @@ class User implements IModel{
     }
 
 // Setters
-    public function setName($name) {
-        $this->name = $name;
+    public function setUsername($username) {
+        $this->username = $username;
     }
 
     public function setEmail($email) {
@@ -64,95 +64,74 @@ class User implements IModel{
     }
 
     public function __toString() {
-        return "User ID: $this->userid, Name: $this->name, Email: $this->email, Password: $this->password, Join Date: $this->joindate, Is Admin: $this->isadmin";
+        return "User ID: $this->userid, Name: $this->username, Email: $this->email, Password: $this->password, Join Date: $this->joindate, Is Admin: $this->isadmin";
     }
 
     public function save() {
         $pdo = Database::getInstance()->getConnection();
+        if ($this->userid) {
+            // Update existing user
+            $stmt = $pdo->prepare("UPDATE user SET username = :name, email = :email, password = :password, joindate = :joindate, isadmin = :isadmin WHERE userid = :userid");
+            $stmt->execute([
+                ':username' => $this->username,
+                ':email' => $this->email,
+                ':password' => $this->password,
+                ':joindate' => $this->joindate,
+                ':isadmin' => $this->isadmin,
+                ':userid' => $this->userid
+            ]);
 
-        try {
-            if ($this->userid) {
-                // Update existing user
-                $stmt = $pdo->prepare("UPDATE user SET name = :name, email = :email, password = :password, joindate = :joindate, isadmin = :isadmin WHERE userid = :userid");
-                $stmt->execute([
-                    ':name' => $this->name,
-                    ':email' => $this->email,
-                    ':password' => $this->password,
-                    ':joindate' => $this->joindate,
-                    ':isadmin' => $this->isadmin,
-                    ':userid' => $this->userid
-                ]);
+        } else {
+            // Insert new user
+            if (!$this->joindate)
+                $this->joindate = date('Y-m-d H:i:s');
 
-            } else {
-                // Insert new user
-                $stmt = $pdo->prepare("INSERT INTO user (name, email, password, joindate, isadmin) VALUES (:name, :email, :password, :joindate, :isadmin)");
-                $stmt->execute([
-                    ':name' => $this->name,
-                    ':email' => $this->email,
-                    ':password' => $this->password,
-                    ':joindate' => $this->joindate,
-                    ':isadmin' => $this->isadmin
-                ]);
-            }
-
-            return $stmt->rowCount();
-        } catch (Exception $e) {
-            echo new Exception("Error saving user: " . $e->getMessage());
+            $stmt = $pdo->prepare("INSERT INTO user (username, email, password, joindate, isadmin) VALUES (:username, :email, :password, :joindate, :isadmin)");
+            $stmt->execute([
+                ':username' => $this->username,
+                ':email' => $this->email,
+                ':password' => $this->password,
+                ':joindate' => $this->joindate,
+                ':isadmin' => $this->isadmin
+            ]);
         }
-        return null;
+
+        return $stmt->rowCount();
     }
 
     public function delete() {
-        try {
-            $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
-            $stmt->execute(['id' => $this->userid]);
-        } catch (Exception $e) {
-            echo new Exception("Error deleting user: " . $e->getMessage());
-        }
+        $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
+        $stmt->execute(['id' => $this->userid]);
     }
 
     public static function deleteById($id)
     {
-        try {
-            $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
-            $stmt->execute(['id' => $id]);
-        } catch (Exception $e) {
-            echo new Exception("Error deleting user: " . $e->getMessage());
+        $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
+        $stmt->execute(['id' => $id]);
+    }
+
+    public static function findById($id)
+    {
+        $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE userid = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch();
+        if ($result) {
+            return User::toObject($result);
+        } else {
+            return null;
         }
     }
 
-    public static function findById($id) {
-
-        try {// Implement find by ID logic here
-            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE userid = :id");
-            $stmt->execute(['id' => $id]);
-            $result = $stmt->fetch();
-            if ($result) {
-                return User::toObject($result);
-            } else {
-                return null;
-            }
-        } catch (Exception $e) {
-            echo new Exception("Error finding user: " . $e->getMessage());
+    public static function findAll()
+    {
+        $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $users = [];
+        foreach ($result as $row) {
+            $users[] = User::toObject($row);
         }
-        return null;
-    }
-
-    public static function findAll() {
-
-        try {// Implement find all logic here
-            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user");
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-            $users = [];
-            foreach ($result as $row) {
-                $users[] = User::toObject($row);
-            }
-            return $users;
-        } catch (Exception $e) {
-            echo new Exception("Error finding user: " . $e->getMessage());
-        }
-        return null;
+        return $users;
     }
 
     public static function toObject($row){

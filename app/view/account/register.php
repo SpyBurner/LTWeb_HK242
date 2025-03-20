@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 
@@ -13,17 +15,14 @@
     <?php
         require_once __DIR__."/../common/header.php";
 
-        //    TEST ZONE
-        require_once __DIR__ . '/../../model/UserModel.php';
-        $users = User::findAll();
-
-        for ($i = 0; $i < count($users); $i++) {
-            echo $users[$i]->getName() . "<br>";
+        require_once __DIR__ . "/../../component/AlertBox.php";
+        if (isset($_GET['error'])) {
+            showAlert($_GET['error'], "error", 10000);
         }
-
-        //
+        if (isset($_GET['success'])) {
+            showAlert($_GET['success'], "success", 10000);
+        }
     ?>
-
 
     <div id="body" class="m-6 md:w-3/4 md:mx-auto">
         <!-- name of each tab group should be unique -->
@@ -36,42 +35,44 @@
 
             <div class="card-body">
                 <fieldset class="fieldset">
-                    <label class="input validator rounded-md w-full">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" required placeholder="name" />
-                    </label>
+                    <form method="post" action="#">
+                        <label class="input validator rounded-md w-full">
+                            <i class="fa-solid fa-user"></i>
+                            <input name="username" type="text" required placeholder="Username"/>
+                        </label>
 
-                    <label class="input validator rounded-md w-full">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" placeholder="mail@site.com" required />
-                    </label>
-                    <div class="validator-hint hidden">Enter valid email address</div>
+                        <label class="input validator rounded-md w-full">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input name="email" type="email" placeholder="mail@site.com" required />
+                        </label>
+                        <div class="validator-hint hidden">Enter valid email address</div>
 
-                    <label class="input validator rounded-md w-full">
-                        <i class="fa-solid fa-key"></i>
-                        <input type="password" required placeholder="Password" minlength="8"
-                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                            title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" />
-                    </label>
-                    <p class="validator-hint hidden">
-                        Must be more than 8 characters, including
-                        <br />At least one number
-                        <br />At least one lowercase letter
-                        <br />At least one uppercase letter
-                    </p>
+                        <label class="input validator rounded-md w-full">
+                            <i class="fa-solid fa-key"></i>
+                            <input name="password" type="password" required placeholder="Password" minlength="8"
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" />
+                        </label>
+                        <p class="validator-hint hidden">
+                            Must be more than 8 characters, including
+                            <br />At least one number
+                            <br />At least one lowercase letter
+                            <br />At least one uppercase letter
+                        </p>
 
-                    <label class="input rounded-md w-full">
-                        <i class="fa-solid fa-key"></i>
-                        <input type="password" required placeholder="Password confirm" minlength="8"
-                            title="Type your password again" />
-                    </label>
+                        <label class="input rounded-md w-full">
+                            <i class="fa-solid fa-key"></i>
+                            <input name="password_confirm" type="password" required placeholder="Password confirm" minlength="8"
+                                title="Type your password again" />
+                        </label>
 
-                    <div id="agree-term" class="flex items-center gap-2 mt-4">
-                        <input type="checkbox" class="checkbox" />
-                        <p class="text-gray-500">I agree to eat cakes every day until I die!</p>
-                    </div>
-                    
-                    <button class="btn btn-primary mt-6 w-1/2 mx-auto">Register</button>
+                        <div id="agree-term" class="flex items-center gap-2 mt-4">
+                            <input name="accept_tos" type="checkbox" class="checkbox" />
+                            <p class="text-gray-500">I agree to eat cakes every day until I die!</p>
+                        </div>
+
+                        <button name="submit" value="submit" type="submit" class="btn btn-primary mt-6 w-1/2 mx-auto">Register</button>
+                    </form>
                 </fieldset>
             </div>
         </div>
@@ -81,6 +82,7 @@
     <?php
         require_once __DIR__ . "/../common/footer.php";
     ?>
+
 
 </body>
 
