@@ -1,426 +1,622 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="valentine">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý sản phẩm</title>
-
-    <!-- icons -->
-    <script
-      src="https://kit.fontawesome.com/d2a9bab36d.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- daisyui -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@5"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0/themes.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!-- tailwindcss -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-    <style type="text/tailwindcss">
-      .brand-name {
-        @apply text-gray-500;
-      }
-
-      .product-name {
-        @apply text-lg font-semibold text-black;
-      }
-
-      .price {
-        @apply text-xl text-red-700;
-      }
-
-      .sold-amt {
-        @apply text-sm text-gray-500;
-      }
-
-      @media (max-width: 768px) {
-        #search-nav,
-        #login-register {
-          display: none;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Blog Post Management</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding-top: 56px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
         }
-
-        #header-content {
-          @apply gap-2 w-11/12;
+        
+        .sidebar.show {
+            transform: translateX(0);
         }
-      }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        .post-preview img {
+            max-height: 50px;
+            object-fit: cover;
+        }
+        
+        .comment-item {
+            border-left: 3px solid #0d6efd;
+            padding-left: 10px;
+        }
     </style>
-  </head>
-
-  <body>
-    <header class="bg-pink-200 py-4">
-      <div
-        id="header-content"
-        class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto"
-      >
-        <button
-          id="toggleSidebar"
-          class="btn btn-primary rounded-lg btn-lg md:hidden"
-        >
-          <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div id="logo-header" class="max-w-50">
-          <img
-            src="../img/header-logo2-nobg.png"
-            alt="header logo"
-            width="250"
-          />
-        </div>
-
-        <div id="search-nav" class="flex flex-col gap-6 justify-between w-full">
-          <form
-            class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between"
-          >
-            <input
-              type="text"
-              placeholder="Search for products"
-              class="input border-0 w-full rounded-md"
-            />
-            <button type="submit" class="btn btn-primary rounded-lg px-6">
-              <i class="fas fa-search"></i>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <button id="toggleSidebar" class="btn btn-primary d-md-none me-2">
+                <i class="fas fa-bars"></i>
             </button>
-          </form>
-
-          <div class="flex flex-row items-center">
-            <div class="flex-1 dropdown dropdown-start">
-              <div
-                tabindex="0"
-                role="button"
-                class="btn btn-neutral rounded-md"
-              >
-                Categories
-              </div>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu bg-base-100 rounded-md z-1 w-52 p-2 shadow-sm mt-2"
-              >
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
+            <a class="navbar-brand" href="#">Blog Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-
-            <nav class="flex-5 flex flex-row justify-center">
-              <a
-                href="#"
-                class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6"
-                >HOME</a
-              >
-              <a
-                href="#"
-                class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6"
-                >ABOUT</a
-              >
-              <a
-                href="#"
-                class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6"
-                >QNA</a
-              >
-              <a
-                href="#"
-                class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6"
-                >NEWS</a
-              >
-            </nav>
-          </div>
         </div>
-
-        <div id="profile-cart" class="flex flex-col gap-4 items-center">
-          <div
-            id="login-register"
-            class="flex-none flex items-center gap-6 justify-center"
-          >
-            <a href="#">Login</a>
-            <a href="#" class="btn btn-primary rounded-md">Register</a>
-          </div>
-
-          <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
-            <i class="fas fa-shopping-cart"></i>
-            Cart
-          </a>
-        </div>
-      </div>
-    </header>
+    </nav>
 
     <!-- Sidebar -->
-    <div
-      id="sidebar"
-      class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50"
-    >
-      <div class="border-b flex justify-between items-center p-4">
-        <h2 class="text-lg font-bold">MENU</h2>
-        <button id="closeSidebar" class="btn btn-ghost">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <nav class="flex flex-col">
-        <a href="#" class="btn btn-ghost rounded-none py-6">Home</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">About</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="#" class="btn btn-outline mx-4 my-2">Login</a>
-        <a href="#" class="btn mx-4 my-2">Register</a>
-      </nav>
-    </div>
-
-    <!-- Overlay -->
-    <div id="overlay" class="hidden fixed inset-0 z-40"></div>
-
-    <div id="body" class="mx-6 md:w-3/4 md:mx-auto my-10">
-      <!-- Search and Filter Section -->
-      <div class="flex flex-col md:flex-row gap-4 mb-6">
-        <!-- Search Bar -->
-        <input
-          type="text"
-          placeholder="Tìm kiếm sản phẩm..."
-          class="input input-bordered w-full md:w-1/2"
-          id="searchInput"
-        />
-
-        <!-- Category Filter -->
-        <select
-          class="select select-bordered w-full md:w-1/2"
-          id="categoryFilter"
-        >
-          <option value="">Tất cả danh mục</option>
-          <option value="Category 1">Category 1</option>
-          <option value="Category 2">Category 2</option>
-          <option value="Category 3">Category 3</option>
-        </select>
-      </div>
-
-      <!-- Add Product Button -->
-      <div class="flex justify-end mb-6">
-        <button
-          class="btn btn-primary"
-          onclick="document.getElementById('addProductModal').showModal()"
-        >
-          <i class="fas fa-plus"></i>
-          Thêm sản phẩm
-        </button>
-      </div>
-
-      <!-- Products Table -->
-      <div class="overflow-x-auto">
-        <table class="table w-full" id="productsTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tên sản phẩm</th>
-              <th>Thương hiệu</th>
-              <th>Danh mục</th>
-              <th>Giá</th>
-              <th>Số lượng</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Product 1 -->
-            <tr>
-              <td>1</td>
-              <td>Product Title 1</td>
-              <td>CALBEE</td>
-              <td>Category 1</td>
-              <td>139,000đ</td>
-              <td>50</td>
-              <td>
-                <button class="btn btn-sm btn-warning">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-error ml-2">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-
-            <!-- Product 2 -->
-            <tr>
-              <td>2</td>
-              <td>Product Title 2</td>
-              <td>CALBEE</td>
-              <td>Category 2</td>
-              <td>159,000đ</td>
-              <td>30</td>
-              <td>
-                <button class="btn btn-sm btn-warning">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-error ml-2">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Add Product Modal -->
-      <dialog id="addProductModal" class="modal">
-        <div class="modal-box">
-          <h3 class="font-bold text-lg">Thêm sản phẩm mới</h3>
-          <form class="space-y-4 mt-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Tên sản phẩm</label
-              >
-              <input
-                type="text"
-                class="input input-bordered w-full"
-                placeholder="Nhập tên sản phẩm"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Thương hiệu</label
-              >
-              <input
-                type="text"
-                class="input input-bordered w-full"
-                placeholder="Nhập thương hiệu"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Danh mục</label
-              >
-              <select class="select select-bordered w-full">
-                <option value="Category 1">Category 1</option>
-                <option value="Category 2">Category 2</option>
-                <option value="Category 3">Category 3</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Giá</label>
-              <input
-                type="number"
-                class="input input-bordered w-full"
-                placeholder="Nhập giá"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Số lượng</label
-              >
-              <input
-                type="number"
-                class="input input-bordered w-full"
-                placeholder="Nhập số lượng"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Hình ảnh</label
-              >
-              <input
-                type="file"
-                class="file-input file-input-bordered w-full"
-              />
-            </div>
-          </form>
-          <div class="modal-action">
-            <button class="btn btn-primary">Lưu</button>
-            <button
-              class="btn"
-              onclick="document.getElementById('addProductModal').close()"
-            >
-              Đóng
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar bg-dark text-white p-0 col-md-3 col-lg-2" id="sidebar">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h5 class="m-0">Menu</h5>
+            <button id="closeSidebar" class="btn btn-dark">
+                <i class="fas fa-times"></i>
             </button>
-          </div>
         </div>
-      </dialog>
+        <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Dashboard</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white active">Posts</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Products</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Orders</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Users</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Settings</a>
+        </div>
     </div>
 
-    <footer
-      class="footer sm:footer-horizontal bg-base-300 text-base-content p-10 lg:px-40"
-    >
-      <nav>
-        <h6 class="footer-title">Services</h6>
-        <a class="link link-hover">Branding</a>
-        <a class="link link-hover">Design</a>
-        <a class="link link-hover">Marketing</a>
-        <a class="link link-hover">Advertisement</a>
-      </nav>
-      <nav>
-        <h6 class="footer-title">Company</h6>
-        <a class="link link-hover">About us</a>
-        <a class="link link-hover">Contact</a>
-        <a class="link link-hover">Jobs</a>
-        <a class="link link-hover">Press kit</a>
-      </nav>
-      <nav>
-        <h6 class="footer-title">Social</h6>
-        <div class="grid grid-flow-col gap-4">
-          <a>
-            <i class="fa-solid fa-map-location-dot fa-2xl"></i>
-          </a>
-          <a>
-            <i class="fa-brands fa-instagram fa-2xl"></i>
-          </a>
-          <a>
-            <i class="fa-brands fa-facebook fa-2xl"></i>
-          </a>
+    <!-- Main Content -->
+    <div class="container mt-5 pt-4 main-content">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Blog Post Management</h2>
+                <p class="text-muted">Manage all your blog posts and comments</p>
+            </div>
         </div>
-      </nav>
-    </footer>
+        
+        <!-- Search and Filter Section -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by title or content...">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <select class="form-select" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                    <i class="fas fa-plus"></i> New Post
+                </button>
+            </div>
+        </div>
 
+        <!-- Posts Table -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">All Posts</h5>
+                    <span class="badge bg-primary">24 Posts</span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="postsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured Image</th>
+                                <th>Date</th>
+                                <th>Comments</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Post 1 -->
+                            <tr>
+                                <td>1</td>
+                                <td>10 Tips for Healthy Eating</td>
+                                <td>Lifestyle</td>
+                                <td class="post-preview">
+                                    <img src="https://via.placeholder.com/150" alt="Post thumbnail" class="img-thumbnail">
+                                </td>
+                                <td>2023-06-15</td>
+                                <td>
+                                    <span class="badge bg-info">12</span>
+                                </td>
+                                <td><span class="badge bg-success">Published</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewCommentsModal" data-post-id="1">
+                                            <i class="fas fa-comments"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPostModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Post 2 -->
+                            <tr>
+                                <td>2</td>
+                                <td>The Ultimate Guide to Modern Web Development</td>
+                                <td>Technology</td>
+                                <td class="post-preview">
+                                    <img src="https://via.placeholder.com/150" alt="Post thumbnail" class="img-thumbnail">
+                                </td>
+                                <td>2023-06-10</td>
+                                <td>
+                                    <span class="badge bg-info">8</span>
+                                </td>
+                                <td><span class="badge bg-success">Published</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewCommentsModal" data-post-id="2">
+                                            <i class="fas fa-comments"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPostModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Post 3 -->
+                            <tr>
+                                <td>3</td>
+                                <td>5 Amazing Places to Visit in 2023</td>
+                                <td>Travel</td>
+                                <td class="post-preview">
+                                    <img src="https://via.placeholder.com/150" alt="Post thumbnail" class="img-thumbnail">
+                                </td>
+                                <td>2023-06-05</td>
+                                <td>
+                                    <span class="badge bg-info">5</span>
+                                </td>
+                                <td><span class="badge bg-warning text-dark">Draft</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewCommentsModal" data-post-id="3">
+                                            <i class="fas fa-comments"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPostModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <nav>
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Post Modal -->
+    <div class="modal fade" id="addPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Blog Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="postTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="postTitle" placeholder="Enter post title">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="postCategory" class="form-label">Category</label>
+                                <select class="form-select" id="postCategory">
+                                    <option value="">Select Category</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Lifestyle">Lifestyle</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Travel">Travel</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="postStatus" class="form-label">Status</label>
+                                <select class="form-select" id="postStatus">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="postFeaturedImage" class="form-label">Featured Image</label>
+                            <input type="file" class="form-control" id="postFeaturedImage">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="postExcerpt" class="form-label">Excerpt</label>
+                            <textarea class="form-control" id="postExcerpt" rows="2" placeholder="Brief summary of the post"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="postContent" rows="10" placeholder="Write your post content here..."></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="postTags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="postTags" placeholder="Enter tags separated by commas">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success">Publish Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Blog Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editPostTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="editPostTitle" value="10 Tips for Healthy Eating">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editPostCategory" class="form-label">Category</label>
+                                <select class="form-select" id="editPostCategory">
+                                    <option value="">Select Category</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Lifestyle" selected>Lifestyle</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Travel">Travel</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editPostStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editPostStatus">
+                                    <option value="published" selected>Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editPostFeaturedImage" class="form-label">Featured Image</label>
+                            <div class="mb-2">
+                                <img src="https://via.placeholder.com/150" alt="Current featured image" class="img-thumbnail" style="height: 100px;">
+                            </div>
+                            <input type="file" class="form-control" id="editPostFeaturedImage">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editPostExcerpt" class="form-label">Excerpt</label>
+                            <textarea class="form-control" id="editPostExcerpt" rows="2">Discover the top 10 tips for maintaining a healthy diet without sacrificing flavor.</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editPostContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="editPostContent" rows="10">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editPostTags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="editPostTags" value="healthy, diet, nutrition, wellness">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Update Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Post Confirmation Modal -->
+    <div class="modal fade" id="deletePostModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+                    <p><strong>Post:</strong> 10 Tips for Healthy Eating</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger">Delete Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Comments Modal -->
+    <div class="modal fade" id="viewCommentsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Post Comments</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="border-bottom pb-2">10 Tips for Healthy Eating</h6>
+                    
+                    <div class="comment-management">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">12 Comments</h6>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-sort-alpha-down"></i> Newest
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 1 -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <h6 class="mb-0">John Doe</h6>
+                                        <small class="text-muted">june 14, 2023 at 2:30 PM</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-success">Approved</span>
+                                    </div>
+                                </div>
+                                <p class="comment-text mb-2">Great article! I've been following these tips for months and they really work. Thanks for sharing!</p>
+                                <div class="d-flex">
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-success">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning">
+                                            <i class="fas fa-envelope"></i> Reply
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 2 -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <h6 class="mb-0">Jane Smith</h6>
+                                        <small class="text-muted">june 13, 2023 at 10:15 AM</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    </div>
+                                </div>
+                                <p class="comment-text mb-2">I would add that drinking plenty of water is also essential for a healthy diet. Maybe you could mention that in an update?</p>
+                                <div class="d-flex">
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-success">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning">
+                                            <i class="fas fa-envelope"></i> Reply
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 3 -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <h6 class="mb-0">David Johnson</h6>
+                                        <small class="text-muted">june 12, 2023 at 5:45 PM</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-danger">Spam</span>
+                                    </div>
+                                </div>
+                                <p class="comment-text mb-2">Visit my website to learn more about supplements that can boost your health: www.example.com</p>
+                                <div class="d-flex">
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-success">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning">
+                                            <i class="fas fa-envelope"></i> Reply
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
     <script>
-      // Toggle Sidebar
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("overlay");
-      const toggleBtn = document.getElementById("toggleSidebar");
-      const closeBtn = document.getElementById("closeSidebar");
-
-      function openSidebar() {
-        sidebar.classList.remove("-translate-x-full");
-        overlay.classList.remove("hidden");
-      }
-
-      function closeSidebar() {
-        sidebar.classList.add("-translate-x-full");
-        overlay.classList.add("hidden");
-      }
-
-      toggleBtn.addEventListener("click", openSidebar);
-      closeBtn.addEventListener("click", closeSidebar);
-      overlay.addEventListener("click", closeSidebar);
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeSidebar();
-      });
-
-      // Search and Filter
-      const searchInput = document.getElementById("searchInput");
-      const categoryFilter = document.getElementById("categoryFilter");
-      const productsTable = document
-        .getElementById("productsTable")
-        .getElementsByTagName("tbody")[0];
-
-      function filterProducts() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const selectedCategory = categoryFilter.value;
-
-        Array.from(productsTable.rows).forEach((row) => {
-          const productName = row.cells[1].textContent.toLowerCase();
-          const productCategory = row.cells[3].textContent;
-
-          const matchesSearch = productName.includes(searchTerm);
-          const matchesCategory =
-            selectedCategory === "" || productCategory === selectedCategory;
-
-          row.style.display = matchesSearch && matchesCategory ? "" : "none";
+        // Sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const closeBtn = document.getElementById('closeSidebar');
+        
+        function openSidebar() {
+            sidebar.classList.add('show');
+            overlay.style.display = 'block';
+        }
+        
+        function closeSidebar() {
+            sidebar.classList.remove('show');
+            overlay.style.display = 'none';
+        }
+        
+        toggleBtn.addEventListener('click', openSidebar);
+        closeBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
         });
-      }
-
-      searchInput.addEventListener("input", filterProducts);
-      categoryFilter.addEventListener("change", filterProducts);
+        
+        // Search and filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const postsTable = document.getElementById('postsTable').getElementsByTagName('tbody')[0];
+        
+        function filterPosts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = categoryFilter.value;
+            
+            Array.from(postsTable.rows).forEach(row => {
+                const postTitle = row.cells[1].textContent.toLowerCase();
+                const postCategory = row.cells[2].textContent;
+                
+                const matchesSearch = postTitle.includes(searchTerm);
+                const matchesCategory = selectedCategory === '' || postCategory === selectedCategory;
+                
+                row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+            });
+        }
+        
+        searchInput.addEventListener('input', filterPosts);
+        categoryFilter.addEventListener('change', filterPosts);
+        
+        // Comment modal functionality
+        const viewCommentsModal = document.getElementById('viewCommentsModal');
+        viewCommentsModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const postId = button.getAttribute('data-post-id');
+            // Here you would fetch comments for the post with ID 'postId'
+            // For demo purposes, we'll just update the modal title
+            const modalTitle = viewCommentsModal.querySelector('.modal-title');
+            modalTitle.textContent = `Comments for Post #${postId}`;
+        });
     </script>
-  </body>
+</body>
 </html>

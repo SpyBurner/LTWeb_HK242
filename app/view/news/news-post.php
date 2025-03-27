@@ -52,6 +52,35 @@
 </head>
 
 <body>
+    <?php
+    $env = parse_ini_file("../../../config/.env");
+    $servername = $env["DB_HOST"];
+    $username = "root";
+    $password = "";
+    $dbname = $env["DB_NAME"];
+
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    $url = $_SERVER['REQUEST_URI']; // Lấy đường dẫn hiện tại
+    $parts = explode("/", $url); // Tách thành mảng
+    $id = end($parts); // Lấy phần cuối cùng (ID)
+
+    $sql = "SELECT blogid, title, postdate, content FROM blogpost WHERE blogid = $id";
+    $result = mysqli_query($conn, $sql);
+
+    $sql_likes = "SELECT COUNT(*) as amount FROM `like` WHERE blogid = ?";
+    $stmt_like = $conn->prepare($sql_likes);
+    $stmt_like->bind_param("i", $id); // "i" là kiểu integer
+    $stmt_like->execute();
+    $result_like = $stmt_like->get_result();
+
+    ?>
     <header class="bg-pink-200 py-4">
         <!-- logo, search, login, cart -->
         <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
@@ -177,15 +206,21 @@
                 </ul>
             </div>
             <div class="flex-1">
-                <h5 class="italic font-semibold">Bài viết</h5>
-                <h1 class="text-2xl font-bold mt-4">Title</h1>
-                <p class="text-sm italic mt-2">Date</p>
-                <p class="mt-4">Content</p>
+                <?php
+                    $row = $result->fetch_assoc();
+                ?>
+                <h5 class='italic font-semibold'>Bài viết</h5>
+                <h1 class='text-2xl font-bold mt-4'><?= $row["title"] ?></h1>
+                <p class='text-sm italic mt-2'><?= $row["postdate"] ?></p>
+                <p class='mt-4'><?= $row["content"] ?></p>
             </div>
         </div>
         <div class="flex justify-end mt-8">
             <a href="#"><i class="fa-solid fa-thumbs-up h-full text-2xl"></i></a>
-            <p class="text-xl ml-1">1</p>
+            <?php
+                $row_likes = $result_like->fetch_assoc()
+            ?>
+            <p class="text-xl ml-4"><?= $row_likes['amount'] ?></p>
         </div>
         <div class="mt-8 p-4 border rounded-md shadow-md bg-base-100 w-full">                
             <div class="flex items-start space-x-3">
@@ -208,74 +243,67 @@
               </div>
             </div>
             <h2 class="font-bold mt-6 text-2xl">Tất cả bình luận</h2>
-            <div class="flex items-start mt-4 space-x-3">
-                <!-- User Avatar -->
-                <div class="avatar">
-                    <div class="w-10 rounded-full">
-                    <img src="https://i.pravatar.cc/100" alt="User Avatar">
+            <?php 
+            $sql_comments = "SELECT username, commentdate, content 
+                            FROM blogcomment 
+                            NATURAL JOIN user  
+                            WHERE blogid = ?";
+
+            $stmt_comment = $conn->prepare($sql_comments);
+            $stmt_comment->bind_param("i", $id); // "i" là kiểu integer
+            $stmt_comment->execute();
+            $result_comment = $stmt_comment->get_result();
+
+            while ($row_comment = $result_comment->fetch_assoc()): 
+                // Bảo vệ dữ liệu đầu ra tránh XSS
+                $username = htmlspecialchars($row_comment['username']);
+                $commentDate = htmlspecialchars($row_comment['commentdate']);
+                $content = htmlspecialchars($row_comment['content']);
+            ?>
+                <div class="flex items-start mt-4 space-x-3">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="https://i.pravatar.cc/100" alt="User Avatar">
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h6 class="font-bold"><?= $username ?></h6>
+                            <p class="text-sm text-gray-500"><?= $commentDate ?></p>
+                        </div>
+                        <p class="mt-2"><?= $content ?></p>
                     </div>
                 </div>
-            
-                <!-- Comment Content -->
-                <div class="flex-1">
-                    <div class="flex items center justify-between">
-                        <h6 class="font-bold">User 1</h6>
-                        <p class="text-sm text-gray-500">DD/MM/YYYY</p>
-                    </div>
-                    <p class="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                </div>
-            </div>
+            <?php 
+            endwhile;
+            $stmt_comment->close();
+            ?>
         </div>
         <div class="mt-8">
             <h1 class="text-2xl text-center font-bold mt-4">Bài viết liên quan</h1>
             <div class="flex items-center gap-4 mt-6 max-h-64 box-border">
                 <button class="btn btn-circle" id="slider-left">❮</button>
                 <div class="flex gap-4" id="container">
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post1">
-                        <h2 class="card-title">Title 1</h2>
-                        <p class="italic">DD/MM/YYYY</p>
-                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
+                <?php
+                    $sql_related_posts = "SELECT blogid, title, postdate, content FROM blogpost WHERE blogid != ?";
+                    $stmt_related_posts = $conn->prepare($sql_related_posts);
+                    $stmt_related_posts->bind_param("i", $id); 
+                    $stmt_related_posts->execute();
+                    $result_related_posts = $stmt_related_posts->get_result();
+                    $related_posts = $result_related_posts->fetch_all(MYSQLI_ASSOC);
+
+                    foreach ($related_posts as $post):
+                        $blogid = htmlspecialchars($post['blogid']);
+                        $title = htmlspecialchars($post['title']);
+                        $postdate = htmlspecialchars($post['postdate']);
+                        $content = htmlspecialchars($post['content']);
+                ?>
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $blogid ?>">
+                        <h2 class="card-title"><?= $title ?></h2>
+                        <p class="italic"><?= $postdate ?></p>
+                        <p class="line-clamp-3"><?= $content ?></p>
                     </div>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post2">
-                        <h2 class="card-title">Title 2</h2>
-                        <p class="italic">DD/MM/YYYY</p>
-                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                    </div>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post3">
-                        <h2 class="card-title">Title 3</h2>
-                        <p class="italic">DD/MM/YYYY</p>
-                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                    </div>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post4">
-                        <h2 class="card-title">Title 4</h2>
-                        <p class="italic">DD/MM/YYYY</p>
-                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                    </div>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post5">
-                        <h2 class="card-title">Title 4</h2>
-                        <p class="italic">DD/MM/YYYY</p>
-                        <p class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptatem exercitationem placeat amet excepturi, vitae aliquid veniam alias voluptas voluptatibus ut non tenetur distinctio blanditiis, illum maiores veritatis beatae harum!
-                        Non nulla asperiores corrupti sint? Dignissimos dolore ullam saepe libero nihil quo eligendi excepturi consectetur? Repellendus, molestiae suscipit dolores harum consectetur vel, rerum incidunt, eveniet ex blanditiis exercitationem amet ipsum.
-                        Voluptate, laborum tempore sit aspernatur laudantium nobis repellendus corporis? Voluptas maiores cum iure, voluptatibus suscipit quibusdam id ipsam enim voluptates tempore omnis, vero tenetur et officia nisi dolorum corrupti alias?
-                        Reprehenderit dolorum sed quod cumque libero enim adipisci quo! Hic voluptas quod molestias autem dolorem vel expedita, quas pariatur animi blanditiis, nostrum ipsam architecto reprehenderit nihil repudiandae voluptate illum! Odit.
-                        Pariatur molestias quas ducimus quod provident! Obcaecati commodi, debitis assumenda soluta animi amet! Sit magnam neque temporibus quisquam perferendis quia delectus ut sint eius nesciunt. Qui ad optio hic facilis.</p>       
-                    </div>
+                <?php endforeach; ?>
                 </div>
                 <button class="btn btn-circle" id="slider-right">❯</button>
             </div>
@@ -346,7 +374,7 @@
             const boxWidth = document.getElementById("container").offsetWidth
             const container = document.getElementById("container");
 
-            if (screen.width > 768) {
+            if (screen.width >= 768) {
                 let idName = all[2].id
                 let idNum = parseInt(idName.replace("post", ""))
 
@@ -396,7 +424,7 @@
             const boxWidth = document.getElementById("container").offsetWidth
             const container = document.getElementById("container");
 
-            if(screen.width > 768) {
+            if(screen.width >= 768) {
                 for (let i = all.length - 1; i >= 0; i--) {
                     all[i].style.transform = `translateX(-${(boxWidth - 16 * 2) / 3 + 16}px)`;
                 }
@@ -417,7 +445,7 @@
                 }
             }, 10);
 
-            if(screen.width > 768) {
+            if(screen.width >= 768) {
                 setTimeout(() => {
                     for (let i = 0; i < all.length; i++) {
                         all[i].style.transition = "";

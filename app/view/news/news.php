@@ -39,6 +39,25 @@
 </head>
 
 <body>
+    <?php
+    $env = parse_ini_file("../../../config/.env");
+    $servername = $env["DB_HOST"];
+    $username = "root";
+    $password = "";
+    $dbname = $env["DB_NAME"];
+
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    
+    $sql = 'select blogid, title, postdate, content FROM blogpost';
+    $result = mysqli_query($conn, $sql);
+
+    ?>
     <header class="bg-pink-200 py-4">
         <!-- logo, search, login, cart -->
         <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto">
@@ -170,36 +189,28 @@
                 </button>
             </form>
             <div class="mt-4">
-                <a href="#" class="card-body rounded-lg bg-white mt-2">
-                    <h2 class="card-title">Title 1</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
-                <a href="#" class="card-body rounded-lg bg-white mt-2">
-                    <h2 class="card-title">Title 2</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
-                <a href="#" class="card-body rounded-lg bg-white mt-2">
-                    <h2 class="card-title">Title 3</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
-                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
-                    <h2 class="card-title">Title 4</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
-                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
-                    <h2 class="card-title">Title 5</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
-                <a href="#" class="card-body rounded-lg bg-white mt-2 hidden">
-                    <h2 class="card-title">Title 6</h2>
-                    <p class="italic">DD/MM/YYYY</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.</p>       
-                </a>
+            <?php if ($result->num_rows > 0): 
+                $count = 1;
+                while ($row = $result->fetch_assoc()): 
+                    $url = "news-post.php/" . htmlspecialchars($row["blogid"]);
+                    $title = htmlspecialchars($row["title"]);
+                    $postdate = htmlspecialchars($row["postdate"]);
+                    $content = htmlspecialchars($row["content"]);
+
+                    // Thêm class "hidden" nếu số bài viết >= 4
+                    $hiddenClass = ($count >= 4) ? 'hidden' : '';
+            ?>
+                    <a href="<?= $url ?>" class="card-body rounded-lg bg-white mt-2 <?= $hiddenClass ?>">
+                        <h2 class="card-title"><?= $title ?></h2>
+                        <p class="italic"><?= $postdate ?></p>
+                        <p><?= $content ?></p>
+                    </a>
+            <?php 
+                $count++;
+                endwhile;
+            else: ?>
+                <p>0 results</p>
+            <?php endif; ?>
             </div>
             <div class="flex justify-center mt-4 gap-4">
                 <button id="page-1" onclick="pagination('page-1')"><input
@@ -289,7 +300,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>
