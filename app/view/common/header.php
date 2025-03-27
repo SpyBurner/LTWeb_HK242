@@ -82,11 +82,32 @@
                 <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
             </div>
 
+            <div class="flex gap-4 items-center">
+                <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
+                    <i class="fas fa-shopping-cart"></i>
+                    Cart
+                </a>
+
+                <!-- read token from cookie and decode AES, if role is admin, display this button -->
+                <?php
+                if (isset($_COOKIE['token'])) {
+                    $token = $_COOKIE['token'];
+                    $iv = $_COOKIE['iv'];
+                    // $data = json_decode(decrypt_token($token));
+
+                    if ($data->role === 'admin') {
+                        echo '<a href="../home/home-admin.php" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </a>';
+                    }
+                }
+                ?>
+
+                <a href="" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </a>
+            </div>
             <!-- cart -->
-            <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
-                <i class="fas fa-shopping-cart"></i>
-                Cart
-            </a>
         </div>
     </div>
 </header>
