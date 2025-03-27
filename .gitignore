@@ -1,2 +1,2 @@
-# push all except mazer-template folder
 mazer-template/
+.idea/
