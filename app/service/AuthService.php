@@ -76,6 +76,18 @@ class AuthService
         return ['success' => true, 'user' => $payload];
     }
 
+    public static function getCurrentUser(){
+        $result = AuthService::validateSession();
+        if (!$result['success']) return $result;
+
+        $userId = $result['user']['userid'];
+
+        $result = UserService::findById($userId);
+        if (!$result['success']) return $result;
+
+        return ['success' => true, 'user' => $result['data']];
+    }
+
 
     /* Encrypts a payload using a secret key
      * @param array $payload The payload to encrypt
