@@ -2,7 +2,7 @@
 <html lang="en" data-theme="valentine">
 
 <head>
-    <?php require_once "../common/head.php"; ?>
+    <?php require_once __DIR__ . "/../common/head.php"; ?>
     <title>CakeZone | Home</title>
 
     <style type="text/tailwindcss">
@@ -26,11 +26,12 @@
 </head>
 
 <body>
-    <?php require_once "../common/header.php"; ?>
+    <?php require_once __DIR__ . "/../common/header.php"; ?>
 
     <div id="body" class="m-6 md:w-3/4 md:mx-auto flex flex-col gap-10">
         <!-- carousel -->
         <div class="relative w-full mx-auto overflow-hidden rounded-lg">
+            Này hư tại chưa truy cập đc hình á:') từ từ sửa.
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
                 <img src="../img/banner-1.jpg" class="w-full flex-shrink-0" />
@@ -144,7 +145,7 @@
         </div>
     </div>
 
-    <?php require_once "../common/footer.php"; ?>
+    <?php require_once __DIR__ . "/../common/footer.php"; ?>
 
     <script>
         // Carousel

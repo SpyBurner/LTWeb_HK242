@@ -9,10 +9,14 @@ $router = new Router();
 // Web routes
 $router->addRoute('', 'HomeController', 'index');
 $router->addRoute('home', 'HomeController', 'index');
-$router->addRoute('about', 'HomeController', 'about');
-$router->addRoute('contact', 'HomeController', 'contact');
+$router->addRoute('about', 'AboutController', 'index');
+$router->addRoute('qna', 'QnaController', 'index');
 
-$router->addRoute('account/test_token', 'AuthController', 'test_token');
+$router->addRoute('admin', 'AdminController', 'index');
+
 $router->addRoute('account/login', 'AuthController', 'login');
 $router->addRoute('account/register', 'AuthController', 'register');
+
+//TEST
+$router->addRoute('account/test_token', 'AuthController', 'test_token');
 

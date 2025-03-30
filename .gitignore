@@ -1,5 +1,5 @@
 .env
 
 **/errors.log
-mazer-template/
+**/mazer-template
 **/.idea

@@ -42,3 +42,4 @@ define('TOKEN_LIFETIME', $token_lifetime_value * $token_lifetime_suffix);
 
 define('ENCRYPT_METHOD', $conf['ENCRYPT_METHOD']);
 
+const MAZER_BASE_URL = 'http://localhost/../app/view/mazer-template';

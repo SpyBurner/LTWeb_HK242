@@ -1,3 +1,4 @@
+
 <header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->
     <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto max-md:gap-2 max-md:w-11/12">
@@ -39,10 +40,10 @@
                 </div>
 
                 <nav class="flex-5 flex flex-row flex-wrap justify-center">
-                    <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">HOME</a>
-                    <a href="../about/about.html" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
-                    <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">QNA</a>
-                    <a href="#" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">NEWS</a>
+                    <a href="/" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">HOME</a>
+                    <a href="/about" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">ABOUT</a>
+                    <a href="/qna" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">QNA</a>
+                    <a href="/news" class="btn btn-ghost hover:bg-base-100 rounded-none py-2 px-6">NEWS</a>
                 </nav>
             </div>
 
@@ -92,17 +93,17 @@
 
                 <!-- read token from cookie and decode AES, if role is admin, display this button -->
                 <?php
-                if (isset($_COOKIE['token'])) {
-                    $token = $_COOKIE['token'];
-                    $iv = $_COOKIE['iv'];
-                    // $data = json_decode(decrypt_token($token));
-
-                    if ($data->role === 'admin') {
-                        echo '<a href="../home/home-admin.php" class="btn btn-ghost btn-neutral rounded-full btn-lg">
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                        </a>';
-                    }
-                }
+//                if (isset($_COOKIE['auth_token'])) {
+//                    $token = $_COOKIE['auth_token'];
+//
+//                    // $data = json_decode(decrypt_token($token));
+//
+//                    if ($data->role === 'admin') {
+//                        echo '<a href="../home/home-admin.php" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+//                            <i class="fa-solid fa-screwdriver-wrench"></i>
+//                        </a>';
+//                    }
+//                }
                 ?>
 
                 <a href="" class="btn btn-ghost btn-neutral rounded-full btn-lg">
@@ -124,12 +125,12 @@
     </div>
 
     <nav class="flex flex-col">
-        <a href="../home/home.html" class="btn btn-ghost rounded-none py-6">Home</a>
-        <a href="../about/about.html" class="btn btn-ghost rounded-none py-6">About</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
-        <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="../account/login.html" class="btn btn-outline mx-4 my-2">Login</a>
-        <a href="../account/register.html" class="btn mx-4 my-2">Register</a>
+        <a href="/" class="btn btn-ghost rounded-none py-6">Home</a>
+        <a href="/about" class="btn btn-ghost rounded-none py-6">About</a>
+        <a href="/qna" class="btn btn-ghost rounded-none py-6">QnA</a>
+        <a href="/news" class="btn btn-ghost rounded-none py-6">News</a>
+        <a href="../account/login" class="btn btn-outline mx-4 my-2">Login</a>
+        <a href="../account/register" class="btn mx-4 my-2">Register</a>
     </nav>
 </div>
 
