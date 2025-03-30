@@ -1,12 +1,17 @@
 <?php
 
-require_once __DIR__ . '/config.php'; // Load environment variables
+namespace core;
 
-class Database {
+use PDO;
+use PDOException;
+
+class Database
+{
     private static $instance = null;
     private $pdo;
 
-    private function __construct() {
+    private function __construct()
+    {
         try {
             // Data Source Name (DSN)
             $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
@@ -18,20 +23,21 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false // Use real prepared statements
             ]);
         } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
+            die("core\Database connection failed: " . $e->getMessage());
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->pdo;
     }
 }
 
-?>
