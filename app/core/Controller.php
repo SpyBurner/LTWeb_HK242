@@ -60,7 +60,7 @@ abstract class Controller
      *
      * @return bool
      */
-    private function isAuthenticate(): bool
+    protected function isAuthenticate(): bool
     {
         return AuthService::validateSession()['success'];
     }

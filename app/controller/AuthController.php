@@ -28,6 +28,12 @@ class AuthController extends Controller {
 //    TESTING ZONE
     public function register()
     {
+        if ($this->isAuthenticate()){
+            $this->redirectWithMessage("/", [
+                'success' => "You are already logged in"
+            ]);
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             session_start();
@@ -68,6 +74,13 @@ class AuthController extends Controller {
     }
 
     public function login() {
+        if ($this->isAuthenticate()){
+            $this->redirectWithMessage("/", [
+                'success' => "You are already logged in"
+            ]);
+        }
+
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $this->post('email');
             $password = $this->post('password');
