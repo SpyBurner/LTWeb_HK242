@@ -18,7 +18,7 @@ interface IService
      * @param object $model Object to save.
      * @return int Number of rows affected (inserted or updated).
      */
-    public function save($model);
+    public static function save($model);
 
     /**
      * Finds a record by its ID and returns an object representation.

@@ -8,7 +8,7 @@ use model\UserModel;
 use function core\handleException;
 class UserService implements IService
 {
-    public function save($model)
+    public static function save($model)
     {
         if (!$model instanceof UserModel) {
             return ['success' => false, 'message' => 'Invalid model type'];
@@ -33,12 +33,6 @@ class UserService implements IService
                     ':userid' => $model->getUserid() // Only used for updates
                 ];
             } else {
-                $usernameCheck = self::findByUsername($model->getUsername());
-
-                if ($usernameCheck['success']) {
-                    return ['success' => false, 'message' => 'Username already exists'];
-                }
-
                 $stmt = $pdo->prepare("
                     INSERT INTO user (username, email, password, joindate, isadmin) 
                     VALUES (:username, :email, :password, :joindate, :isadmin)
@@ -73,14 +67,15 @@ class UserService implements IService
         }
     }
 
-    public static function findByUsername($username)
+
+    public static function findByEmail($email)
     {
         try {
-            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE username = :username");
-            $stmt->execute([':username' => $username]);
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE email = :email");
+            $stmt->execute([':email' => $email]);
             $result = $stmt->fetch();
 
-            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'User not found'];
+            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'Email not found'];
         } catch (Exception $e) {
             return handleException($e);
         }
@@ -110,4 +105,6 @@ class UserService implements IService
             return handleException($e);
         }
     }
+
+
 }

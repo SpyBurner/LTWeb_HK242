@@ -1,11 +1,13 @@
 <?php
+namespace controller;
 
 use core\Controller;
 
-require_once __DIR__ . "/../../core/Controller.php";
-
 class HomeController extends Controller {
     public function index() {
-        require_once __DIR__ . "/../view/home/home.php";
+        $this->requireAuth();
+
+//        require_once __DIR__ . "/../view/home/home.php";
+        echo 'hi';
     }
 }

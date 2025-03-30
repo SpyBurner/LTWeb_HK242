@@ -2,6 +2,9 @@
 
 namespace core;
 
+use JetBrains\PhpStorm\NoReturn;
+use service\AuthService;
+
 abstract class Controller
 {
     /**
@@ -10,10 +13,10 @@ abstract class Controller
      * @param string $view The view file name (without .php extension).
      * @param array $data Data to be extracted and passed to the view.
      */
-    protected function render($view, $data = [])
+    protected function render(string $view, array $data = []): void
     {
         extract($data); // Convert array keys into variables
-        require __DIR__ . "/../views/$view.php"; // Include the view file
+        require __DIR__ . "/../view/$view.php"; // Include the view file
     }
 
     /**
@@ -23,9 +26,9 @@ abstract class Controller
      * @param mixed $default Default value if the key is missing.
      * @return mixed
      */
-    protected function get($key, $default = null)
+    protected function get($key, $default = null): mixed
     {
-        return isset($_GET[$key]) ? $_GET[$key] : $default;
+        return $_GET[$key] ?? $default;
     }
 
     /**
@@ -35,15 +38,16 @@ abstract class Controller
      * @param mixed $default Default value if the key is missing.
      * @return mixed
      */
-    protected function post($key, $default = null)
+    protected function post($key, $default = null): mixed
     {
-        return isset($_POST[$key]) ? $_POST[$key] : $default;
+        return $_POST[$key] ?? $default;
     }
 
     /**
      * Redirect to a different page.
      *
      * @param string $url The target URL.
+     * @return void
      */
     protected function redirect($url)
     {
@@ -56,27 +60,37 @@ abstract class Controller
      *
      * @return bool
      */
-    protected function isAuthenticated()
+    private function isAuthenticate(): bool
     {
-        return isset($_SESSION['user_id']);
+        return AuthService::validateSession()['success'];
     }
 
     /**
+     * PUT THIS IN THE BEGINNING OF EVERY CONTROLLER METHOD THAT REQUIRES AUTHENTICATION.
+     *
      * Require authentication before allowing access to a page.
      * Redirects to login if the user is not authenticated.
      */
-    protected function requireAuth()
+    protected function requireAuth(): void
     {
-        if (!$this->isAuthenticated()) {
+        if (!$this->isAuthenticate()) {
             $this->redirectWithMessage('/account/login', [
                 'error' => 'You must be logged in to access this page.'
             ]);
         }
     }
 
-    protected function redirectWithMessage($url, $params = []) {
-        $query = http_build_query($params);
-        header("Location: " . $url . ($query ? '?' . $query : ''));
+    /**
+     * Redirect to a URL with flash (session stored) messages.
+     * @param string $url The target URL.
+     * @param array $params An associative array of flash (session-stored) messages to set in the session. Use SessionHelper::getFlash(<message>) extract.
+     */
+    #[NoReturn] protected function redirectWithMessage($url, $params = []): void
+    {
+        foreach ($params as $key => $value) {
+            SessionHelper::setflash($key, $value);
+        }
+        header("Location: " . $url);
         exit;
     }
 }

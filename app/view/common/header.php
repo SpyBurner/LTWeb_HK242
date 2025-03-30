@@ -1,3 +1,23 @@
+<?php
+//Include alert box
+require_once __DIR__ . "/../../component/AlertBox.php";
+
+use core\SessionHelper;
+
+// Retrieve session data and clear it after displaying
+$formData = SessionHelper::getFlash('form_data');
+$error = SessionHelper::getFlash('error');
+$success = SessionHelper::getFlash('success');
+
+// Show alerts if any
+if ($error) {
+    showAlert($error, "error", MESSAGE_DURATION);
+}
+if ($success) {
+    showAlert($success, "success", MESSAGE_DURATION);
+}
+
+?>
 <!-- place this at the top of <body> -->
 <header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->

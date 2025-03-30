@@ -8,7 +8,7 @@ USE BTL_LTW;
 
 CREATE TABLE User (
 userid int AUTO_INCREMENT PRIMARY KEY,
-username varchar(255) NOT NULL UNIQUE,
+username varchar(255) NOT NULL,
 password varchar(100) NOT NULL,
 joindate DATETIME NOT NULL DEFAULT current_timestamp(),
 email varchar(255) NOT NULL UNIQUE,
@@ -147,16 +147,16 @@ CREATE TABLE ContactMessage(
 );
 
 INSERT INTO User (username, password, email, isadmin) VALUES
-('admin1', 'hashedpassword1', 'admin1@example.com', TRUE),
-('admin2', 'hashedpassword2', 'admin2@example.com', TRUE),
-('admin3', 'hashedpassword3', 'admin3@example.com', TRUE),
-('user1', 'hashedpassword4', 'user1@example.com', FALSE),
-('user2', 'hashedpassword5', 'user2@example.com', FALSE),
-('user3', 'hashedpassword6', 'user3@example.com', FALSE),
-('user4', 'hashedpassword7', 'user4@example.com', FALSE),
-('user5', 'hashedpassword8', 'user5@example.com', FALSE),
-('user6', 'hashedpassword9', 'user6@example.com', FALSE),
-('user7', 'hashedpassword10', 'user7@example.com', FALSE);
+('admin1', '$2y$10$dXH5SrJdbDz0Zkv/x9c1.OMCzkIr8kSL8wDzsh2Lr1eZXDRe1I1C6', 'admin1@example.com', TRUE),
+('admin2', '$2y$10$J21m1bQiDakEhFLiMIfPaept8LzAepSWIsc2MNsy6TTcRSJ1dTfee', 'admin2@example.com', TRUE),
+('admin3', '$2y$10$f7sl1wFPIIHxMhJzOw0b6uhlFcnthpDBXG2QkGMtM3OGmYCyDBuzW', 'admin3@example.com', TRUE),
+('user1', '$2y$10$ocFmzQLZhbX1NZ24IFuSsO.Sd6MrWEGWmiX/7nRKh6GeuJHteCSF.', 'user1@example.com', FALSE),
+('user2', '$2y$10$H40G7xWKNrcjRvpPtZ5.peeCb4ENe5YxSDNegBN8ngH1hlOw/sW4i', 'user2@example.com', FALSE),
+('user3', '$2y$10$FGv.fkV0croo0OPc8AMnoOs.Ccr4YAHhSOSR0NjHBCVFP5dh45zBy', 'user3@example.com', FALSE),
+('user4', '$2y$10$XF0uqsMr7ACoRq8HXhSzju9JE7cDkgLrsL7jeP2vozvt/EnTXdIKW', 'user4@example.com', FALSE),
+('user5', '$2y$10$En82pJ9eSojCRT5fk2Pm8OhRdFJr5hPFXTC/y3ZsOuOvXZ/ONb4hi', 'user5@example.com', FALSE),
+('user6', '$2y$10$ym6PkRC/n/zGQ.jdILa55uWIwpxBFrW1ADc3V3KQBi68hEYb88jQq', 'user6@example.com', FALSE),
+('user7', '$2y$10$Zne5EGh1UUBomkqBIGhZGe5kVuDlyPo5BR.0l3URRRht22Fghggi.', 'user7@example.com', FALSE);
 
 -- Insert admins into the Admin table
 INSERT INTO Admin (userid)

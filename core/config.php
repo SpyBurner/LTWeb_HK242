@@ -18,4 +18,27 @@ define('DB_USER', $env['DB_USER']);
 define('DB_PASS', $env['DB_PASS']);
 define('DB_CHARSET', $env['DB_CHARSET']);
 
-define('MESSAGE_DURATION', 10000);
+$conf_file = __DIR__ . '/../config.ini';
+$conf = parse_ini_file($conf_file);
+
+define('MESSAGE_DURATION', $conf['MESSAGE_DURATION']);
+define('SECRET_KEY', $conf['SECRET_KEY']);
+
+//Token lifetime calculation
+$lifetime_suffix = [
+    's' => 1,
+    'm' => 60,
+    'h' => 3600,
+    'd' => 86400,
+    'w' => 604800,
+    'M' => 2592000,
+    'y' => 31536000
+];
+
+$token_lifetime_value = (int) substr($conf['TOKEN_LIFETIME'], 0, -1);
+$token_lifetime_suffix = $lifetime_suffix[(substr($conf['TOKEN_LIFETIME'], -1))];
+
+define('TOKEN_LIFETIME', $token_lifetime_value * $token_lifetime_suffix);
+
+define('ENCRYPT_METHOD', $conf['ENCRYPT_METHOD']);
+

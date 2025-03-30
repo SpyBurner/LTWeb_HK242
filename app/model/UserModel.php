@@ -4,19 +4,19 @@ namespace model;
 use core\IModel;
 
 class UserModel implements IModel{
-    private int $userid;
-    private string $username;
-    private string $email;
-    private int $password;
-    private string $joindate;
-    private bool $isadmin;
+    private $userid;
+    private $username;
+    private $email;
+    private $password;
+    private $joindate;
+    private $isadmin;
 
     public function __construct($id, $username, $email, $password, $joindate = null, $isadmin = false) {
         $this->userid = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
-        $this->joindate = isset($joindate) ? $joindate : date('Y-m-d H:i:s');
+        $this->joindate = $joindate ?? date('Y-m-d H:i:s');
         $this->isadmin = $isadmin;
     }
 

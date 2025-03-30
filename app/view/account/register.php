@@ -39,7 +39,7 @@ if ($success) {
 
         <div class="card-body">
             <fieldset class="fieldset">
-                <form method="post" action="/account/register">
+                <form method="post" action="#">
                     <label class="input validator rounded-md w-full">
                         <i class="fa-solid fa-user"></i>
                         <input name="username" type="text" required placeholder="Username"
