@@ -26,6 +26,10 @@
                 box-sizing: border-box;
                 width: calc((100% - 1rem * 2) / 3) !important;
             }
+            .posts-container {
+                margin-left: 20%;
+                margin-right: 20%;
+            }
         }
         @media (max-width: 768px) {
             #search-nav, #login-register {
@@ -281,9 +285,9 @@
         </div>
         <div class="mt-8">
             <h1 class="text-2xl text-center font-bold mt-4">Bài viết liên quan</h1>
-            <div class="flex items-center gap-4 mt-6 max-h-64 box-border">
+            <div class="flex items-center gap-4 mt-6 max-h-64 box-border" id="related-posts-container">
                 <button class="btn btn-circle" id="slider-left">❮</button>
-                <div class="flex gap-4" id="container">
+                <div class="flex flex-1 gap-4" id="container">
                 <?php
                     $sql_related_posts = "SELECT blogid, title, postdate, content FROM blogpost WHERE blogid != ?";
                     $stmt_related_posts = $conn->prepare($sql_related_posts);
@@ -292,18 +296,23 @@
                     $result_related_posts = $stmt_related_posts->get_result();
                     $related_posts = $result_related_posts->fetch_all(MYSQLI_ASSOC);
 
+                    $count = 1;
+
                     foreach ($related_posts as $post):
                         $blogid = htmlspecialchars($post['blogid']);
                         $title = htmlspecialchars($post['title']);
                         $postdate = htmlspecialchars($post['postdate']);
                         $content = htmlspecialchars($post['content']);
                 ?>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $blogid ?>">
+                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $count ?>">
                         <h2 class="card-title"><?= $title ?></h2>
                         <p class="italic"><?= $postdate ?></p>
                         <p class="line-clamp-3"><?= $content ?></p>
                     </div>
-                <?php endforeach; ?>
+                <?php 
+                    $count++;
+                    endforeach; 
+                ?>
                 </div>
                 <button class="btn btn-circle" id="slider-right">❯</button>
             </div>
@@ -367,6 +376,33 @@
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeSidebar();
         });
+
+        if(screen.width >= 768) {
+            let all = document.querySelectorAll('[id^="post"]')
+            if (all.length >= 3) {
+                if (all.length == 3) {
+                    document.getElementById("slider-left").classList.add("hidden");
+                    document.getElementById("slider-right").classList.add("hidden");
+                }
+                for (let i = 0; i < all.length; i++) {
+                    all[i].classList.add("carousel-item");
+                }
+            }
+            else {
+                document.getElementById("related-posts-container").classList.add("posts-container");
+                document.getElementById("container").classList.add("w-full");
+                for (let i = 0; i < all.length; i++) {
+                    all[i].classList.remove("carousel-item");
+                }
+                document.getElementById("slider-left").classList.add("hidden");
+                document.getElementById("slider-right").classList.add("hidden");
+            }
+        }
+
+        else {
+            document.getElementById("slider-left").classList.remove("hidden");
+            document.getElementById("slider-right").classList.remove("hidden");
+        }
 
         document.getElementById("slider-right").addEventListener("click", () => {
             let all = document.querySelectorAll('[id^="post"]')
