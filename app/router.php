@@ -1,18 +1,18 @@
 <?php
 
-// Define routes and their corresponding files
-$routes = [
-    '' => __DIR__ . '/view/home/home.php',
-    'about' => __DIR__ . '/view/about/about.php',
-    // Add more routes here
-];
+use core\Router;
 
-// Check if the route exists in the routes array
-if (array_key_exists($route, $routes)) {
-    require_once($routes[$route]);
-} else {
-    // If the route does not exist, show a 404 page
-    require_once(__DIR__ . '/view/404.php');
-}
+require_once __DIR__ . '/core/Router.php';
 
-?>
+$router = new Router();
+
+// Web routes
+$router->addRoute('', 'HomeController', 'index');
+$router->addRoute('home', 'HomeController', 'index');
+$router->addRoute('about', 'HomeController', 'about');
+$router->addRoute('contact', 'HomeController', 'contact');
+
+$router->addRoute('account/test_token', 'AuthController', 'test_token');
+$router->addRoute('account/login', 'AuthController', 'login');
+$router->addRoute('account/register', 'AuthController', 'register');
+

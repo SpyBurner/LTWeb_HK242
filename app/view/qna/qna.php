@@ -6,8 +6,9 @@
 
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
-<head>
 
+<head>
+    <title>Cakezone QnA</title>
 <?php
     require_once(__DIR__.'/../common/head.php');
 ?>
@@ -16,10 +17,9 @@
 
 <body>
 <?php
-    require_once(__DIR__ . '/../common/header-sidebar.php');
+    require_once(__DIR__ . '/../common/header.php');
 
     $admin_edit = isset($_GET['edit']) && $_GET['edit'] === 'true';
-    echo $admin_edit;
 ?>
 
     <script>
@@ -361,9 +361,6 @@
             </div>
         </dialog>
     </div>
-
-
-
 
 <?php
     require_once(__DIR__.'/../common/footer.php');

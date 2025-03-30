@@ -65,8 +65,8 @@
         <a href="../about/about.html" class="btn btn-ghost rounded-none py-6">About</a>
         <a href="#" class="btn btn-ghost rounded-none py-6">QnA</a>
         <a href="#" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="../account/login.html" class="btn btn-outline mx-4 my-2">Profile</a>
-        <a href="../account/login.html" class="btn btn-error mx-4 my-2">Logout</a>
+        <a href="../account/login.php" class="btn btn-outline mx-4 my-2">Profile</a>
+        <a href="../account/login.php" class="btn btn-error mx-4 my-2">Logout</a>
         <!-- <a href="../account/register.html" class="btn mx-4 my-2">Register</a> -->
     </nav>
 </div>

@@ -1,4 +1,3 @@
-<!-- place this at the top of <body> -->
 <header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->
     <div id="header-content" class="flex flex-row gap-10 justify-between items-center w-3/4 mx-auto max-md:gap-2 max-md:w-11/12">
@@ -7,9 +6,12 @@
             <i class="fa-solid fa-bars"></i>
         </button>
 
+        <?php
+            require_once __DIR__."/serve-image.php";
+        ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="../img/header-logo2-nobg.png" alt="header logo" width="150">
+            <img src="<?php echo get_image_path('/../img/header-logo2-nobg.png') ?>" alt="header logo" width="150">
         </div>
 
         <!-- search, cate dropdown, navigation -->
@@ -78,8 +80,8 @@
 
             <!-- login / register (replaced by profile after logged in) -->
             <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
-                <a href="../account/login.html">Login</a>
-                <a href="../account/register.html" class="btn btn-primary rounded-md">Register</a>
+                <a href="../account/login.php">Login</a>
+                <a href="../account/register.php" class="btn btn-primary rounded-md">Register</a>
             </div>
 
             <!-- cart -->
