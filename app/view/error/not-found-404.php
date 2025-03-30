@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <script src="<?php echo MAZER_BASE_URL . '/assets/static/js/initTheme.js' ?>"></script>
+    <script src="<?php echo MAZER_BASE_URL . '/static/js/initTheme.js' ?>"></script>
     <div id="error">
         <div class="error-page container">
             <div class="col-md-8 col-12 offset-md-2">
