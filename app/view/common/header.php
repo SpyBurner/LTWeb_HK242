@@ -12,7 +12,7 @@
         ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="<?php echo get_image_path('/../img/header-logo2-nobg.png') ?>" alt="header logo" width="150">
+            <img src="/assets/img/header-logo2-nobg.png" alt="header logo" width="150">
         </div>
 
         <!-- search, cate dropdown, navigation -->

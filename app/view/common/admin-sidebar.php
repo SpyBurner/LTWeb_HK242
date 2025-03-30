@@ -9,7 +9,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo col-6">
-                    <a class="d-block" href="#"><img class="w-100 h-auto" src="../img/header-logo2-nobg.png" alt="Logo"></a>
+                    <a class="d-block" href="#"><img class="w-100 h-auto" src="../../../public/assets/img/header-logo2-nobg.png" alt="Logo"></a>
                 </div>
 
                 <div class="col-6 theme-toggle d-flex gap-2 align-items-center justify-content-end">

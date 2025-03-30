@@ -31,12 +31,11 @@
     <div id="body" class="m-6 md:w-3/4 md:mx-auto flex flex-col gap-10">
         <!-- carousel -->
         <div class="relative w-full mx-auto overflow-hidden rounded-lg">
-            Này hư tại chưa truy cập đc hình á:') từ từ sửa.
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
-                <img src="../img/banner-1.jpg" class="w-full flex-shrink-0" />
-                <img src="../img/banner-1.jpg" class="w-full flex-shrink-0" />
-                <img src="../img/banner-1.jpg" class="w-full flex-shrink-0" />
+                <img src="/assets/img/banner-1.jpg" class="w-full flex-shrink-0" />
+                <img src="/assets/img/banner-2.jpg" class="w-full flex-shrink-0" />
+                <img src="/assets/img/banner-3.jpg" class="w-full flex-shrink-0" />
             </div>
 
             <!-- Navigation Buttons -->

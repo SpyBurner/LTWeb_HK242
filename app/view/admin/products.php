@@ -212,7 +212,7 @@
                                             <label class="form-label">Image</label>
                                             <input type="file" class="form-control">
                                             <small class="text-muted">Current image:</small>
-                                            <img src="../img/product-placeholder.jpg" alt="Current product" class="product-image mt-2">
+                                            <img src="../../../public/assets/img/product-placeholder.jpg" alt="Current product" class="product-image mt-2">
                                         </div>
                                     </form>
                                 </div>
