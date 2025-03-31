@@ -35,8 +35,6 @@ class AuthController extends Controller {
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            session_start();
             $username = $this->post('username');
             $email = $this->post('email');
             $password = $this->post('password');

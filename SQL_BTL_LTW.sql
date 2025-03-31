@@ -107,6 +107,7 @@ bought int,
 mfgid int NOT NULL,
 stock varchar(255) NOT NULL,
 cateid int NOT NULL,
+avatarurl varchar(255) NOT NULL,
 CONSTRAINT refcategoryid_product FOREIGN KEY (cateid) REFERENCES Category(cateid) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT refmfgid_product FOREIGN KEY (mfgid) REFERENCES Manufacturer(mfgid) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -9,7 +9,7 @@ class ProfileController extends Controller {
     public function index() {
         $this->requireAuth();
 
-        $result = authService::getCurrentUser();
+        $result = AuthService::getCurrentUser();
         if (!$result['success']){
             $this->redirectWithMessage('/', $result['message']);
         }
