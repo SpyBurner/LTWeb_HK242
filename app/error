@@ -1,0 +1,2 @@
+[2025-04-06 20:18:19] SQLSTATE[HY093]: Invalid parameter number
+[2025-04-06 20:19:13] SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`btl_ltw`.`customer`, CONSTRAINT `refcustomerid_customer` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE)

@@ -3,7 +3,9 @@ namespace service;
 
 use core\Database;
 use core\IService;
+use core\Logger;
 use Exception;
+use model\CustomerModel;
 use model\UserModel;
 use function core\handleException;
 class UserService implements IService
@@ -32,6 +34,8 @@ class UserService implements IService
                     ':isadmin' => $model->getisadmin(),
                     ':userid' => $model->getUserid() // Only used for updates
                 ];
+
+                $stmt->execute($params);
             } else {
                 $stmt = $pdo->prepare("
                     INSERT INTO user (username, email, password, joindate, isadmin) 
@@ -44,11 +48,31 @@ class UserService implements IService
                     ':joindate' => $model->getJoindate(),
                     ':isadmin' => $model->getisadmin()
                 ];
+                $stmt->execute($params);
+
+                //Also create a customer record
+                $id = $pdo->lastInsertId();
+
+                $success = false;
+                $find_result = self::findById($id);
+                if ($find_result['success']) {
+                    Logger::log("UserService", "User with ID $id created/updated successfully");
+
+                    $customerResult = CustomerService::save(new CustomerModel($id));
+
+                    if ($customerResult['success']) {
+                        $extra_msg = $customerResult['message'];
+                        $success = true;
+                    }
+                }
+
+                if (!$success) {
+                    self::deleteById($id);
+                    return ['success' => false, 'message' => 'User creation successful, but customer creation failed. User deleted.'];
+                }
             }
 
-            $stmt->execute($params);
-
-            return ['success' => true, 'message' => $model->getUserid() ? 'User updated successfully' : 'User created successfully'];
+            return ['success' => true, 'message' => ($model->getUserid() ? 'User updated successfully' : 'User created successfully') . ', ' . $extra_msg] ;
         } catch (Exception $e) {
             return handleException($e);
         }
