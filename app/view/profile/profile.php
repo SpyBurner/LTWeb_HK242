@@ -57,16 +57,57 @@ assert(isset($avatar));
             }
         }
 
+        // Automatically detect changes
+        function uploadAvatar(event) {
+            const file = event.target.files[0];
+
+            console.log("Selected file:", file);
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch(BASE_URL + '/profile/update_avatar', {
+                    method: 'POST',
+                    body: formData, // FormData automatically handles content type
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Upload failed");
+                    return response.text();
+                })
+                .then(data => {
+                    console.log("Upload success:", data);
+                    window.location.reload();
+                })
+                    .catch(error => {
+                        console.error("Error uploading avatar:", error);
+                    });
+            }
+        }
+
+
+
     </script>
 
     <main class="container mx-auto p-6">
         <section class="bg-white shadow-lg rounded-lg p-10 md:p-16">
             <div class="flex flex-col md:flex-row items-center gap-8">
 
-                <!-- Profile Picture -->
-                <div class="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-pink-500">
-                    <img src="<?php echo $avatar?>" alt="Profile Picture" class="w-full h-full object-cover">
+                <!-- Profile Picture with Upload Overlay -->
+                <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-pink-500">
+                    <!-- Image -->
+                    <img class="avatar" src="<?php echo $avatar?>" alt="Profile Picture" class="w-full h-full object-cover">
+
+                    <!-- Overlay for click -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-70 transition-opacity cursor-pointer z-10"
+                         onclick="document.getElementById('avatar-upload').click()">
+                        <span class="text-white font-bold">Click to change</span>
+                    </div>
+
+                    <!-- Hidden File Input -->
+                    <input type="file" id="avatar-upload" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="uploadAvatar(event)">
                 </div>
+
 
                 <!-- Profile Info -->
                 <div class="flex-1">

@@ -43,12 +43,12 @@ define('TOKEN_LIFETIME', $token_lifetime_value * $token_lifetime_suffix);
 
 define('ENCRYPT_METHOD', $conf['ENCRYPT_METHOD']);
 
+define('BASE_URL', 'http://localhost');
 const MAZER_BASE_URL = '/assets/mazer-template/assets';
 
+const IMAGE_UPLOAD_URL = __DIR__ . '/../public/assets/repo';
 
-const IMAGE_UPLOAD_URL = __DIR__ . '/../assets/.repo';
-
-const IMAGE_UPLOAD_URL_PUBLIC = 'assets/.repo';
+const IMAGE_UPLOAD_URL_PUBLIC = 'assets/repo';
 
 const NO_IMAGE_URL_PUBLIC = 'assets/img/No_Image_Available.jpg';
 

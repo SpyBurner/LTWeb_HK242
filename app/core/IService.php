@@ -4,7 +4,7 @@ namespace core;
 use Exception;
 
 // Log the exception message into a file and return the message
-function handleException(Exception $e)
+function handleException(Exception $e): array
 {
     Logger::log($e->getMessage());
     return ['success' => false, 'message' => 'Server-side error, please contact admin (to check the logs).'];

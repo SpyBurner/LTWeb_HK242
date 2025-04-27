@@ -2,7 +2,10 @@
 namespace service;
 
 use core\Database;
+use core\FileCategory;
+use core\FileManager;
 use core\IService;
+use core\Logger;
 use Exception;
 use model\CustomerModel;
 use function core\handleException;
@@ -64,5 +67,39 @@ class CustomerService implements IService
     public static function deleteById($id)
     {
         return ['success' => false, 'message' => 'Delete operation not supported for CustomerService. Please delete from UserService'];
+    }
+
+    public static function updateAvatar($avatar, $customerid)
+    {
+        Logger::log("Updating avatar for customer ID: $customerid");
+
+        if (!isset($avatar) || !isset($customerid)) {
+            Logger::log("Invalid parameters for updating avatar");
+            return  ['success' => false, 'message' => 'Invalid parameters'];
+        }
+
+        try {
+            $result = FileManager::getInstance()->Save($avatar, $customerid, FileCategory::AVATAR, true);
+            if (!$result['success']) {
+                Logger::log("Failed to save avatar: " . $result['message']);
+                return ['success' => false, 'message' => $result['message']];
+            }
+            Logger::log("File saved successfully: " . $result['data']);
+            $avatarurl = $result['data'];
+
+            $stmt = Database::getInstance()->getConnection()->prepare("UPDATE customer SET avatarurl = :avatarurl WHERE userid = :customerid");
+            $params = [
+                ':avatarurl' => $avatarurl,
+                ':customerid' => $customerid
+            ];
+
+            $stmt->execute($params);
+
+            Logger::log("Avatar updated successfully for customer ID: $customerid");
+            return ['success' => true, 'message' => 'Avatar updated successfully'];
+        } catch (Exception $e) {
+            Logger::log("Error updating avatar: " . $e->getMessage());
+            return handleException($e);
+        }
     }
 }

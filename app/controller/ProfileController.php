@@ -6,6 +6,7 @@ use core\Logger;
 use model\ContactModel;
 use service\AuthService;
 use service\ContactService;
+use service\CustomerService;
 
 class ProfileController extends Controller {
     public function index() {
@@ -79,5 +80,33 @@ class ProfileController extends Controller {
             }
             $this->redirectWithMessage('/profile', 'Contact deleted successfully');
         }
+    }
+
+    public function updateAvatar_API(){
+        $user = AuthService::getCurrentUser()['user'];
+
+        Logger::log("Update avatar API called");
+
+        if ($user->getIsAdmin()){
+            $this->redirectWithMessage('/profile', 'Admin cannot update avatar :(');
+        }
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
+
+            if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+                Logger::log("File upload error: " . $_FILES['file']['error']);
+                $this->redirectWithMessage('/profile', 'File upload error');
+            }
+            $avatar = $_FILES['file'];
+            $result = CustomerService::updateAvatar($avatar, $user->getUserid());
+            if (!$result['success']){
+                Logger::log("Update avatar failed: " . $result['message']);
+                $this->redirectWithMessage('/profile', $result['message']);
+            }
+            Logger::log("Update avatar success: " . $result['message']);
+            $this->redirectWithMessage('/profile', 'Avatar updated successfully');
+        }
+        Logger::log("Update avatar fall through???");
+        $this->redirectWithMessage('/profile', 'Avatar update have fallen through');
     }
 }
