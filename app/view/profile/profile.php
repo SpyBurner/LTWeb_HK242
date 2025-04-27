@@ -17,7 +17,7 @@ assert(isset($avatar));
     <?php require_once __DIR__ . "/../common/header.php"; ?>
 
     <script>
-        function openModal(modalId, contactId = null) {
+        function openModal(modalId) {
             console.log("Opening modal: " + modalId);
             const modal = document.getElementById(modalId);
 
@@ -92,12 +92,10 @@ assert(isset($avatar));
     <main class="container mx-auto p-6">
         <section class="bg-white shadow-lg rounded-lg p-10 md:p-16">
             <div class="flex flex-col md:flex-row items-center gap-8">
-
                 <!-- Profile Picture with Upload Overlay -->
                 <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-pink-500">
                     <!-- Image -->
-                    <img class="avatar" src="<?php echo $avatar?>" alt="Profile Picture" class="w-full h-full object-cover">
-
+                    <img class="avatar" src="/<?php echo $avatar?>" alt="Profile Picture" class="w-full h-full object-cover">
                     <!-- Overlay for click -->
                     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-70 transition-opacity cursor-pointer z-10"
                          onclick="document.getElementById('avatar-upload').click()">
@@ -124,6 +122,7 @@ assert(isset($avatar));
                                 <?php echo $user->getIsadmin() ? 'Admin' : 'User'; ?>
                             </span>
                         </p>
+                        <div class="btn btn-primary" onclick="openModal('change-password')">Change password</div>
                     </div>
                 </div>
 
@@ -177,7 +176,7 @@ assert(isset($avatar));
                     <div class="modal-box">
                         <h3 class="text-lg font-bold mb-4">Add Contact</h3>
 
-                        <form action="profile/add_contact" method="post">
+                        <form action="/profile/add_contact" method="post">
                             <label class="block font-medium mb-1">Name
                                 <input type="text" name="name" class="input input-bordered w-full mb-3" placeholder="Enter name" required />
                             </label>
@@ -208,7 +207,7 @@ assert(isset($avatar));
                     <div class="modal-box">
                         <h3 class="text-lg font-bold mb-4">Edit Contact</h3>
 
-                        <form action="profile/edit_contact" method="post">
+                        <form action="/profile/edit_contact" method="post">
                             <input type="hidden" name="contactid" id="edit-contact-id" />
 
                             <label class="block font-medium mb-1">Name</label>
@@ -227,6 +226,40 @@ assert(isset($avatar));
                             <div class="modal-action">
                                 <button type="submit" class="btn btn-primary">Save</button>
                                 <button type="button" class="btn" onclick="closeModal('contact-edit')">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </dialog>
+
+                <!-- Change Password Modal -->
+                <dialog id="change-password" class="modal">
+                    <div class="modal-box">
+                        <h3 class="text-lg font-bold mb-4">Change Password</h3>
+
+                        <form action="/profile/change_password" method="post">
+                            <label class="block font-medium mb-1">Old Password
+                                <input type="password" name="old_password" class="input input-bordered w-full mb-3" placeholder="Enter old password" required />
+                            </label>
+
+                            <label class="block font-medium mb-1 validator">New Password
+                                <input name="new_password" type="password" required placeholder="Enter new password" minlength="8" class="input input-bordered w-full mb-3"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                       title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"/>
+                            </label>
+                            <p class="validator-hint hidden">
+                                Must be more than 8 characters, including
+                                <br />At least one number
+                                <br />At least one lowercase letter
+                                <br />At least one uppercase letter
+                            </p>
+
+                            <label class="block font-medium mb-1">Confirm New Password
+                                <input type="password" name="confirm_password" class="input input-bordered w-full mb-3" placeholder="Confirm new password" required />
+                            </label>
+
+                            <div class="modal-action">
+                                <button type="submit" class="btn btn-primary">Change</button>
+                                <button type="button" class="btn" onclick="closeModal('change-password')">Close</button>
                             </div>
                         </form>
                     </div>

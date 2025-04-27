@@ -10,6 +10,7 @@ use Exception;
 use model\CustomerModel;
 use model\UserModel;
 use function core\handleException;
+use const config\DEFAULT_AVATAR_URL;
 use const config\DEFAULT_MOD_AVATAR_URL;
 
 class UserService implements IService
@@ -65,9 +66,12 @@ class UserService implements IService
                     $customerResult = CustomerService::save(new CustomerModel($id));
 
                     if ($customerResult['success']) {
-                        $extra_msg = $customerResult['message'];
                         $success = true;
                     }
+                    else {
+                        Logger::log("UserService", "Failed to create customer for user ID $id: " . $customerResult['message']);
+                    }
+                    $extra_msg = $customerResult['message'];
                 }
 
                 if (!$success) {
@@ -92,8 +96,16 @@ class UserService implements IService
             if ($result){
                 $model = UserModel::toObject($result);
 
-                if (!$model->getisadmin())
-                    $avatar =  CustomerService::findById($id)['data']->getAvatarurl();
+                if (!$model->getisadmin()){
+                    $result = CustomerService::findById($id);
+                    if ($result['success']){
+                        $avatar = $result['data']->getAvatarurl();
+                    }
+                    else {
+                        Logger::log("UserService " . "Failed to find customer for user ID: $id");
+                        $avatar = DEFAULT_AVATAR_URL;
+                    }
+                }
                 else $avatar = DEFAULT_MOD_AVATAR_URL;
 
                 $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];
@@ -117,8 +129,16 @@ class UserService implements IService
             if ($result){
                 $model = UserModel::toObject($result);
 
-                if (!$model->getisadmin())
-                    $avatar =  CustomerService::findById($model->getUserid())['data']->getAvatarurl();
+                if (!$model->getisadmin()){
+                    $result = CustomerService::findById($model->getUserid());
+                    if ($result['success']){
+                        $avatar = $result['data']->getAvatarurl();
+                    }
+                    else {
+                        Logger::log("UserService: " . "Failed to find customer for user ID: " . $model->getUserid());
+                        $avatar = DEFAULT_AVATAR_URL;
+                    }
+                }
                 else $avatar = DEFAULT_MOD_AVATAR_URL;
 
                 $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];

@@ -16,7 +16,9 @@ class ProfileController extends Controller {
         // User
         $result = AuthService::getCurrentUser();
         if (!$result['success']){
-            $this->redirectWithMessage('/', $result['message']);
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
+            ]);
         }
 
         $user = $result['user'];
@@ -44,13 +46,11 @@ class ProfileController extends Controller {
 
             $result = ContactService::save($model);
             if (!$result['success']){
-                $this->redirectWithMessage('/profile', $result['message']);
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
             }
 
-            $this->redirectWithMessage('/profile', 'Contact added successfully');
+            $this->redirectWithMessage('/profile', ['success' => 'Contact added successfully']);
         }
-        Logger::log("Add contact fall through???");
-        $this->redirectWithMessage('/profile', 'Contact add have fallen through');
     }
 
     public function editContact(){
@@ -66,8 +66,8 @@ class ProfileController extends Controller {
             $model = new ContactModel($contactId, $name, $phone, $address, $customerId);
             $result = ContactService::save($model);
             if (!$result['success'])
-                $this->redirectWithMessage('/profile', $result['message']);
-            $this->redirectWithMessage('/profile', 'Contact updated successfully');
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
+            $this->redirectWithMessage('/profile', ['success' => 'Contact updated successfully']);
         }
     }
 
@@ -77,9 +77,9 @@ class ProfileController extends Controller {
             $contactid = $this->get('contactid');
             $result = ContactService::deleteById($contactid);
             if (!$result['success']) {
-                $this->redirectWithMessage('/profile', $result['message']);
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
             }
-            $this->redirectWithMessage('/profile', 'Contact deleted successfully');
+            $this->redirectWithMessage('/profile', ['success' => 'Contact deleted successfully']);
         }
     }
 
@@ -89,26 +89,46 @@ class ProfileController extends Controller {
         Logger::log("Update avatar API called");
 
         if ($user->getIsAdmin()){
-            $this->redirectWithMessage('/profile', 'Admin cannot update avatar :(');
+            $this->redirectWithMessage('/profile', ['error' => 'Admin cannot update avatar :(']);
         }
 
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
 
             if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
                 Logger::log("File upload error: " . $_FILES['file']['error']);
-                $this->redirectWithMessage('/profile', 'File upload error');
+                $this->redirectWithMessage('/profile', ['error' => 'File upload error']);
             }
             $avatar = $_FILES['file'];
             $result = CustomerService::updateAvatar($avatar, $user->getUserid());
             if (!$result['success']){
                 Logger::log("Update avatar failed: " . $result['message']);
-                $this->redirectWithMessage('/profile', $result['message']);
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
             }
             Logger::log("Update avatar success: " . $result['message']);
-            $this->redirectWithMessage('/profile', 'Avatar updated successfully');
+            $this->redirectWithMessage('/profile', ['success' => 'Avatar updated successfully']);
         }
-        Logger::log("Update avatar fall through???");
-        $this->redirectWithMessage('/profile', 'Avatar update have fallen through');
+    }
+
+    public function changePassword(){
+        $this->requireAuth();
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
+            $oldPassword = $this->post('old_password');
+            $newPassword = $this->post('new_password');
+            $confirmPassword = $this->post('confirm_password');
+
+            if ($newPassword !== $confirmPassword){
+                Logger::log("New password and confirm password do not match");
+                $this->redirectWithMessage('/profile', ['error' => 'New password and confirm password do not match']);
+            }
+
+            $result = AuthService::changePassword($oldPassword, $newPassword);
+            if (!$result['success']){
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
+            }
+            AuthService::logout();
+            $this->redirectWithMessage('/account/login', ['success' => 'Password changed successfully, please login again']);
+        }
     }
 
     public function test_deleteUser(){
@@ -117,9 +137,9 @@ class ProfileController extends Controller {
             $userid = $this->get('userid');
             $result = UserService::deleteById($userid);
             if (!$result['success']) {
-                $this->redirectWithMessage('/profile', $result['message']);
+                $this->redirectWithMessage('/profile', ['error' => $result['message']]);
             }
-            $this->redirectWithMessage('/profile', 'User deleted successfully');
+            $this->redirectWithMessage('/profile', ['success' => 'User deleted successfully']);
         }
 
     }

@@ -22,6 +22,7 @@ $router->addRoute('profile/add_contact', 'ProfileController', 'addContact');
 $router->addRoute('profile/edit_contact', 'ProfileController', 'editContact');
 $router->addRoute('profile/delete_contact', 'ProfileController', 'deleteContact');
 $router->addRoute('profile/update_avatar', 'ProfileController', 'updateAvatar_API');
+$router->addRoute('profile/change_password', 'ProfileController', 'changePassword');
 
 $router->addRoute('account/login', 'AuthController', 'login');
 $router->addRoute('account/register', 'AuthController', 'register');
