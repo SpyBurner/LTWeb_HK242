@@ -30,4 +30,5 @@ $router->addRoute('account/logout', 'AuthController', 'logout');
 
 //TEST
 $router->addRoute('account/test_token', 'AuthController', 'test_token');
+$router->addRoute('profile/test_deleteUser', 'ProfileController', 'test_deleteUser');
 

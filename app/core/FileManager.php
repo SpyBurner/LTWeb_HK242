@@ -102,10 +102,11 @@ class FileManager
         $dirPath = IMAGE_UPLOAD_URL . '/' . $category . '/' . $id;
         Logger::log("Saving file to: $dirPath");
         // Make sure the directory exists
-        if (is_dir($dirPath) && $overwrite) {
-            $this->Delete($id, $category);
+        if (is_dir($dirPath)) {
+            if ($overwrite)
+                $this->Delete($id, $category);
+            else return ['success' => false, 'message' => 'File already exists and overwrite is not used'];
         }
-        else return ['success' => false, 'message' => 'File already exists and overwrite is not used'];
         mkdir($dirPath, 0755, true);
 
         $path = $dirPath . '/' . $file['name'];
@@ -121,7 +122,7 @@ class FileManager
      * Delete the file for the given id and category.
      *
      * @param string $id The ID of the file.
-     * @param FileCategory $category The category of the file.
+     * @param string $category The category of the file.
      * @return array An array containing 'success' and 'message' keys.
      */
     public function Delete($id, $category)

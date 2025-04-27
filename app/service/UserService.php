@@ -2,6 +2,8 @@
 namespace service;
 
 use core\Database;
+use core\FileCategory;
+use core\FileManager;
 use core\IService;
 use core\Logger;
 use Exception;
@@ -149,8 +151,22 @@ class UserService implements IService
             $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
             $stmt->execute([':id' => $id]);
 
-            return ['success' => $stmt->rowCount() > 0, 'message' => 'User deleted successfully'];
+            // Also delete the avatar in case this is a customer
+            $result = FileManager::getInstance()->Delete($id, FileCategory::AVATAR);
+            if (!$result['success']) {
+                Logger::log("Failed to delete avatar: " . $result['message'] . " for user ID: $id");
+            }
+
+            if ($stmt->rowCount() == 0) {
+                Logger::log("No user found with ID: $id");
+                return ['success' => false, 'message' => 'User not found'];
+            }
+            else {
+                Logger::log("User with ID: $id deleted successfully");
+                return ['success' => true, 'message' => 'User deleted successfully'];
+            }
         } catch (Exception $e) {
+            Logger::log("Failed to delete user: " . $e->getMessage());
             return handleException($e);
         }
     }

@@ -7,6 +7,7 @@ use model\ContactModel;
 use service\AuthService;
 use service\ContactService;
 use service\CustomerService;
+use service\UserService;
 
 class ProfileController extends Controller {
     public function index() {
@@ -37,7 +38,7 @@ class ProfileController extends Controller {
             $name = $this->post('name');
             $phone = $this->post('phone');
             $address = $this->post('address');
-            $customerId = $this->post('customerId');
+            $customerId = $this->post('customerid');
 
             $model = new ContactModel(null, $name, $phone, $address, $customerId);
 
@@ -56,7 +57,7 @@ class ProfileController extends Controller {
         $this->requireAuth();
 
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
-            $contactId = $this->post('contactId');
+            $contactId = $this->post('contactid');
             $name = $this->post('name');
             $phone = $this->post('phone');
             $address = $this->post('address');
@@ -108,5 +109,18 @@ class ProfileController extends Controller {
         }
         Logger::log("Update avatar fall through???");
         $this->redirectWithMessage('/profile', 'Avatar update have fallen through');
+    }
+
+    public function test_deleteUser(){
+        $this->requireAuth();
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'GET'){
+            $userid = $this->get('userid');
+            $result = UserService::deleteById($userid);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/profile', $result['message']);
+            }
+            $this->redirectWithMessage('/profile', 'User deleted successfully');
+        }
+
     }
 }
