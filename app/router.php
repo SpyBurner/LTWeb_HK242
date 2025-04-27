@@ -18,9 +18,13 @@ $router->addRoute('admin', 'AdminController', 'index');
 $router->addRoute('qna', 'QnaController', 'index');
 
 $router->addRoute('profile', 'ProfileController', 'index');
+$router->addRoute('profile/add_contact', 'ProfileController', 'addContact');
+$router->addRoute('profile/edit_contact', 'ProfileController', 'editContact');
+$router->addRoute('profile/delete_contact', 'ProfileController', 'deleteContact');
 
 $router->addRoute('account/login', 'AuthController', 'login');
 $router->addRoute('account/register', 'AuthController', 'register');
+$router->addRoute('account/logout', 'AuthController', 'logout');
 
 
 //TEST

@@ -123,4 +123,11 @@ class AuthController extends Controller {
             $this->render('account/login', []);
         }
     }
+
+    public function logout() {
+        AuthService::logout();
+        $this->redirectWithMessage("/", [
+            'success' => "Logout successful"
+        ]);
+    }
 }

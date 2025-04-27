@@ -8,6 +8,8 @@ use Exception;
 use model\CustomerModel;
 use model\UserModel;
 use function core\handleException;
+use const config\DEFAULT_MOD_AVATAR_URL;
+
 class UserService implements IService
 {
     public static function save($model)
@@ -85,7 +87,18 @@ class UserService implements IService
             $stmt->execute([':id' => $id]);
             $result = $stmt->fetch();
 
-            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'User not found'];
+            if ($result){
+                $model = UserModel::toObject($result);
+
+                if (!$model->getisadmin())
+                    $avatar =  CustomerService::findById($id)['data']->getAvatarurl();
+                else $avatar = DEFAULT_MOD_AVATAR_URL;
+
+                $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];
+            }
+            else
+                $ret = ['success' => false, 'message' => 'User not found'];
+            return $ret;
         } catch (Exception $e) {
             return handleException($e);
         }
@@ -99,7 +112,19 @@ class UserService implements IService
             $stmt->execute([':email' => $email]);
             $result = $stmt->fetch();
 
-            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'Email not found'];
+            if ($result){
+                $model = UserModel::toObject($result);
+
+                if (!$model->getisadmin())
+                    $avatar =  CustomerService::findById($model->getUserid())['data']->getAvatarurl();
+                else $avatar = DEFAULT_MOD_AVATAR_URL;
+
+                $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];
+            }
+            else
+                $ret = ['success' => false, 'message' => 'No user found with this email'];
+
+            return $ret;
         } catch (Exception $e) {
             return handleException($e);
         }

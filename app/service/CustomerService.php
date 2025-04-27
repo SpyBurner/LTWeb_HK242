@@ -5,7 +5,6 @@ use core\Database;
 use core\IService;
 use Exception;
 use model\CustomerModel;
-use model\UserModel;
 use function core\handleException;
 
 class CustomerService implements IService

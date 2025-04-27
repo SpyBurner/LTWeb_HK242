@@ -23,6 +23,7 @@ $conf = parse_ini_file($conf_file);
 
 define('MESSAGE_DURATION', $conf['MESSAGE_DURATION']);
 define('SECRET_KEY', $conf['SECRET_KEY']);
+define('USE_LOGGER', $conf['USE_LOGGER']);
 
 //Token lifetime calculation
 $lifetime_suffix = [
@@ -44,4 +45,13 @@ define('ENCRYPT_METHOD', $conf['ENCRYPT_METHOD']);
 
 const MAZER_BASE_URL = '/assets/mazer-template/assets';
 
-const DEFAULT_AVATAR_URL = '/assets/img/avatar_male.png';
+
+const IMAGE_UPLOAD_URL = __DIR__ . '/../assets/.repo';
+
+const IMAGE_UPLOAD_URL_PUBLIC = 'assets/.repo';
+
+const NO_IMAGE_URL_PUBLIC = 'assets/img/No_Image_Available.jpg';
+
+const DEFAULT_AVATAR_URL = 'assets/img/avatar_male.png';
+
+const DEFAULT_MOD_AVATAR_URL =  'assets/img/header-logo2-nobg.png';

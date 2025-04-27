@@ -6,7 +6,7 @@ use Exception;
 // Log the exception message into a file and return the message
 function handleException(Exception $e)
 {
-    Logger::log($e->getMessage(), 'error');
+    Logger::log($e->getMessage());
     return ['success' => false, 'message' => 'Server-side error, please contact admin (to check the logs).'];
 }
 

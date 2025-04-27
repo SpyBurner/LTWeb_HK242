@@ -43,7 +43,7 @@ class AuthService
         return ['success' => true, 'message' => 'Login successful', 'token' => $token];
     }
 
-    public function logout(){
+    public static function logout(){
         try{
             session_start();
         }
@@ -52,7 +52,7 @@ class AuthService
         }
         session_destroy();
         if (isset($_COOKIE['auth_token'])) {
-            unset($_COOKIE['auth_token']);
+            setcookie('auth_token', '', time() - 3600, '/'); // Expire the cookie
         }
         session_start();
     }
@@ -85,7 +85,7 @@ class AuthService
         $result = UserService::findById($userId);
         if (!$result['success']) return $result;
 
-        return ['success' => true, 'user' => $result['data']];
+        return ['success' => true, 'user' => $result['data'], 'avatar' => $result['avatar']];
     }
 
 

@@ -100,7 +100,11 @@ class ContactService implements IService
             $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM Contact WHERE contactid = :id");
             $stmt->execute([':id' => $id]);
 
-            return ['success' => $stmt->rowCount() > 0, 'message' => 'Contact deleted successfully'];
+            if ($stmt->rowCount() === 0) {
+                return ['success' => false, 'message' => 'Contact not found or already deleted'];
+            }
+
+            return ['success' => true, 'message' => 'Contact deleted successfully'];
         } catch (Exception $e) {
             return handleException($e);
         }
