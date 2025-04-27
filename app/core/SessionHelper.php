@@ -13,6 +13,7 @@ class SessionHelper
     public static function getFlash($key)
     {
         if (isset($_SESSION[$key])) {
+            Logger::log("getFlash: " . $key . " = " . $_SESSION[$key] ?? 'null');
             $value = $_SESSION[$key];
             unset($_SESSION[$key]); // Clear after retrieving
             return $value;
@@ -22,6 +23,7 @@ class SessionHelper
 
     public static function setFlash($key, $value)
     {
+        Logger::log("setFlash: " . $key . " = " . $value);
         $_SESSION[$key] = $value;
     }
 }

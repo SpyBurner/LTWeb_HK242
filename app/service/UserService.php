@@ -2,12 +2,17 @@
 namespace service;
 
 use core\Database;
+use core\FileCategory;
+use core\FileManager;
 use core\IService;
 use core\Logger;
 use Exception;
 use model\CustomerModel;
 use model\UserModel;
 use function core\handleException;
+use const config\DEFAULT_AVATAR_URL;
+use const config\DEFAULT_MOD_AVATAR_URL;
+
 class UserService implements IService
 {
     public static function save($model)
@@ -61,9 +66,12 @@ class UserService implements IService
                     $customerResult = CustomerService::save(new CustomerModel($id));
 
                     if ($customerResult['success']) {
-                        $extra_msg = $customerResult['message'];
                         $success = true;
                     }
+                    else {
+                        Logger::log("UserService", "Failed to create customer for user ID $id: " . $customerResult['message']);
+                    }
+                    $extra_msg = $customerResult['message'];
                 }
 
                 if (!$success) {
@@ -85,7 +93,26 @@ class UserService implements IService
             $stmt->execute([':id' => $id]);
             $result = $stmt->fetch();
 
-            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'User not found'];
+            if ($result){
+                $model = UserModel::toObject($result);
+
+                if (!$model->getisadmin()){
+                    $result = CustomerService::findById($id);
+                    if ($result['success']){
+                        $avatar = $result['data']->getAvatarurl();
+                    }
+                    else {
+                        Logger::log("UserService " . "Failed to find customer for user ID: $id");
+                        $avatar = DEFAULT_AVATAR_URL;
+                    }
+                }
+                else $avatar = DEFAULT_MOD_AVATAR_URL;
+
+                $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];
+            }
+            else
+                $ret = ['success' => false, 'message' => 'User not found'];
+            return $ret;
         } catch (Exception $e) {
             return handleException($e);
         }
@@ -99,7 +126,27 @@ class UserService implements IService
             $stmt->execute([':email' => $email]);
             $result = $stmt->fetch();
 
-            return $result ? ['success' => true, 'data' => UserModel::toObject($result)] : ['success' => false, 'message' => 'Email not found'];
+            if ($result){
+                $model = UserModel::toObject($result);
+
+                if (!$model->getisadmin()){
+                    $result = CustomerService::findById($model->getUserid());
+                    if ($result['success']){
+                        $avatar = $result['data']->getAvatarurl();
+                    }
+                    else {
+                        Logger::log("UserService: " . "Failed to find customer for user ID: " . $model->getUserid());
+                        $avatar = DEFAULT_AVATAR_URL;
+                    }
+                }
+                else $avatar = DEFAULT_MOD_AVATAR_URL;
+
+                $ret = ['success' => true, 'data' => $model, 'avatar' => $avatar];
+            }
+            else
+                $ret = ['success' => false, 'message' => 'No user found with this email'];
+
+            return $ret;
         } catch (Exception $e) {
             return handleException($e);
         }
@@ -124,8 +171,22 @@ class UserService implements IService
             $stmt = Database::getInstance()->getConnection()->prepare("DELETE FROM user WHERE userid = :id");
             $stmt->execute([':id' => $id]);
 
-            return ['success' => $stmt->rowCount() > 0, 'message' => 'User deleted successfully'];
+            // Also delete the avatar in case this is a customer
+            $result = FileManager::getInstance()->Delete($id, FileCategory::AVATAR);
+            if (!$result['success']) {
+                Logger::log("Failed to delete avatar: " . $result['message'] . " for user ID: $id");
+            }
+
+            if ($stmt->rowCount() == 0) {
+                Logger::log("No user found with ID: $id");
+                return ['success' => false, 'message' => 'User not found'];
+            }
+            else {
+                Logger::log("User with ID: $id deleted successfully");
+                return ['success' => true, 'message' => 'User deleted successfully'];
+            }
         } catch (Exception $e) {
+            Logger::log("Failed to delete user: " . $e->getMessage());
             return handleException($e);
         }
     }
