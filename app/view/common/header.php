@@ -81,8 +81,8 @@
 
             <!-- login / register (replaced by profile after logged in) -->
             <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
-                <a href="../account/login.php">Login</a>
-                <a href="../account/register.php" class="btn btn-primary rounded-md">Register</a>
+                <a href="/account/login">Login</a>
+                <a href="/account/register" class="btn btn-primary rounded-md">Register</a>
             </div>
 
             <div class="flex gap-4 items-center">
@@ -129,8 +129,8 @@
         <a href="/about" class="btn btn-ghost rounded-none py-6">About</a>
         <a href="/qna" class="btn btn-ghost rounded-none py-6">QnA</a>
         <a href="/news" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="../account/login" class="btn btn-outline mx-4 my-2">Login</a>
-        <a href="../account/register" class="btn mx-4 my-2">Register</a>
+        <a href="/account/login" class="btn btn-outline mx-4 my-2">Login</a>
+        <a href="/account/register" class="btn mx-4 my-2">Register</a>
     </nav>
 </div>
 
@@ -164,3 +164,25 @@
         if (e.key === "Escape") closeSidebar();
     });
 </script>
+
+<?php
+global $MESSAGE_DURATION;
+
+//Include alert box
+require_once __DIR__ . "/../../component/AlertBox.php";
+
+use core\SessionHelper;
+
+// Retrieve session data and clear it after displaying
+$formData = SessionHelper::getFlash('form_data');
+$error = SessionHelper::getFlash('error');
+$success = SessionHelper::getFlash('success');
+
+// Show alerts if any
+if ($error) {
+    showAlert($error, "error", MESSAGE_DURATION);
+}
+if ($success) {
+    showAlert($success, "success", MESSAGE_DURATION);
+}
+?>

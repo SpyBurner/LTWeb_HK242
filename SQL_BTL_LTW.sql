@@ -22,7 +22,7 @@ CONSTRAINT refadminid_admin FOREIGN KEY (userid) REFERENCES User(userid) ON DELE
 
 CREATE TABLE Customer (
 userid int PRIMARY KEY,
-avatarurl varchar(255) NOT NULL,
+avatarurl varchar(255) NOT NULL DEFAULT 'assets/img/avatar_male.png',
 CONSTRAINT refcustomerid_customer FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -107,6 +107,7 @@ bought int,
 mfgid int NOT NULL,
 stock varchar(255) NOT NULL,
 cateid int NOT NULL,
+avatarurl varchar(255) NOT NULL,
 CONSTRAINT refcategoryid_product FOREIGN KEY (cateid) REFERENCES Category(cateid) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT refmfgid_product FOREIGN KEY (mfgid) REFERENCES Manufacturer(mfgid) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -163,8 +164,8 @@ INSERT INTO Admin (userid)
 SELECT userid FROM User WHERE isadmin = TRUE;
 
 -- Insert customers into the Customer table
-INSERT INTO Customer (userid, avatarurl)
-SELECT userid, null
+INSERT INTO Customer (userid)
+SELECT userid
 FROM User WHERE isadmin = FALSE;
 
 -- Insert random data into the BlogPost table
@@ -258,8 +259,3 @@ INSERT INTO ContactMessage (name, email, title, message, status) VALUES
 ('Liam Johnson', 'liam.johnson@example.com', 'Feature Request', 'Would love to see a dark mode option.', 'Read'),
 ('Emily Davis', 'emily.davis@example.com', 'Account Help', 'I forgot my password, need assistance.', 'Unread'),
 ('Noah White', 'noah.white@example.com', 'Other', 'Just saying hi, love the content!', 'Read');
-
-
-CREATE USER 'user'@'localhost' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
-FLUSH PRIVILEGES;

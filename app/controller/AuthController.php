@@ -28,9 +28,13 @@ class AuthController extends Controller {
 //    TESTING ZONE
     public function register()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->isAuthenticate()){
+            $this->redirectWithMessage("/", [
+                'success' => "You are already logged in"
+            ]);
+        }
 
-            session_start();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $this->post('username');
             $email = $this->post('email');
             $password = $this->post('password');
@@ -68,6 +72,13 @@ class AuthController extends Controller {
     }
 
     public function login() {
+        if ($this->isAuthenticate()){
+            $this->redirectWithMessage("/", [
+                'success' => "You are already logged in"
+            ]);
+        }
+
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $this->post('email');
             $password = $this->post('password');
@@ -111,5 +122,12 @@ class AuthController extends Controller {
         else{
             $this->render('account/login', []);
         }
+    }
+
+    public function logout() {
+        AuthService::logout();
+        $this->redirectWithMessage("/", [
+            'success' => "Logout successful"
+        ]);
     }
 }

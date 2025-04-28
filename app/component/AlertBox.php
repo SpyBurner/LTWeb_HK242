@@ -1,10 +1,14 @@
+<?php
+    $base_style = 'fixed bottom-10 right-10 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 scale-90 hidden z-50';
+?>
+
 <script>
     function showAlert(message, type = "error", duration = 3000) {
         const alertBox = document.getElementById("alert-box");
         alertBox.querySelector("p").innerText = message;
 
         // Change color based on type
-        alertBox.className = `fixed bottom-10 right-10 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 scale-90 hidden ${
+        alertBox.className = ` <?php echo $base_style ?> ${
             type === "success" ? "bg-green-500" :
                 type === "warning" ? "bg-yellow-500" : "bg-red-500"
         }`;
@@ -27,7 +31,7 @@
 </script>
 
 <!-- Floating Alert -->
-<div id="alert-box" class="fixed bottom-10 right-10 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 scale-90 hidden">
+<div id="alert-box" class="fixed bottom-10 right-10 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 scale-90 hidden z-50">
     <p><i class="fa-solid fa-triangle-exclamation"></i> Username or password is wrong</p>
 </div>
 

@@ -1,10 +1,10 @@
 <?php
     function get_image_path($image_path) {
         $dirname = __DIR__.$image_path;
-        $images = glob($dirname);
+        $image = glob($dirname);
 
-        if (count($images) > 0) {
-            return $images[0];
+        if (count($image) > 0) {
+
         }
     }
 ?>
