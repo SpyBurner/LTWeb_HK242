@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
-    <?php require_once "../common/head.php"; ?>
+    <?php require_once __DIR__ . "/../common/head.php"; ?>
     <title>CakeZone | Thanh toán</title>
 
     <style type="text/tailwindcss">
@@ -17,19 +17,24 @@
         .sold-amt {
             @apply text-sm text-gray-500;
         }
-        /* .payment-method {
-            @apply flex items-center gap-3 p-4 border rounded-lg cursor-pointer hover:border-primary;
-        } */
-        /* .payment-method.active {
-            @apply border-2 border-primary bg-primary/10;
-        } */
     </style>
 </head>
 
 <body>
-    <?php require_once "../common/header.php"; ?>
+    <?php require_once __DIR__ . "/../common/header.php"; ?>
 
     <div id="body" class="mx-6 md:w-3/4 md:mx-auto my-10">
+        <?php if (!empty($messages['success'])): ?>
+            <div class="alert alert-success mb-4">
+                <?= htmlspecialchars($messages['success']) ?>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($messages['error'])): ?>
+            <div class="alert alert-error mb-4">
+                <?= htmlspecialchars($messages['error']) ?>
+            </div>
+        <?php endif; ?>
+
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Left Column - Payment Form -->
             <div class="w-full md:w-2/3">
@@ -45,32 +50,32 @@
                                     <label class="label">
                                         <span class="label-text">Họ và tên</span>
                                     </label>
-                                    <input type="text" class="input input-bordered w-full" value="Nguyễn Văn A" required>
+                                    <input type="text" id="name" class="input input-bordered w-full" value="" required>
                                 </div>
                                 <div>
                                     <label class="label">
                                         <span class="label-text">Số điện thoại</span>
                                     </label>
-                                    <input type="tel" class="input input-bordered w-full" value="0987654321" required>
+                                    <input type="tel" id="phone" class="input input-bordered w-full" value="" required>
                                 </div>
                             </div>
                             <div>
                                 <label class="label">
                                     <span class="label-text">Email</span>
                                 </label>
-                                <input type="email" class="input input-bordered w-full" value="nguyenvana@example.com" required>
+                                <input type="email" id="email" class="input input-bordered w-full" value="" required>
                             </div>
                             <div>
                                 <label class="label">
                                     <span class="label-text">Địa chỉ giao hàng</span>
                                 </label>
-                                <textarea class="textarea textarea-bordered w-full" rows="2">123 Đường ABC, Quận 1, TP.HCM</textarea>
+                                <textarea id="address" class="textarea textarea-bordered w-full" rows="2" required></textarea>
                             </div>
                             <div>
                                 <label class="label">
                                     <span class="label-text">Ghi chú đơn hàng</span>
                                 </label>
-                                <textarea class="textarea textarea-bordered w-full" rows="2" placeholder="Ghi chú cho người bán..."></textarea>
+                                <textarea id="note" class="textarea textarea-bordered w-full" rows="2" placeholder="Ghi chú cho người bán..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -82,21 +87,21 @@
                         <h3 class="text-lg font-semibold mb-4">Phương thức thanh toán</h3>
                         <div class="space-y-3">
                             <div class="payment-method active" onclick="selectPaymentMethod(this)">
-                                <input type="radio" name="payment-method" class="radio radio-primary" checked>
+                                <input type="radio" name="payment_method" value="COD" class="radio radio-primary" checked>
                                 <div>
                                     <h4 class="font-medium">Thanh toán khi nhận hàng (COD)</h4>
                                     <p class="text-sm text-gray-500">Thanh toán bằng tiền mặt khi nhận hàng</p>
                                 </div>
                             </div>
                             <div class="payment-method" onclick="selectPaymentMethod(this)">
-                                <input type="radio" name="payment-method" class="radio radio-primary">
+                                <input type="radio" name="payment_method" value="BankTransfer" class="radio radio-primary">
                                 <div>
                                     <h4 class="font-medium">Chuyển khoản ngân hàng</h4>
                                     <p class="text-sm text-gray-500">Chuyển khoản qua tài khoản ngân hàng</p>
                                 </div>
                             </div>
                             <div class="payment-method" onclick="selectPaymentMethod(this)">
-                                <input type="radio" name="payment-method" class="radio radio-primary">
+                                <input type="radio" name="payment_method" value="Momo" class="radio radio-primary">
                                 <div>
                                     <h4 class="font-medium">Ví điện tử Momo</h4>
                                     <p class="text-sm text-gray-500">Thanh toán qua ứng dụng Momo</p>
@@ -111,28 +116,18 @@
                     <div class="card-body">
                         <h3 class="text-lg font-semibold mb-4">Kiểm tra đơn hàng</h3>
                         <div class="space-y-4">
-                            <!-- Product 1 -->
-                            <div class="flex items-center gap-4">
-                                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" 
-                                     alt="product img" 
-                                     class="w-16 h-16 object-cover rounded-lg">
-                                <div class="flex-1">
-                                    <h4 class="font-medium">Product Title 1</h4>
-                                    <p class="text-gray-500">139,000đ × 1</p>
+                            <?php foreach ($cart->products as $product): ?>
+                                <div class="flex items-center gap-4">
+                                    <img src="<?= htmlspecialchars($product['avatarurl']) ?>" 
+                                         alt="<?= htmlspecialchars($product['name']) ?>" 
+                                         class="w-16 h-16 object-cover rounded-lg">
+                                    <div class="flex-1">
+                                        <h4 class="font-medium"><?= htmlspecialchars($product['name']) ?></h4>
+                                        <p class="text-gray-500"><?= number_format($product['price'], 0, ',', '.') ?>đ × <?= $product['amount'] ?></p>
+                                    </div>
+                                    <p class="font-semibold"><?= number_format($product['price'] * $product['amount'], 0, ',', '.') ?>đ</p>
                                 </div>
-                                <p class="font-semibold">139,000đ</p>
-                            </div>
-                            <!-- Product 2 -->
-                            <div class="flex items-center gap-4">
-                                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" 
-                                     alt="product img" 
-                                     class="w-16 h-16 object-cover rounded-lg">
-                                <div class="flex-1">
-                                    <h4 class="font-medium">Product Title 2</h4>
-                                    <p class="text-gray-500">159,000đ × 1</p>
-                                </div>
-                                <p class="font-semibold">159,000đ</p>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -143,11 +138,10 @@
                 <div class="card bg-base-100 shadow-sm p-6 sticky top-6">
                     <h2 class="text-2xl font-bold mb-6">Tóm tắt đơn hàng</h2>
 
-                    <!-- Order Details -->
                     <div class="space-y-4 mb-6">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Tạm tính:</span>
-                            <span class="font-semibold">298,000đ</span>
+                            <span class="font-semibold"><?= number_format($cart->getTotalcost(), 0, ',', '.') ?>đ</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Phí vận chuyển:</span>
@@ -155,20 +149,18 @@
                         </div>
                         <div class="flex justify-between border-t pt-4">
                             <span class="text-gray-600">Tổng cộng:</span>
-                            <span class="text-xl font-bold text-red-700">328,000đ</span>
+                            <span class="text-xl font-bold text-red-700"><?= number_format($cart->getTotalcost() + 30000, 0, ',', '.') ?>đ</span>
                         </div>
                     </div>
 
-                    <!-- Terms and Conditions -->
                     <div class="form-control mb-6">
                         <label class="label cursor-pointer justify-start gap-3">
-                            <input type="checkbox" checked="checked" class="checkbox checkbox-primary">
+                            <input type="checkbox" id="terms" class="checkbox checkbox-primary" checked>
                             <span class="label-text">Tôi đồng ý với <a href="#" class="link link-primary">điều khoản</a></span>
                         </label>
                     </div>
 
-                    <!-- Place Order Button -->
-                    <button class="btn btn-primary w-full">
+                    <button class="btn btn-primary w-full" onclick="placeOrder(<?= $userId ?>)">
                         <i class="fas fa-shopping-bag"></i>
                         Đặt hàng
                     </button>
@@ -177,10 +169,9 @@
         </div>
     </div>
 
-    <?php require_once "../common/footer.php"; ?>
+    <?php require_once __DIR__ . "/../common/footer.php"; ?>
 
     <script>
-        // Payment method selection
         function selectPaymentMethod(element) {
             document.querySelectorAll('.payment-method').forEach(method => {
                 method.classList.remove('active');
@@ -190,6 +181,47 @@
             element.classList.add('active');
             element.querySelector('input[type="radio"]').checked = true;
         }
+
+        function placeOrder(userId) {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
+    const address = document.getElementById('address').value;
+    const note = document.getElementById('note').value;
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const termsAgreed = document.getElementById('terms').checked;
+
+    if (!name || !phone || !email || !address || !paymentMethod || !termsAgreed) {
+        alert('Vui lòng điền đầy đủ thông tin và đồng ý với điều khoản!');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('address', address);
+    formData.append('note', note);
+    formData.append('payment_method', paymentMethod);
+
+    fetch('/checkout/paymentValid', {
+        method: 'POST',
+        body: formData // Sử dụng FormData thay vì JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = `/checkout/confirmation/${data.orderId}`;
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while placing the order');
+    });
+}
     </script>
 </body>
 </html>
