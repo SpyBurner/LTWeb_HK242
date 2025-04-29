@@ -87,7 +87,9 @@ abstract class Controller
      */
     #[NoReturn] protected function redirectWithMessage($url, $params = []): void
     {
+        Logger::log("Redirecting to $url " . json_encode($params));
         foreach ($params as $key => $value) {
+            Logger::log("With message: " . $key . " = " . $value);
             SessionHelper::setflash($key, $value);
         }
         header("Location: " . $url);

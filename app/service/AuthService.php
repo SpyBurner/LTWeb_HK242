@@ -10,7 +10,7 @@ class AuthService
 {
     public static function register($username, $email, $password)
     {
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+        $hashed_password = self::getPassword_hash($password);
 
         $emailCheck = UserService::findByEmail($email);
 
@@ -43,7 +43,7 @@ class AuthService
         return ['success' => true, 'message' => 'Login successful', 'token' => $token];
     }
 
-    public function logout(){
+    public static function logout(){
         try{
             session_start();
         }
@@ -52,9 +52,39 @@ class AuthService
         }
         session_destroy();
         if (isset($_COOKIE['auth_token'])) {
-            unset($_COOKIE['auth_token']);
+            setcookie('auth_token', '', time() - 3600, '/'); // Expire the cookie
         }
         session_start();
+    }
+
+    public static function changePassword($oldPassword, $newPassword){
+        $user = AuthService::getCurrentUser()['user'];
+
+        assert($user instanceof UserModel);
+
+        Logger::log("Changing password for user: " . $user->getUserid());
+
+        if (!password_verify($oldPassword, $user->getPassword())) {
+            Logger::log("Old password is incorrect");
+            return ['success' => false, 'message' => "Old password is incorrect"];
+        }
+
+        if (password_verify($newPassword, $user->getPassword())) {
+            Logger::log("New password is the same as old password");
+            return ['success' => false, 'message' => 'New password cannot be the same as old password'];
+        }
+
+        $hashed = self::getPassword_hash($newPassword);
+
+        $user->setpassword($hashed);
+
+        $result = UserService::save($user);
+        if (!$result['success']) {
+            Logger::log("Failed to update password: " . $result['message']);
+            return ['success' => false, 'message' => $result['message']];
+        }
+
+        return ['success' => true, 'message' => 'Password updated successfully'];
     }
 
     /**
@@ -85,7 +115,7 @@ class AuthService
         $result = UserService::findById($userId);
         if (!$result['success']) return $result;
 
-        return ['success' => true, 'user' => $result['data']];
+        return ['success' => true, 'user' => $result['data'], 'avatar' => $result['avatar']];
     }
 
 
@@ -131,6 +161,15 @@ class AuthService
         // Decrypt
         $decryptedJson = openssl_decrypt($ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv, $tag);
         return json_decode($decryptedJson, true); // Convert back to an array
+    }
+
+    /**
+     * @param $password
+     * @return string
+     */
+    public static function getPassword_hash($password): string
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
     }
 
 
