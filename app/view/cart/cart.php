@@ -86,7 +86,7 @@
 
         <!-- Order Summary -->
         <div class="w-full md:w-1/3">
-            <div class="card bg-base-100 shadow-sm p-6">
+            <div class="card bg-base-100 shadow-sm p-6 sticky top-6">
                 <h2 class="text-2xl font-bold mb-6">Tóm tắt đơn hàng</h2>
 
                 <div class="flex justify-between mb-4">
