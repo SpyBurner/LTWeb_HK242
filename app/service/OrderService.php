@@ -27,7 +27,7 @@ class OrderService implements IService {
                 $params[':status'] = $filters['status'];
             }
             
-            $query .= " ORDER BY o.orderdate DESC";
+            $query .= " ORDER BY o.orderid DESC";
             
             $stmt = Database::getInstance()->getConnection()->prepare($query);
             $stmt->execute($params);
@@ -235,7 +235,7 @@ class OrderService implements IService {
             $checkStmt = $pdo->prepare(
                 "SELECT amount FROM HasProduct WHERE orderid = :orderid AND productid = :productid"
             );
-            $checkStmt->execute([':orderid' => $orderId, ':productid' => $productId]);
+            $checkStmt->execute([':orderid' => $orderid, ':productid' => $productId]);
             $currentAmount = $checkStmt->fetchColumn();
 
             if ($currentAmount === false) {
@@ -269,12 +269,10 @@ class OrderService implements IService {
         }
     }
 
-    // Hàm mới: Lấy chi tiết đơn hàng theo orderId
     public static function getOrderById($orderId) {
         try {
             $pdo = Database::getInstance()->getConnection();
 
-            // Lấy thông tin đơn hàng
             $stmt = $pdo->prepare(
                 "SELECT o.*, u.username as customer_name 
                  FROM `Order` o
@@ -291,7 +289,6 @@ class OrderService implements IService {
             $orderModel = OrderModel::toObject($order);
             $orderModel->customerName = $order['customer_name'];
 
-            // Lấy danh sách sản phẩm
             $productsStmt = $pdo->prepare(
                 "SELECT p.productid, p.name, p.price, p.description, p.avgrating, 
                         p.bought, p.stock, p.avatarurl, hp.amount,
@@ -311,7 +308,95 @@ class OrderService implements IService {
         }
     }
 
-    // Các phương thức IService khác
+    public static function updateProductStockAndBought($orderId) {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            // Get all products and their amounts for the given order
+            $productsStmt = $pdo->prepare(
+                "SELECT hp.productid, hp.amount
+                 FROM HasProduct hp
+                 WHERE hp.orderid = :orderid"
+            );
+            $productsStmt->execute([':orderid' => $orderId]);
+            $products = $productsStmt->fetchAll();
+
+            if (empty($products)) {
+                return ['success' => false, 'message' => 'No products found in order'];
+            }
+
+            // Start transaction to ensure atomic updates
+            $pdo->beginTransaction();
+
+            foreach ($products as $product) {
+                // Check current stock
+                $stockStmt = $pdo->prepare(
+                    "SELECT stock FROM Product WHERE productid = :productid FOR UPDATE"
+                );
+                $stockStmt->execute([':productid' => $product['productid']]);
+                $currentStock = $stockStmt->fetchColumn();
+
+                if ($currentStock === false) {
+                    $pdo->rollBack();
+                    return ['success' => false, 'message' => 'Product not found: ' . $product['productid']];
+                }
+
+                if ($currentStock < $product['amount']) {
+                    $pdo->rollBack();
+                    return ['success' => false, 'message' => 'Insufficient stock for product: ' . $product['productid']];
+                }
+
+                // Update stock and bought
+                $updateStmt = $pdo->prepare(
+                    "UPDATE Product 
+                     SET stock = stock - :amount, 
+                         bought = bought + :amount2 
+                     WHERE productid = :productid"
+                );
+                $updateStmt->execute([
+                    ':amount' => $product['amount'],
+                    ':amount2' => $product['amount'],
+                    ':productid' => $product['productid']
+                ]);
+
+                if ($updateStmt->rowCount() === 0) {
+                    $pdo->rollBack();
+                    return ['success' => false, 'message' => 'Failed to update product: ' . $product['productid']];
+                }
+            }
+
+            $pdo->commit();
+            return ['success' => true, 'message' => 'Product stock and bought counts updated successfully'];
+        } catch (Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            return handleException($e);
+        }
+    }
+
+    public static function updateContactId($orderId, $contactId) {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $stmt = $pdo->prepare(
+                "UPDATE `Order` SET contactid = :contactid WHERE orderid = :orderid"
+            );
+            
+            $stmt->execute([
+                ':contactid' => $contactId,
+                ':orderid' => $orderId
+            ]);
+
+            if ($stmt->rowCount() === 0) {
+                return ['success' => false, 'message' => 'Order not found or no changes made'];
+            }
+
+            return ['success' => true, 'message' => 'Order contact updated successfully'];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
     public static function save($model) {}
     public static function findById($id) {}
     public static function findAll() {}

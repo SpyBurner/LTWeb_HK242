@@ -43,12 +43,12 @@ class AdminProductsController extends Controller {
     
             $avatarurl = '/assets/images/default-product.png';
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '/../../public/uploads/products/';
+                $uploadDir = __DIR__ . '/../../public/assets/repo/products/';
                 $fileName = uniqid() . '-' . basename($_FILES['image']['name']);
                 $uploadPath = $uploadDir . $fileName;
     
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-                    $avatarurl = '/uploads/products/' . $fileName;
+                    $avatarurl = '/assets/repo/products/' . $fileName;
                 }
             }
     

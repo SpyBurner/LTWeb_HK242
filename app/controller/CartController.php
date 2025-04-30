@@ -223,7 +223,7 @@ class CartController extends Controller {
         ]);
     }
 
-    public function paymentValid($userId = null) {
+    public function paymentValid() {
         if (!$this->isAuthenticate()) {
             $this->redirectWithMessage('/account/login', [
                 'error' => 'Please login to proceed with payment'
@@ -239,7 +239,7 @@ class CartController extends Controller {
             return;
         }
 
-        $userId = $authResult['user']['userid']; // Use authenticated userId
+        $userId = $authResult['user']['userid'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $this->post('name');
@@ -265,7 +265,7 @@ class CartController extends Controller {
                 exit;
             }
 
-            // Step 2: Update Order status
+            // Step 2: Update Order with contactId and status
             $cartResult = OrderService::getCartByUserId($userId);
             if (!$cartResult['success'] || !$cartResult['data']) {
                 header('Content-Type: application/json');
@@ -275,23 +275,49 @@ class CartController extends Controller {
 
             $orderId = $cartResult['data']->getOrderid();
 
-            $updateResult = OrderService::updateStatus($orderId, 'Preparing');
-
-            if ($updateResult['success']) {
+            // Get the latest contact ID for the user
+            $contactListResult = ContactService::findAllByCustomerId($userId);
+            if (!$contactListResult['success'] || empty($contactListResult['data'])) {
                 header('Content-Type: application/json');
-                echo json_encode(['success' => true, 'message' => 'Order placed successfully', 'orderId' => $orderId]);
+                echo json_encode(['success' => false, 'message' => 'Failed to retrieve contact information']);
                 exit;
-            } else {
+            }
+            $contactId = end($contactListResult['data'])->getContactId();
+
+            // Update contactId in the order
+            $contactUpdateResult = OrderService::updateContactId($orderId, $contactId);
+            if (!$contactUpdateResult['success']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => $contactUpdateResult['message']]);
+                exit;
+            }
+
+            // Update product stock and bought counts
+            $stockResult = OrderService::updateProductStockAndBought($orderId);
+            if (!$stockResult['success']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => $stockResult['message']]);
+                exit;
+            }
+
+            // Update order status
+            $updateResult = OrderService::updateStatus($orderId, 'Preparing');
+            if (!$updateResult['success']) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => $updateResult['message']]);
                 exit;
             }
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Order placed successfully', 'orderId' => $orderId]);
+            exit;
         } else {
             $this->redirectWithMessage('/checkout', [
                 'error' => 'Invalid request method'
             ]);
         }
     }
+
     public function confirmation($orderId = null) {
         if (!$this->isAuthenticate()) {
             $this->redirectWithMessage('/account/login', [

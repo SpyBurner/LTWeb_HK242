@@ -50,3 +50,9 @@ $router->addRoute('checkout/confirmation/:id', 'CartController', 'confirmation')
 $router->addRoute('cart/add/:id', 'CartController', 'add');
 $router->addRoute('cart/remove/:id', 'CartController', 'remove');
 $router->addRoute('cart/reduce/:id', 'CartController', 'reduce');
+
+
+
+$router->addRoute('orders', 'OrdersController', 'index');
+$router->addRoute('orders/my-orders', 'OrdersController', 'myOrders');
+$router->addRoute('orders/detail/:id', 'OrdersController', 'orderDetail');
