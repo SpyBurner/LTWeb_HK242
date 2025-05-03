@@ -1,3 +1,10 @@
+<?php
+assert(isset($isLoggedIn));
+assert(isset($isAdmin));
+assert(isset($username));
+assert(isset($avatar));
+assert(isset($categories));
+?>
 
 <header class="bg-base-300 py-4">
     <!-- logo, search, login, cart -->
@@ -8,7 +15,7 @@
         </button>
 
         <?php
-            require_once __DIR__."/serve-image.php";
+            require_once __DIR__."/serve-image.php"; // ???
         ?>
         <!-- logo -->
         <div id="logo-header">
@@ -18,7 +25,7 @@
         <!-- search, cate dropdown, navigation -->
         <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between max-md:hidden">
             <!-- search bar -->
-            <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between">
+            <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between" action="/products" method="GET">
                 <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
                 <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search"></i>
@@ -34,8 +41,11 @@
                     </div>
                     <ul tabindex="0"
                         class="dropdown-content menu bg-base-100 rounded-md z-1 w-52 p-2 shadow-sm mt-2">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
+                        <?php
+                        forEach ($categories as $category) {
+                            echo '<li><a href="/products?category=' . $category->getCateid() . '">' . $category->getName() . '</a></li>';
+                        }
+                        ?>
                     </ul>
                 </div>
 
@@ -51,38 +61,32 @@
 
         <!-- profile/login, cart -->
         <div id="profile-cart" class="flex flex-col gap-4 items-center">
+            <?php if ($isLoggedIn) { ?>
             <!-- PROFILE -->
-            <!-- <div class="dropdown">
+            <div class="dropdown">
                 <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                     <div class="avatar">
                         <div class="w-12 rounded-full">
-                            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                            <img src="<?=$avatar?>" alt="avatar"/>
                         </div>
                     </div>
 
                     <div class="username flex gap-2 items-center">
-                        <span>Linh Thinh</span>
+                        <span><?=$username?></span>
                         <i class="fas fa-angle-down"></i>
                     </div>
                 </div>
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     <li>
-                        <a class="justify-between">
+                        <a class="justify-between" href="/profile">
                             Profile
-                            <span class="badge">New</span>
+<!--                                <span class="badge">New</span>-->
                         </a>
                     </li>
                     <li><a>Settings</a></li>
                     <li><a>Logout</a></li>
                 </ul>
-            </div> -->
-
-
-            <!-- login / register (replaced by profile after logged in) -->
-            <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
-                <a href="/account/login">Login</a>
-                <a href="/account/register" class="btn btn-primary rounded-md">Register</a>
             </div>
 
             <div class="flex gap-4 items-center">
@@ -91,26 +95,20 @@
                     Cart
                 </a>
 
-                <!-- read token from cookie and decode AES, if role is admin, display this button -->
-                <?php
-//                if (isset($_COOKIE['auth_token'])) {
-//                    $token = $_COOKIE['auth_token'];
-//
-//                    // $data = json_decode(decrypt_token($token));
-//
-//                    if ($data->role === 'admin') {
-//                        echo '<a href="../home/home-admin.php" class="btn btn-ghost btn-neutral rounded-full btn-lg">
-//                            <i class="fa-solid fa-screwdriver-wrench"></i>
-//                        </a>';
-//                    }
-//                }
-                ?>
-
+                <?php if ($isAdmin) { ?>
                 <a href="" class="btn btn-ghost btn-neutral rounded-full btn-lg">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
                 </a>
+                <?php } ?>
             </div>
-            <!-- cart -->
+
+            <?php } else { ?>
+            <!-- LOGIN/REGISTER -->
+            <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
+                <a href="/account/login">Login</a>
+                <a href="/account/register" class="btn btn-primary rounded-md">Register</a>
+            </div>
+            <?php } ?>
         </div>
     </div>
 </header>
