@@ -6,6 +6,8 @@ use core\IModel;
 class QnaEntryModel implements IModel{
     private $qnaid;
 
+    private $messages;
+
     /**
      * @return mixed
      */
@@ -22,6 +24,16 @@ class QnaEntryModel implements IModel{
         $this->qnaid = $qnaid;
     }
 
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    public function setMessages($messages): void
+    {
+        $this->messages = $messages;
+    }
+
     public function __construct($qnaid) {
         $this->qnaid = $qnaid;
     }
@@ -29,6 +41,7 @@ class QnaEntryModel implements IModel{
     public function __toString() {
         return "QnaEntryModel{" .
             "qnaid=" . $this->qnaid .
+            ", messages=" . json_encode($this->messages) .
             '}';
     }
     public static function toObject($row){
