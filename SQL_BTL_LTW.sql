@@ -60,6 +60,7 @@ qnaid int PRIMARY KEY
 CREATE TABLE Message (
 msgid int PRIMARY KEY,
 senddate date DEFAULT CURRENT_DATE,
+content varchar(255) NOT NULL,
 qnaid int NOT NULL,
 userid int,
 CONSTRAINT refqnaid_msg FOREIGN KEY (qnaid) REFERENCES QnaEntry(qnaid) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -199,10 +200,10 @@ INSERT INTO QnaEntry (qnaid) VALUES
 (3);
 
 -- Insert random data into the Message table
-INSERT INTO Message (msgid, qnaid, userid) VALUES
-(1, 1, 4),
-(2, 2, 5),
-(3, 3, 6);
+INSERT INTO Message (msgid, content, qnaid, userid) VALUES
+(1, "Message 1", 1, 4),
+(2, "Message 2", 2, 5),
+(3, "Message 3", 3, 6);
 
 -- Insert random data into the Contact table
 INSERT INTO Contact (name, phone, address, customerid) VALUES

@@ -50,7 +50,7 @@
                         <p class="py-6">
                             Got a question? Check out our FAQ section
                             <br>
-                            or type it in the search bar below.
+                            or use the search bar below.
                         </p>
                         <div class="join">
                             <label class="input flex items-center join-item">
