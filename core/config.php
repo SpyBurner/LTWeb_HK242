@@ -26,6 +26,10 @@ define('MESSAGE_DURATION', $conf['MESSAGE_DURATION']);
 define('SECRET_KEY', $conf['SECRET_KEY']);
 define('USE_LOGGER', $conf['USE_LOGGER']);
 
+//Pagination
+define('PAGINATION_SIZE', $conf['PAGINATION_SIZE']);
+define('PAGINATION_NUMBER', $conf['PAGINATION_NUMBER']);
+
 //Token lifetime calculation
 $lifetime_suffix = [
     's' => 1,

@@ -5,8 +5,8 @@ use core\IModel;
 
 class QnaEntryModel implements IModel{
     private $qnaid;
-
-    private $messages;
+    //First message is the question
+    private $message;
 
     /**
      * @return mixed
@@ -24,14 +24,14 @@ class QnaEntryModel implements IModel{
         $this->qnaid = $qnaid;
     }
 
-    public function getMessages()
+    public function getMessage()
     {
-        return $this->messages;
+        return $this->message;
     }
 
-    public function setMessages($messages): void
+    public function setMessage($message): void
     {
-        $this->messages = $messages;
+        $this->message = $message;
     }
 
     public function __construct($qnaid) {
@@ -41,7 +41,7 @@ class QnaEntryModel implements IModel{
     public function __toString() {
         return "QnaEntryModel{" .
             "qnaid=" . $this->qnaid .
-            ", messages=" . json_encode($this->messages) .
+            ", messages=" . json_encode($this->message) .
             '}';
     }
     public static function toObject($row){

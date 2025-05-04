@@ -49,12 +49,12 @@ class QnaService implements IService
 
     private static function fetchMsg($entry)
     {
-        $msg = MessageService::findAllByQnaId($entry->getQnaid());
-        if ($msg['success']) {
-            $entry->setMessages($msg['data']);
+        $result = MessageService::findFirstByQnaId($entry->getQnaid());
+        if ($result['success']) {
+            $entry->setMessage($result['data']);
             return ['success' => true];
         } else {
-            Logger::log("Error fetching messages for QnaEntry with id " . $entry->getQnaid());
+            Logger::log("Error fetching first message for QnaEntry with id " . $entry->getQnaid() . ": " . $result['message']);
             return ['success' => false];
         }
     }
@@ -89,19 +89,22 @@ class QnaService implements IService
         }
     }
 
-    public static function findAll($limit = null, $offset = null)
+    public static function findAll($limit = null, $page = null)
     {
         try {
             $stmtLimit = ($limit != null)? " LIMIT :limit" : "";
-            $stmtOffset = ($offset != null)? " OFFSET :offset" : "";
+            $stmtOffset = ($page != null)? " OFFSET :offset" : "";
 
             $stmt = Database::getInstance()->getConnection()->prepare(
                 "SELECT * FROM QnaEntry"
                 . $stmtLimit
                 . $stmtOffset
             );
+
+            $offset = ($page - 1) * PAGINATION_SIZE;
+
             if ($limit) $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-            if ($offset) $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            if ($page) $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
             $stmt->execute();
             $qnaEntries = array_map(fn($row) => QnaEntryModel::toObject($row), $stmt->fetchAll());
@@ -136,6 +139,21 @@ class QnaService implements IService
             }
         } catch (Exception $e) {
             Logger::log("Failed to delete QnaEntry: " . $e->getMessage());
+            return handleException($e);
+        }
+    }
+
+    public static function getCount()
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT COUNT(*) FROM QnaEntry");
+            $stmt->execute();
+
+            $result = $stmt->fetchColumn();
+
+            return $result;
+        } catch (Exception $e) {
+            Logger::log("Failed to get QnaEntry count: " . $e->getMessage());
             return handleException($e);
         }
     }

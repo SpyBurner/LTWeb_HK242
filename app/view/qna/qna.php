@@ -1,7 +1,8 @@
 <?php
-    $qnaPage = 1;
-    if (isset($_GET['qnaPage'])) $qnaPage = $_GET['qnaPage'];
-
+    assert(isset($qnaPage));
+    assert(isset($qna));
+    assert(isset($faq));
+    assert(isset($maxPage));
 ?>
 
 <!DOCTYPE html>
@@ -75,44 +76,23 @@
             <h2 class="text-3xl font-bold text-center mb-6">Frequently Asked Questions</h2>
 
             <div class="space-y-4">
-                <!-- FAQ Item 1 -->
-                <div class="card bg-base-100 shadow-md">
-                    <div class="collapse collapse-arrow">
-                        <input type="checkbox" />
-                        <div class="collapse-title text-lg font-medium">
-                            What is DaisyUI?
-                        </div>
-                        <div class="collapse-content">
-                            <p>DaisyUI is a Tailwind CSS component library that provides pre-styled UI components.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="card bg-base-100 shadow-md">
-                    <div class="collapse collapse-arrow">
-                        <input type="checkbox" />
-                        <div class="collapse-title text-lg font-medium">
-                            How do I install DaisyUI?
-                        </div>
-                        <div class="collapse-content">
-                            <p>You can install it via npm: <code>npm install daisyui</code>, then add it to your Tailwind config.</p>
+                <?php
+                    foreach ($faq as $entry){
+                ?>
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="collapse collapse-arrow">
+                            <input type="checkbox" />
+                            <div class="collapse-title text-lg font-medium">
+                                <?= $entry->getQuestion();?>
+                            </div>
+                            <div class="collapse-content">
+                                <p><?= $entry->getAnswer(); ?></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="card bg-base-100 shadow-md">
-                    <div class="collapse collapse-arrow">
-                        <input type="checkbox" />
-                        <div class="collapse-title text-lg font-medium">
-                            Is DaisyUI free to use?
-                        </div>
-                        <div class="collapse-content">
-                            <p>Yes! DaisyUI is completely free and open-source.</p>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                    }
+                ?>
             </div>
         </section>
 
@@ -122,39 +102,42 @@
         <section id="qna" class="max-w-5xl mx-auto p-6">
             <h2 class="text-3xl font-bold text-center mb-6">Questions And Answers</h2>
             <div class="space-y-4">
+                <?php
+                    foreach ($qna as $entry){
+                ?>
                 <!-- QNA Item 1 -->
                 <div class="cursor-pointer card bg-base-100 shadow-md">
                     <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
-                        What is DaisyUI?
+                        <?= $entry->getMessage()->getContent(); ?>
                     </div>
                 </div>
-
-                <!-- QNA Item 2 -->
-                <div class="cursor-pointer card bg-base-100 shadow-md">
-                    <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
-                        How do I install DaisyUI?
-                    </div>
-                </div>
-
-                <!-- QNA Item 3 -->
-                <div class="cursor-pointer card bg-base-100 shadow-md">
-                    <div class="collapse-title text-lg font-medium" onclick="openModal('thread')">
-                        Is DaisyUI free to use?
-                    </div>
-                </div>
+                <?php
+                    }
+                ?>
             </div>
             <div class="join flex justify-center mt-6">
-                <button class="join-item btn">«</button>
-                <button class="join-item btn">‹</button>
-                <button class="join-item btn btn-disabled <?php echo ($qnaPage <= 5)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
-                <button class="join-item btn <?php echo ($qnaPage == 1)? 'btn-primary' : '' ?>" onclick="setQnaPage(1)">1</button>
-                <button class="join-item btn <?php echo ($qnaPage == 2)? 'btn-primary' : '' ?>" onclick="setQnaPage(2)">2</button>
-                <button class="join-item btn <?php echo ($qnaPage == 3)? 'btn-primary' : '' ?>" onclick="setQnaPage(3)">3</button>
-                <button class="join-item btn <?php echo ($qnaPage == 4)? 'btn-primary' : '' ?>" onclick="setQnaPage(4)">4</button>
-                <button class="join-item btn <?php echo ($qnaPage == 5)? 'btn-primary' : '' ?>" onclick="setQnaPage(5)">5</button>
-                <button class="join-item btn btn-disabled <?php echo ($qnaPage >= 25)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
-                <button class="join-item btn">›</button>
-                <button class="join-item btn">»</button>
+                <button class="join-item btn" onclick="setQnaPage(1)">«</button>
+                <button class="join-item btn" onclick="setQnaPage(<?= ($qnaPage > 0)? $qnaPage - 1 : $qnaPage?>)">‹</button>
+
+                <button class="join-item btn btn-disabled <?php echo ($qnaPage <= PAGINATION_NUMBER)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
+
+                <?php
+
+
+                    $pageMin = max(1, $qnaPage - PAGINATION_NUMBER);
+                    $pageMax = min($maxPage, $qnaPage + PAGINATION_NUMBER);
+                    for ($index = $pageMin; $index <= $pageMax; $index++) {
+                ?>
+                    <button class="join-item btn <?php echo ($qnaPage == $index )? 'btn-primary' : '' ?>"
+                            onclick="setQnaPage(<?= $index ?>)"><?=$index?></button>
+                <?php
+                    }
+                ?>
+
+                <button class="join-item btn btn-disabled <?php echo ($qnaPage >= $maxPage - PAGINATION_NUMBER)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
+
+                <button class="join-item btn" onclick="setQnaPage(<?= ($qnaPage < $maxPage)? $qnaPage + 1 : $qnaPage?>)">›</button>
+                <button class="join-item btn" onclick="setQnaPage(<?= $maxPage?>)">»</button>
             </div>
         </section>
 
@@ -255,7 +238,7 @@
                         <!-- Buttons -->
                         <div class="modal-action">
                             <button class="btn btn-error">Cancel</button>
-                            <button class="btn btn-primary">Submit</button>
+                            <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>

@@ -193,17 +193,20 @@ INSERT INTO BlogComment (blogid, userid, content) VALUES
 (2, 6, 'Comment 1 on blog post 2'),
 (3, 7, 'Comment 1 on blog post 3');
 
--- Insert random data into the QnaEntry table
+-- Insert initial QnaEntry records
 INSERT INTO QnaEntry (qnaid) VALUES
 (1),
 (2),
 (3);
 
--- Insert random data into the Message table
+-- Insert improved Messages for entries 1 to 3
 INSERT INTO Message (msgid, content, qnaid, userid) VALUES
-(1, "Message 1", 1, 4),
-(2, "Message 2", 2, 5),
-(3, "Message 3", 3, 6);
+(1, "How do I deploy a PHP site to a live server?", 1, 4),
+(2, "You can use tools like FileZilla or Git to upload your project.", 1, 5),
+(3, "What’s the difference between INNER JOIN and LEFT JOIN?", 2, 5),
+(4, "INNER JOIN returns matching records only; LEFT JOIN keeps all from the left table.", 2, 6),
+(5, "Why won’t my CSS changes reflect after saving?", 3, 6),
+(6, "Try clearing the browser cache or using a hard refresh.", 3, 4);
 
 -- Insert random data into the Contact table
 INSERT INTO Contact (name, phone, address, customerid) VALUES
@@ -247,11 +250,19 @@ INSERT INTO RateProduct (orderid, productid, rating, comment) VALUES
 (2, 2, 4, 'Good product!'),
 (3, 3, 3, 'Average product.');
 
--- Insert random data into the FaqEntry table
+-- Insert meaningful FAQ entries
 INSERT INTO FaqEntry (answer, question) VALUES
-('Answer 1', 'Question 1'),
-('Answer 2', 'Question 2'),
-('Answer 3', 'Question 3');
+('You can reset your password by clicking "Forgot Password" on the login page and following the instructions.', 'How do I reset my password?'),
+('Check your spam folder first. If it’s not there, ensure you entered the correct email or try resending the verification email.', 'I didn’t receive a verification email. What should I do?'),
+('Navigate to Settings > Profile, then click "Edit" to update your personal information.', 'How can I update my profile information?'),
+('Our platform supports JPG, PNG, and PDF files. Each file must be under 10MB.', 'What file types are supported for uploads?'),
+('You can contact support through the Help Center or by emailing support@example.com.', 'How do I contact customer support?'),
+('Yes, your data is encrypted in transit and at rest. We follow industry-standard security practices.', 'Is my data secure on your platform?'),
+('Go to the dashboard and click "Create New Project" to start building your first project.', 'How do I start a new project?'),
+('You can delete your account by navigating to Account Settings and clicking "Delete Account" at the bottom.', 'How do I delete my account permanently?'),
+('We support all modern browsers including Chrome, Firefox, Safari, and Edge. Internet Explorer is not supported.', 'Which browsers are supported?'),
+('Make sure JavaScript is enabled and that your browser is up to date. Clear cache if the issue persists.', 'Why isn’t the site loading correctly?');
+
 
 INSERT INTO ContactMessage (name, email, title, message, status) VALUES
 ('Alice Smith', 'alice.smith@example.com', 'Inquiry', 'I would like to know more about your services.', 'Unread'),

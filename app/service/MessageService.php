@@ -90,6 +90,23 @@ class MessageService implements IService
         }
     }
 
+    public static function findFirstByQnaId($qnaid)
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM Message WHERE qnaid = :qnaid ORDER BY msgid ASC LIMIT 1");
+            $stmt->execute([':qnaid' => $qnaid]);
+            $result = $stmt->fetch();
+
+            if ($result) {
+                return ['success' => true, 'data' => MessageModel::toObject($result)];
+            } else {
+                return ['success' => false, 'message' => 'No messages found for this QnA ID'];
+            }
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
     public static function findAll()
     {
         try {
