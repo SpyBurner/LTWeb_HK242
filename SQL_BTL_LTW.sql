@@ -147,17 +147,21 @@ CREATE TABLE ContactMessage(
     status varchar(20) DEFAULT 'Unread'
 );
 
+-- Password1
+-- Password2
+-- Password3
+-- ...
 INSERT INTO User (username, password, email, isadmin) VALUES
-('admin1', '$2y$10$dXH5SrJdbDz0Zkv/x9c1.OMCzkIr8kSL8wDzsh2Lr1eZXDRe1I1C6', 'admin1@example.com', TRUE),
-('admin2', '$2y$10$J21m1bQiDakEhFLiMIfPaept8LzAepSWIsc2MNsy6TTcRSJ1dTfee', 'admin2@example.com', TRUE),
-('admin3', '$2y$10$f7sl1wFPIIHxMhJzOw0b6uhlFcnthpDBXG2QkGMtM3OGmYCyDBuzW', 'admin3@example.com', TRUE),
-('user1', '$2y$10$ocFmzQLZhbX1NZ24IFuSsO.Sd6MrWEGWmiX/7nRKh6GeuJHteCSF.', 'user1@example.com', FALSE),
-('user2', '$2y$10$H40G7xWKNrcjRvpPtZ5.peeCb4ENe5YxSDNegBN8ngH1hlOw/sW4i', 'user2@example.com', FALSE),
-('user3', '$2y$10$FGv.fkV0croo0OPc8AMnoOs.Ccr4YAHhSOSR0NjHBCVFP5dh45zBy', 'user3@example.com', FALSE),
-('user4', '$2y$10$XF0uqsMr7ACoRq8HXhSzju9JE7cDkgLrsL7jeP2vozvt/EnTXdIKW', 'user4@example.com', FALSE),
-('user5', '$2y$10$En82pJ9eSojCRT5fk2Pm8OhRdFJr5hPFXTC/y3ZsOuOvXZ/ONb4hi', 'user5@example.com', FALSE),
-('user6', '$2y$10$ym6PkRC/n/zGQ.jdILa55uWIwpxBFrW1ADc3V3KQBi68hEYb88jQq', 'user6@example.com', FALSE),
-('user7', '$2y$10$Zne5EGh1UUBomkqBIGhZGe5kVuDlyPo5BR.0l3URRRht22Fghggi.', 'user7@example.com', FALSE);
+('admin1', '$2y$10$dqxqb8t4hgUfUhXnq6gBbe0IlVtQ9vIYfRRurXkz2NSUF3pDYB3oS', 'admin1@example.com', TRUE),
+('admin2', '$2y$10$IOtBfhEgTICPChw3Rs2.W.UoNdDaHKGsr2wjjLqmK.yoDG8RTc11m', 'admin2@example.com', TRUE),
+('admin3', '$2y$10$GNUjqZhP0gGXgpj7fV9neu8phGHbybnsNnnl1cqN4ThUu6M/4fiUS', 'admin3@example.com', TRUE),
+('user1', '$2y$10$1KFonwKOW.lcabeyAMMuheqgwIbFkgkluHTixmPmsTS1fTd77orbW', 'user1@example.com', FALSE),
+('user2', '$2y$10$QHlDCCxt5iRKJW7xaAaJiOoNOzL8CYjseBLdhTVx06pN7KUIgxFTG', 'user2@example.com', FALSE),
+('user3', '$2y$10$qteyJua6GJOx2QV.xgM3J.0g4PCneV8CeNqeiUuPwFBdSiMtjQHHa', 'user3@example.com', FALSE),
+('user4', '$2y$10$fykafLPbiquUcNgc2w8kQuiIqnF.3u0PfbkyszDUk5wEQQfRRDTOy', 'user4@example.com', FALSE),
+('user5', '$2y$10$1bnvsyeByF9DS8/NoGluA.z47D5vghWzZGUH9t7h6jdH9ZqlHcKsC', 'user5@example.com', FALSE),
+('user6', '$2y$10$GKKrlr6mGErGEg2dUTUYweZ536BBUzne5rifj3lqohBwi3FijqtP2', 'user6@example.com', FALSE),
+('user7', '$2y$10$jK51kdGlA.pntVFK.wNsb.X0kjsF0v7FYBw..gTBpaBCyXY1s70bi', 'user7@example.com', FALSE);
 
 -- Insert admins into the Admin table
 INSERT INTO Admin (userid)
