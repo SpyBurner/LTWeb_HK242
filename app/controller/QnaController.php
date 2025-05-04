@@ -24,7 +24,7 @@ class QnaController extends Controller {
             // Get qna list
             $result = QnaService::findAll($limit, $qnaPage);
             if (!$result['success']){
-                Logger::log("QnaController::index", $result['message']);
+                Logger::log("QnaController::index" . $result['message']);
                 $this->redirectWithMessage('/', [
                     'error' => $result['message']
                 ]);
@@ -33,7 +33,7 @@ class QnaController extends Controller {
 
             $result = FaqService::findAll();
             if (!$result['success']){
-                Logger::log("QnaController::index", $result['message']);
+                Logger::log("QnaController::index" . $result['message']);
                 $this->redirectWithMessage('/', [
                     'error' => $result['message']
                 ]);
