@@ -14,9 +14,10 @@ class ProductModel implements IModel {
     private $stock;
     private $cateid;
     private $avatarurl;
+    private $manufacturer;
 
     public function __construct($name, $price, $description, $mfgid, $stock, $cateid, $avatarurl, 
-                                $productid = null, $avgrating = 0.0, $bought = 0) {
+                                $productid = null, $avgrating = 0.0, $bought = 0, $manufacturer = null) {
         $this->productid = $productid;
         $this->name = $name;
         $this->price = $price;
@@ -27,6 +28,7 @@ class ProductModel implements IModel {
         $this->stock = $stock;
         $this->cateid = $cateid;
         $this->avatarurl = $avatarurl;
+        $this->manufacturer = $manufacturer;
     }
 
     // Getters
@@ -56,6 +58,10 @@ class ProductModel implements IModel {
 
     public function getMfgid() {
         return $this->mfgid;
+    }
+
+    public function getManufacturer() {
+        return $this->manufacturer;
     }
 
     public function getStock() {
@@ -122,7 +128,8 @@ class ProductModel implements IModel {
             $row['avatarurl'],
             $row['productid'] ?? null,
             $row['avgrating'] ?? 0.0,
-            $row['bought'] ?? 0
+            $row['bought'] ?? 0,
+            $row['manufacturer'] ?? null
         );
     }
 

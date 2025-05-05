@@ -91,7 +91,7 @@
 
             <!-- logo -->
             <div id="logo-header" class="max-w-50">
-                <img src="../../../public/assets/img/header-logo2-nobg.png" alt="header logo" width="250">
+                <img src="../../../public/assets/img/logo_logo.png" alt="header logo" width="250">
             </div>
 
             <!-- search, cate dropdown, navigation -->

@@ -1,9 +1,11 @@
 <?php
-assert(isset($isLoggedIn));
-assert(isset($isAdmin));
-assert(isset($username));
-assert(isset($avatar));
-assert(isset($categories));
+assert(isset($header_isLoggedIn));
+assert(isset($header_isAdmin));
+assert(isset($header_username));
+assert(isset($header_avatar));
+assert(isset($header_categories));
+
+use const config\STATIC_IMAGE_URL;
 ?>
 
 <header class="bg-base-300 py-4">
@@ -19,14 +21,16 @@ assert(isset($categories));
         ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="/assets/img/header-logo2-nobg.png" alt="header logo" width="150">
+            <img src="<?= STATIC_IMAGE_URL . "logo_logo.png" ?>" alt="logo" width="150">
         </div>
 
         <!-- search, cate dropdown, navigation -->
         <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between max-md:hidden">
             <!-- search bar -->
             <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between" action="/products" method="GET">
-                <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
+                <label>
+                    <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
+                </label>
                 <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search"></i>
                 </button>
@@ -42,7 +46,7 @@ assert(isset($categories));
                     <ul tabindex="0"
                         class="dropdown-content menu bg-base-100 rounded-md z-1 w-52 p-2 shadow-sm mt-2">
                         <?php
-                        forEach ($categories as $category) {
+                        forEach ($header_categories as $category) {
                             echo '<li><a href="/products?category=' . $category->getCateid() . '">' . $category->getName() . '</a></li>';
                         }
                         ?>
@@ -61,31 +65,28 @@ assert(isset($categories));
 
         <!-- profile/login, cart -->
         <div id="profile-cart" class="flex flex-col gap-4 items-center">
-            <?php if ($isLoggedIn) { ?>
+            <?php if ($header_isLoggedIn) { ?>
             <!-- PROFILE -->
             <div class="dropdown">
                 <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                     <div class="avatar">
                         <div class="w-12 rounded-full">
-                            <img src="<?=$avatar?>" alt="avatar"/>
+                            <img src="<?=$header_avatar?>" alt="avatar"/>
                         </div>
                     </div>
 
                     <div class="username flex gap-2 items-center">
-                        <span><?=$username?></span>
+                        <span><?=$header_username?></span>
                         <i class="fas fa-angle-down"></i>
                     </div>
                 </div>
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     <li>
-                        <a class="justify-between" href="/profile">
-                            Profile
-<!--                                <span class="badge">New</span>-->
-                        </a>
+                        <a href="/profile">Profile</a>
                     </li>
-                    <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+<!--                    <li><a>Settings</a></li>-->
+                    <li><a href="/account/logout">Logout</a></li>
                 </ul>
             </div>
 
@@ -95,8 +96,8 @@ assert(isset($categories));
                     Cart
                 </a>
 
-                <?php if ($isAdmin) { ?>
-                <a href="" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+                <?php if ($header_isAdmin) { ?>
+                <a href="/admin" class="btn btn-ghost btn-neutral rounded-full btn-lg">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
                 </a>
                 <?php } ?>
@@ -157,7 +158,7 @@ assert(isset($categories));
     closeBtn.addEventListener("click", closeSidebar);
     overlay.addEventListener("click", closeSidebar);
 
-    // Close sidebar on Escape key press
+    // Close the sidebar on Escape key press
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeSidebar();
     });

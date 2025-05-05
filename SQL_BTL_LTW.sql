@@ -144,7 +144,8 @@ CREATE TABLE ContactMessage(
     email varchar(255) NOT NULL,
     title varchar(255),
     message varchar(255) NOT NULL,
-    status varchar(20) DEFAULT 'Unread'
+    status varchar(20) DEFAULT 'Unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO User (username, password, email, isadmin) VALUES

@@ -5,7 +5,7 @@ use core\Controller;
 use service\AuthService;
 use core\SessionHelper;
 
-class AuthController extends Controller {
+class AuthController extends BaseController {
 //    TESTING ZONE
     public function test_token(){
         $token = $_COOKIE['auth_token'] ?? null;

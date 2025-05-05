@@ -1,11 +1,11 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Handle form submission (save data, upload files, etc.)
-
-    // Redirect to prevent resubmission
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
+assert(isset($title));
+assert(isset($contactNumber));
+assert(isset($address));
+assert(isset($maxDisplayedProduct));
+assert(isset($slogan));
+assert(isset($aboutUs));
+assert(isset($partners));
 ?>
 
 <!DOCTYPE html>
@@ -14,19 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Content Manager</title>
+    <title><?= $title ?></title>
 
-    <?php require_once "../common/admin-link.php"; ?>
+    <?php require_once __DIR__ . "/../common/admin-link.php"; ?>
 </head>
 
 <body>
     <div id="app">
-        <?php require_once "../common/admin-sidebar.php"; ?>
+        <?php require_once __DIR__ . "/../common/admin-sidebar.php"; ?>
 
         <div id="main">
-            <?php require_once "../common/admin-header.php"; ?>
+            <?php require_once __DIR__ . "/../common/admin-header.php"; ?>
 
-            <!-- put main content here -->
+            <!-- put the main content here -->
             <div class="page-heading">
                 <h3>Content Manager</h3>
             </div>
@@ -41,28 +41,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <small>Images should have a ratio of 5:2</small>
                             </div>
                             <div class="card-body">
-                                <form class="form form-horizontal">
+                                <form class="form form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/content-manager/edit-carousel">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label for="slide-1">Slide 1</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="file" id="slide-1" class="form-control" name="slide1-img" />
+                                                <input type="file" id="slide-1" class="form-control" name="carousel1" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="slide-2">Slide 2</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="file" id="slide-2" class="form-control" name="slide2-img" />
+                                                <input type="file" id="slide-2" class="form-control" name="carousel2" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="slide-3">Slide 3</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="file" id="slide-3" class="form-control" name="slide3-img" />
+                                                <input type="file" id="slide-3" class="form-control" name="carousel3" />
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">
@@ -84,21 +84,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h4 class="card-title">Contact Information</h4>
                             </div>
                             <div class="card-body">
-                                <form class="form form-horizontal">
+                                <form class="form form-horizontal" method="POST" action="/admin/content-manager/edit">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label for="">Contact Number</label>
                                             </div>
+
+                                            <input type="hidden" name="section" value="contact" />
+
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="phone" value="0916 737 162" />
+                                                <input type="text" class="form-control" name="phone" value="<?= $contactNumber ?>" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="">Address</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="address" value="268 Ly Thuong Kiet, P.14, Q.10, TP.HCM" />
+                                                <input type="text" class="form-control" name="address" value="<?= $address ?>" />
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">
@@ -120,14 +123,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h4 class="card-title">Display Configuration</h4>
                             </div>
                             <div class="card-body">
-                                <form class="form form-horizontal">
+                                <form class="form form-horizontal" method="POST" action="/admin/content-manager/edit">
                                     <div class="form-body">
                                         <div class="row">
+                                            <input type="hidden" name="section" value="display" />
+
                                             <div class="col-md-4">
-                                                <label for="">Max products</label>
+                                                <label for="">Max displayed products for Home page</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="number" class="form-control" name="max-display" required min="4" max="20" value="8" />
+                                                <input type="number" class="form-control" name="max-display" required min="4" max="20" value="<?= $maxDisplayedProduct ?>" />
                                                 <small class="d-block text-end">Integer between 4 to 20</small>
                                             </div>
 
@@ -150,35 +155,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h4 class="card-title">Introduction</h4>
                             </div>
                             <div class="card-body">
-                                <form class="form form-horizontal">
+                                <form class="form form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/content-manager/edit">
                                     <div class="form-body">
                                         <div class="row">
+                                            <input type="hidden" name="section" value="introduction" />
                                             <div class="col-md-4">
                                                 <label for="">Logo</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="file" class="form-control" name="logo-img" />
+                                                <input type="file" class="form-control" name="logo" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="">Slogan</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="slogan" value="Treats & Sweets In A Nutshell" />
+                                                <input type="text" class="form-control" name="slogan" value="<?= $slogan ?>" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="">Banner</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="file" class="form-control" name="banner-img" />
+                                                <input type="file" class="form-control" name="banner" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="">About us</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <textarea class="form-control" name="about-us" rows="4">Welcome to **Sweet Delights**, where we bring your sweetest dreams to life...</textarea>
+                                                <textarea class="form-control" name="aboutUs" rows="4"><?= $aboutUs ?></textarea>
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">
@@ -201,17 +207,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="card-body">
                                 <div class="row g-4">
+                                    <?php foreach ($partners as $index => $partner) : ?>
                                     <div class="col-6 col-md-4">
                                         <div class="p-3 bg-white border rounded text-center shadow-sm team-member">
-                                            <form action="" method="POST">
+                                            <form method="POST" enctype="multipart/form-data" action="/admin/content-manager/edit">
+                                                <input type="hidden" name="section" value="partner" />
+                                                <input type="hidden" name="id" value="<?= $index ?>" />
+
                                                 <div class="mb-3">
                                                     <label class="form-label">Logo</label>
-                                                    <input type="file" class="form-control form-control-sm" />
+                                                    <input type="file" class="form-control form-control-sm" name="logo" />
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Name</label>
-                                                    <input type="text" class="form-control" value="Microsoft" />
+                                                    <input type="text" class="form-control" name="name" value="<?= $partner['name'] ?>" />
                                                 </div>
 
                                                 <div class="d-flex justify-content-center gap-2">
@@ -221,6 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </form>
                                         </div>
                                     </div>
+                                        <?php endforeach; ?>
                                 </div>
 
                                 <!-- Add New Team Member Button -->
@@ -241,15 +252,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="" method="POST">
+                                        <form method="POST" action="/admin/content-manager/add" enctype="multipart/form-data">
+                                            <input type="hidden" name="section" value="partner" />
+
                                             <div class="mb-3">
                                                 <label class="form-label">Logo</label>
-                                                <input type="file" class="form-control form-control-sm" />
+                                                <input type="file" class="form-control form-control-sm" name="logo"/>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Name</label>
-                                                <input type="text" class="form-control" />
+                                                <input type="text" class="form-control" name="name"/>
                                             </div>
 
                                             <div class="text-center mt-3">
@@ -269,12 +282,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         // Delete Team Member
         function deleteMember(button) {
-            let teamCard = button.closest(".team-member");
-            teamCard.remove();
+            // let teamCard = button.closest(".team-member");
+            // teamCard.remove();
+            // send the current form to delete api
+            let form = button.closest("form");
+            form.action = "/admin/content-manager/delete";
+            form.method = "POST";
+            form.submit();
         }
     </script>
 
-    <?php require_once "../common/admin-script.php"; ?>
+    <?php require_once __DIR__ . "/../common/admin-script.php"; ?>
 </body>
 
 </html>

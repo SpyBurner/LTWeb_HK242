@@ -456,4 +456,74 @@ class ProductsService implements IService {
             'avatarurl' => $obj->getAvatarurl()
         ];
     }
+
+    ///////////////////////////// ADDED BY LINH /////////////////////////////
+    public static function getTmp(int $limit): array
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("
+                SELECT p.*, m.name as manufacturer
+                FROM Product p
+                LEFT JOIN Manufacturer m ON p.mfgid = m.mfgid
+                ORDER BY bought DESC
+                LIMIT :limit
+            ");
+            $stmt->execute([':limit' => $limit]);
+            $products = array_map(function($row) {
+                return ProductModel::toObject($row);
+            }, $stmt->fetchAll());
+
+            return ['success' => true, 'data' => $products];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function getNewestProducts(int $limit): array
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $stmt = $pdo->prepare("SELECT * FROM product ORDER BY avgrating DESC LIMIT :limit");
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->execute();
+            $products = $stmt->fetchAll(\PDO::FETCH_CLASS, ProductModel::class);
+
+            return ['success' => true, 'data' => $products];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function getTopRatedProducts(int $limit): array
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $stmt = $pdo->prepare("SELECT * FROM product ORDER BY avgrating DESC LIMIT :limit");
+//            $stmt = $pdo->prepare("SELECT p.*, m.name AS brandName FROM product p LEFT JOIN Manufacturer m ON p.mfgid = m.mfgid ORDER BY p.created_at DESC LIMIT :limit");
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->execute();
+            $products = $stmt->fetchAll(\PDO::FETCH_CLASS, ProductModel::class);
+
+            return ['success' => true, 'data' => $products];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function getBestSellers(int $limit): array
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $stmt = $pdo->prepare("SELECT * FROM product ORDER BY bought DESC LIMIT :limit");
+//            $stmt = $pdo->prepare("SELECT p.*, m.name AS brandName FROM product p LEFT JOIN Manufacturer m ON p.mfgid = m.mfgid ORDER BY p.bought DESC LIMIT :limit");
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->execute();
+            $products = $stmt->fetchAll(\PDO::FETCH_CLASS, ProductModel::class);
+
+            return ['success' => true, 'data' => $products];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+    ///////////////////////////// ADDED BY LINH /////////////////////////////
 }
