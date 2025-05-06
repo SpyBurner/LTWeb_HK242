@@ -245,7 +245,7 @@ assert(isset($title));
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            renderMessages();
+                            fetchMessages();
                         } else {
                             console.error("Failed to delete message:", data.message);
                         }
