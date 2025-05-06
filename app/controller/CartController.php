@@ -20,8 +20,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         $cartResult = OrderService::getCartByUserId($userId);
 
         $this->render('cart/cart', [
@@ -41,7 +40,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
+        $userId = $result['user']->getUserid();
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
@@ -82,8 +81,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
 
@@ -131,8 +129,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
             $amount = (int)$this->get('amount', 1);
@@ -181,8 +178,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         $cartResult = OrderService::getCartByUserId($userId);
         if (!$cartResult['success'] || !$cartResult['data'] || empty($cartResult['data']->products)) {
             $this->redirectWithMessage('/cart', [
@@ -209,8 +205,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contactId = $this->post('contactId');
             $email = $this->post('email');
@@ -286,8 +281,7 @@ class CartController extends BaseController  {
             ]);
         }
 
-        $userId = $result['user']['userid'];
-
+        $userId = $result['user']->getUserid();
         if (empty($orderId)) {
             $this->redirectWithMessage('/cart', [
                 'error' => 'Invalid order ID'
