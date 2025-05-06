@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 
-use core\Controller;
 use core\Logger;
 use model\ContactModel;
 use service\AuthService;
@@ -30,7 +29,13 @@ class ProfileController extends BaseController {
         $result = ContactService::findAllByCustomerId($user->getUserid());
         $contacts = $result['success'] ? $result['data'] : null;
 
-        require_once __DIR__ . "/../view/profile/profile.php";
+        $data = [
+            'user' => $user,
+            'contacts' => $contacts,
+            'avatar' => $avatar
+        ];
+
+        $this->render('profile/profile', $data);
     }
 
     public function addContact(){

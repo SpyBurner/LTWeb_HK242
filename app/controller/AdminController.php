@@ -8,7 +8,7 @@ use Service\CommentService;
 use service\UserService;
 use service\AuthService;
 
-class AdminController extends Controller {
+class AdminController extends BaseController {
     public function index() {
         if (isset($_SESSION['REQUEST_METHOD']) && $_SESSION['REQUEST_METHOD']  === 'POST'){
             echo "TODO HANDLE POST REQUEST AT AdminController";

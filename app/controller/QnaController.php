@@ -13,7 +13,7 @@ use service\QnaService;
 use service\UserService;
 use const config\DEFAULT_MOD_AVATAR_URL;
 
-class QnaController extends Controller {
+class QnaController extends BaseController {
     public function index() {
         /* Needs:
          * qna list, paginated
