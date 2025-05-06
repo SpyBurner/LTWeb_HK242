@@ -82,7 +82,7 @@ abstract class Controller
 
         $user = $result['user'];
         if (!$user['role'] && $expectAdmin) {
-            $this->redirectWithMessage('/account/login', [
+            $this->redirectWithMessage('/', [
                 'error' => 'You do not have the required permission.'
             ]);
         }
