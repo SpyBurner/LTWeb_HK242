@@ -29,7 +29,7 @@
             <div class="carousel rounded-box">
                 <div class="carousel-item w-full">
                     <img
-                        src="<?= htmlspecialchars($product->getAvatarurl()) ?>"
+                        src="/<?= htmlspecialchars($product->getAvatarurl()) ?>"
                         class="w-full"
                         alt="<?= htmlspecialchars($product->getName()) ?>"
                     />
@@ -40,7 +40,7 @@
         <div class="w-full md:w-1/2">
             <h1 class="text-3xl font-bold mb-4"><?= htmlspecialchars($product->getName()) ?></h1>
             <p class="text-gray-500 mb-4">Brand: <?= htmlspecialchars($product->manufacturerName) ?></p>
-            <p class="text-2xl text-red-700 font-semibold mb-4"><?= number_format($product->getPrice(), 0, ',', '.') ?>đ</p>
+            <p class="text-2xl text-red-700 font-semibold mb-4"><?= number_format($product->getPrice(), 0, ',', '.') ?> VND</p>
             <p class="text-gray-600 mb-6">
                 <?= nl2br(htmlspecialchars($product->getDescription())) ?>
             </p>
@@ -157,7 +157,7 @@
                 <div class="card bg-base-100 shadow-sm relative w-full">
                     <a href="/products/detail/<?= $related->getProductid() ?>">
                         <img
-                            src="<?= htmlspecialchars($related->getAvatarurl()) ?>"
+                            src="/<?= htmlspecialchars($related->getAvatarurl()) ?>"
                             alt="<?= htmlspecialchars($related->getName()) ?>"
                             class="w-full h-32 object-cover"
                         />
@@ -168,7 +168,7 @@
                             <h2 class="text-xs font-bold text-gray-800 truncate">
                                 <?= htmlspecialchars($related->getName()) ?>
                             </h2>
-                            <p class="text-base font-semibold text-primary"><?= number_format($related->getPrice(), 0, ',', '.') ?>đ</p>
+                            <p class="text-base font-semibold text-primary"><?= number_format($related->getPrice(), 0, ',', '.') ?> VND</p>
                             <div class="flex items-center justify-between mt-1">
                                 <p class="text-[10px] text-gray-600">
                                     Đã bán: <span class="font-semibold"><?= $related->getBought() ?></span>

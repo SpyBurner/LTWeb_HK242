@@ -83,10 +83,10 @@
                     <h4 class="font-semibold mb-2">Price Range</h4>
                     <select name="price_range" class="select select-bordered w-full">
                         <option value="">All Prices</option>
-                        <option value="under_100k" <?= ($filters['price_range'] ?? '') === 'under_100k' ? 'selected' : '' ?>>Under 100,000đ</option>
-                        <option value="100k_to_200k" <?= ($filters['price_range'] ?? '') === '100k_to_200k' ? 'selected' : '' ?>>100,000đ - 200,000đ</option>
-                        <option value="200k_to_500k" <?= ($filters['price_range'] ?? '') === '200k_to_500k' ? 'selected' : '' ?>>200,000đ - 500,000đ</option>
-                        <option value="over_500k" <?= ($filters['price_range'] ?? '') === 'over_500k' ? 'selected' : '' ?>>Over 500,000đ</option>
+                        <option value="under_100k" <?= ($filters['price_range'] ?? '') === 'under_100k' ? 'selected' : '' ?>>Under 100,000 VND</option>
+                        <option value="100k_to_200k" <?= ($filters['price_range'] ?? '') === '100k_to_200k' ? 'selected' : '' ?>>100,000đ - 200,000 VND</option>
+                        <option value="200k_to_500k" <?= ($filters['price_range'] ?? '') === '200k_to_500k' ? 'selected' : '' ?>>200,000đ - 500,000 VND</option>
+                        <option value="over_500k" <?= ($filters['price_range'] ?? '') === 'over_500k' ? 'selected' : '' ?>>Over 500,000 VND</option>
                     </select>
                 </div>
                 
@@ -108,6 +108,7 @@
                             <li><a href="?sort=price_asc<?= $this->getQueryString(['sort', 'page']) ?>">Price: Low to High</a></li>
                             <li><a href="?sort=price_desc<?= $this->getQueryString(['sort', 'page']) ?>">Price: High to Low</a></li>
                             <li><a href="?sort=popular<?= $this->getQueryString(['sort', 'page']) ?>">Popularity</a></li>
+                            <li><a href="?sort=top_rated<?= $this->getQueryString(['sort', 'page']) ?>">Popularity</a></li>
                         </ul>
                     </div>
                 </div>
@@ -127,7 +128,7 @@
                         <?php foreach ($products as $product): ?>
                             <div class="card bg-base-100 shadow-md rounded-lg overflow-hidden w-full">
                                 <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
-                                    <img src="<?= htmlspecialchars($product->getAvatarurl()) ?>" 
+                                    <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
                                          alt="<?= htmlspecialchars($product->getName()) ?>" 
                                          class="w-full h-32 object-cover" />
                                     <div class="card-body p-3">
@@ -138,7 +139,7 @@
                                             <?= htmlspecialchars($product->getName()) ?>
                                         </h2>
                                         <p class="text-base font-semibold text-primary">
-                                            <?= number_format($product->getPrice(), 0, ',', '.') ?>đ
+                                            <?= number_format($product->getPrice(), 0, ',', '.') ?> VND
                                         </p>
                                         <div class="flex items-center justify-between mt-1">
                                             <p class="text-[10px] text-gray-600">

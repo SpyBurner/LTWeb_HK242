@@ -107,7 +107,7 @@ class OrderModel implements IModel {
 
     // Additional method to calculate total with currency formatting
     public function getFormattedTotal() {
-        return number_format($this->totalcost) . 'đ';
+        return number_format($this->totalcost) . 'VND';
     }
 
     // Additional method to get status with badge styling

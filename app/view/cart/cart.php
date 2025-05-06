@@ -57,7 +57,7 @@
                                 <h3 class="text-lg font-semibold"><?= htmlspecialchars($product['name']) ?></h3>
                                 <p class="text-gray-500">Brand: <?= htmlspecialchars($product['manufacturer_name']) ?></p>
                                 <p class="text-xl text-red-700 font-semibold">
-                                    <?= number_format($product['price'], 0, ',', '.') ?>đ
+                                    <?= number_format($product['price'], 0, ',', '.') ?> VND
                                 </p>
                             </div>
                             <div class="flex items-center gap-4">
@@ -92,19 +92,19 @@
                 <div class="flex justify-between mb-4">
                     <span class="text-gray-600">Tạm tính:</span>
                     <span class="text-xl font-semibold">
-                        <?= $cart ? number_format($cart->getTotalcost(), 0, ',', '.') . 'đ' : '0đ' ?>
+                        <?= $cart ? number_format($cart->getTotalcost(), 0, ',', '.') . ' VND' : '0 VND' ?>
                     </span>
                 </div>
 
                 <div class="flex justify-between mb-4">
                     <span class="text-gray-600">Phí vận chuyển:</span>
-                    <span class="text-xl font-semibold">30,000đ</span>
+                    <span class="text-xl font-semibold">30,000 VND</span>
                 </div>
 
                 <div class="flex justify-between mb-6">
                     <span class="text-gray-600">Tổng cộng:</span>
                     <span class="text-2xl font-bold text-red-700">
-                        <?= $cart ? number_format($cart->getTotalcost() + 30000, 0, ',', '.') . 'đ' : '30,000đ' ?>
+                        <?= $cart ? number_format($cart->getTotalcost() + 30000, 0, ',', '.') . ' VND' : '30,000 VND' ?>
                     </span>
                 </div>
 

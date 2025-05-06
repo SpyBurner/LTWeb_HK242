@@ -8,24 +8,19 @@ use service\OrderService;
 use service\ContactService;
 use model\ContactModel;
 
-class CartController extends Controller {
+class CartController extends BaseController  {
     public function index() {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to view your cart'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         $cartResult = OrderService::getCartByUserId($userId);
 
@@ -36,22 +31,17 @@ class CartController extends Controller {
     }
 
     public function add($productId = null) {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to add products to your cart'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
@@ -82,22 +72,17 @@ class CartController extends Controller {
     }
 
     public function remove($productId = null) {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to modify your cart'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
@@ -136,22 +121,17 @@ class CartController extends Controller {
     }
 
     public function reduce($productId = null) {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to modify your cart'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $productId = $this->get('product_id') ?? $productId;
@@ -191,22 +171,17 @@ class CartController extends Controller {
     }
 
     public function checkout() {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to checkout'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         $cartResult = OrderService::getCartByUserId($userId);
         if (!$cartResult['success'] || !$cartResult['data'] || empty($cartResult['data']->products)) {
@@ -224,48 +199,39 @@ class CartController extends Controller {
     }
 
     public function paymentValid() {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to proceed with payment'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $this->post('name');
-            $phone = $this->post('phone');
+            $contactId = $this->post('contactId');
             $email = $this->post('email');
-            $address = $this->post('address');
             $note = $this->post('note');
             $paymentMethod = $this->post('payment_method');
 
-            if (empty($name) || empty($phone) || empty($email) || empty($address) || empty($paymentMethod)) {
+            if (empty($contactId) || empty($email) || empty($paymentMethod)) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'Please fill in all required fields']);
                 exit;
             }
 
-            // Step 1: Create new Contact
-            $contact = new ContactModel(null, $name, $phone, $address, $userId);
-            $contactResult = ContactService::save($contact);
-
-            if (!$contactResult['success']) {
+            // Step 1: Verify contact exists and belongs to the user
+            $contactResult = ContactService::findById($contactId);
+            if (!$contactResult['success'] || $contactResult['data']->getCustomerId() != $userId) {
                 header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => $contactResult['message']]);
+                echo json_encode(['success' => false, 'message' => 'Invalid contact selected']);
                 exit;
             }
 
-            // Step 2: Update Order with contactId and status
+            // Step 2: Get cart
             $cartResult = OrderService::getCartByUserId($userId);
             if (!$cartResult['success'] || !$cartResult['data']) {
                 header('Content-Type: application/json');
@@ -275,16 +241,7 @@ class CartController extends Controller {
 
             $orderId = $cartResult['data']->getOrderid();
 
-            // Get the latest contact ID for the user
-            $contactListResult = ContactService::findAllByCustomerId($userId);
-            if (!$contactListResult['success'] || empty($contactListResult['data'])) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Failed to retrieve contact information']);
-                exit;
-            }
-            $contactId = end($contactListResult['data'])->getContactId();
-
-            // Update contactId in the order
+            // Step 3: Update contactId in the order
             $contactUpdateResult = OrderService::updateContactId($orderId, $contactId);
             if (!$contactUpdateResult['success']) {
                 header('Content-Type: application/json');
@@ -292,7 +249,7 @@ class CartController extends Controller {
                 exit;
             }
 
-            // Update product stock and bought counts
+            // Step 4: Update product stock and bought counts
             $stockResult = OrderService::updateProductStockAndBought($orderId);
             if (!$stockResult['success']) {
                 header('Content-Type: application/json');
@@ -300,7 +257,7 @@ class CartController extends Controller {
                 exit;
             }
 
-            // Update order status
+            // Step 5: Update order status
             $updateResult = OrderService::updateStatus($orderId, 'Preparing');
             if (!$updateResult['success']) {
                 header('Content-Type: application/json');
@@ -319,22 +276,17 @@ class CartController extends Controller {
     }
 
     public function confirmation($orderId = null) {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Please login to view your order confirmation'
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
             ]);
-            return;
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', [
-                'error' => 'Invalid session. Please login again.'
-            ]);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         if (empty($orderId)) {
             $this->redirectWithMessage('/cart', [

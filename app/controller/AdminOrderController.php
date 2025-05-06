@@ -5,8 +5,9 @@ use core\Controller;
 use core\SessionHelper;
 use service\OrderService;
 
-class AdminOrderController extends Controller {
+class AdminOrderController extends BaseController  {
     public function index() {
+        $this->requireAuth(true);
         // Get filter parameters from request
         $filters = [
             'search' => $this->get('search') ?? $_GET['search'] ?? null,
@@ -35,6 +36,7 @@ class AdminOrderController extends Controller {
     }
 
     public function updateStatus() {
+        $this->requireAuth(true);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = json_decode(file_get_contents('php://input'), true);
             $orderId = $input['orderId'] ?? null;

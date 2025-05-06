@@ -118,7 +118,7 @@
                                                 <tr>
                                                     <td><?= $product->getProductid() ?></td>
                                                     <td>
-                                                        <img src="<?= htmlspecialchars($product->getAvatarurl() ?: '/assets/images/default-product.png') ?>" 
+                                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() ?: '/assets/repo/product/default-product.jpg') ?>" 
                                                             alt="<?= htmlspecialchars($product->getName()) ?>" 
                                                             class="product-image rounded">
                                                     </td>
@@ -131,7 +131,7 @@
                                                     <td><?= htmlspecialchars($product->manufacturerName) ?></td>
                                                     <td><?= htmlspecialchars($product->categoryName) ?></td>
                                                     <td class="fw-bold text-primary">
-                                                        <?= number_format($product->getPrice(), 0, ',', '.') ?>đ
+                                                        <?= number_format($product->getPrice(), 0, ',', '.') ?>  VND
                                                     </td>
                                                     <td>
                                                         <span class="badge bg-<?= $product->getStock() > 0 ? 'success' : 'danger' ?>">
@@ -150,7 +150,7 @@
                                                                 data-mfgid="<?= $product->getMfgid() ?>"
                                                                 data-cateid="<?= $product->getCateid() ?>"
                                                                 data-stock="<?= $product->getStock() ?>"
-                                                                data-avatarurl="<?= htmlspecialchars($product->getAvatarurl()) ?>">
+                                                                data-avatarurl="/<?= htmlspecialchars($product->getAvatarurl()) ?>">
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
                                                             <form action="/admin/products/delete/<?= $product->getProductid() ?>" 

@@ -69,7 +69,7 @@ use const config\MAZER_BASE_URL;
                                             <td><?= $order->getOrderid() ?></td>
                                             <td><?= htmlspecialchars($order->customerName) ?></td>
                                             <td><?= date('d M Y', strtotime($order->getOrderdate())) ?></td>
-                                            <td><?= number_format($order->getTotalcost()) ?>đ</td>
+                                            <td><?= number_format($order->getTotalcost()) ?> VND</td>
                                             <td>
                                                 <select class="form-select form-select-sm" 
                                                         onchange="updateOrderStatus(this, <?= $order->getOrderid() ?>)"
@@ -224,15 +224,15 @@ use const config\MAZER_BASE_URL;
                             </div>
                         </div>
                     </td>
-                    <td>${Number(product.price || 0).toLocaleString()}đ</td>
+                    <td>${Number(product.price || 0).toLocaleString()} VND</td>
                     <td>${product.amount || 0}</td>
-                    <td>${Number(subtotal || 0).toLocaleString()}đ</td>
+                    <td>${Number(subtotal || 0).toLocaleString()} VND</td>
                 `;
                 productsBody.appendChild(row);
             });
             
             document.getElementById('detailTotal').textContent = 
-                Number(order.totalcost || 0).toLocaleString() + 'đ';
+                Number(order.totalcost || 0).toLocaleString() + ' VND';
 
             // Show modal using Bootstrap
             const modalElement = document.getElementById('orderDetailsModal');

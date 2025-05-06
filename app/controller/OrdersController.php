@@ -9,20 +9,19 @@ use service\ContactService;
 use service\RateProductService;
 use model\RateProductModel;
 
-class OrdersController extends Controller {
+class OrdersController extends BaseController  {
     public function myOrders() {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', ['error' => 'Please login to view your orders']);
-            return;
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
+            ]);
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', ['error' => 'Invalid session. Please login again.']);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         $filters = [
             'search' => $this->get('search'),
@@ -40,18 +39,17 @@ class OrdersController extends Controller {
     }
 
     public function orderDetail($orderId) {
-        if (!$this->isAuthenticate()) {
-            $this->redirectWithMessage('/account/login', ['error' => 'Please login to view order details']);
-            return;
+        $this->requireAuth(false);
+
+
+        $result = AuthService::getCurrentUser();
+        if (!$result['success']){
+            $this->redirectWithMessage('/',[
+                'error' => $result['message']
+            ]);
         }
 
-        $authResult = AuthService::validateSession();
-        if (!$authResult['success']) {
-            $this->redirectWithMessage('/account/login', ['error' => 'Invalid session. Please login again.']);
-            return;
-        }
-
-        $userId = $authResult['user']['userid'];
+        $userId = $result['user']['userid'];
 
         $orderResult = OrderService::getOrderById($orderId);
         if (!$orderResult['success']) {

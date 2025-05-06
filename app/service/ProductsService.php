@@ -28,7 +28,7 @@ class ProductsService implements IService {
             $params = [];
             $countParams = [];
             
-            // Thêm chức năng search - SỬA LẠI PHẦN NÀY
+            // Add search functionality
             if (!empty($filters['search'])) {
                 $query .= " AND (p.name LIKE :search_name OR p.description LIKE :search_desc)";
                 $countQuery .= " AND (p.name LIKE :search_name OR p.description LIKE :search_desc)";
@@ -89,12 +89,15 @@ class ProductsService implements IService {
                 case 'popular':
                     $query .= " ORDER BY p.bought DESC";
                     break;
+                case 'top_rated':
+                    $query .= " ORDER BY p.avgrating DESC";
+                    break;
                 case 'newest':
                 default:
                     $query .= " ORDER BY p.productid DESC";
             }
             
-            // Get total count first - SỬA LẠI CÁCH BIND PARAM
+            // Get total count first
             $countStmt = $pdo->prepare($countQuery);
             foreach ($countParams as $key => $value) {
                 $countStmt->bindValue($key, $value, is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
@@ -114,7 +117,7 @@ class ProductsService implements IService {
             // Prepare main query with updated query string
             $stmt = $pdo->prepare($query);
             
-            // Bind filter parameters - SỬA LẠI CÁCH BIND PARAM
+            // Bind filter parameters
             foreach ($params as $key => $value) {
                 $stmt->bindValue($key, $value, is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
             }
@@ -146,7 +149,6 @@ class ProductsService implements IService {
         }
     }
 
-    // Các phương thức khác giữ nguyên
     public static function save($data) {
         try {
             $pdo = Database::getInstance()->getConnection();
@@ -219,7 +221,6 @@ class ProductsService implements IService {
                 }
             }
 
-       
             return ['success' => true];
         } catch (Exception $e) {
             return handleException($e);

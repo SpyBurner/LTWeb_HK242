@@ -87,7 +87,7 @@
                                             Ngày đặt: <?= date('d/m/Y', strtotime($order->getOrderdate())) ?>
                                         </p>
                                         <p class="text-sm text-gray-500">
-                                            Tổng tiền: <?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?>đ
+                                            Tổng tiền: <?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?> VND
                                         </p>
                                     </div>
                                     <div class="flex items-center gap-4">

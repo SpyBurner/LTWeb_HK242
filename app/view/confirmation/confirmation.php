@@ -50,7 +50,7 @@
                         <div class="space-y-2">
                             <p><strong>Ngày đặt hàng:</strong> <?= date('d/m/Y H:i:s', strtotime($order->getOrderdate())) ?></p>
                             <p><strong>Trạng thái:</strong> <?= htmlspecialchars($order->getStatus()) ?></p>
-                            <p><strong>Tổng tiền:</strong> <?= number_format($order->getTotalcost(), 0, ',', '.') ?>đ</p>
+                            <p><strong>Tổng tiền:</strong> <?= number_format($order->getTotalcost(), 0, ',', '.') ?> VND</p>
                         </div>
                     </div>
                 </div>
@@ -67,9 +67,9 @@
                                          class="w-16 h-16 object-cover rounded-lg">
                                     <div class="flex-1">
                                         <h4 class="font-medium"><?= htmlspecialchars($product['name']) ?></h4>
-                                        <p class="text-gray-500"><?= number_format($product['price'], 0, ',', '.') ?>đ × <?= $product['amount'] ?></p>
+                                        <p class="text-gray-500"><?= number_format($product['price'], 0, ',', '.') ?> VND × <?= $product['amount'] ?></p>
                                     </div>
-                                    <p class="font-semibold"><?= number_format($product['price'] * $product['amount'], 0, ',', '.') ?>đ</p>
+                                    <p class="font-semibold"><?= number_format($product['price'] * $product['amount'], 0, ',', '.') ?> VND</p>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -97,15 +97,15 @@
                     <div class="space-y-4 mb-6">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Tạm tính:</span>
-                            <span class="font-semibold"><?= number_format($order->getTotalcost(), 0, ',', '.') ?>đ</span>
+                            <span class="font-semibold"><?= number_format($order->getTotalcost(), 0, ',', '.') ?> VND</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Phí vận chuyển:</span>
-                            <span class="font-semibold">30,000đ</span>
+                            <span class="font-semibold">30,000 VND</span>
                         </div>
                         <div class="flex justify-between border-t pt-4">
                             <span class="text-gray-600">Tổng cộng:</span>
-                            <span class="text-xl font-bold text-red-700"><?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?>đ</span>
+                            <span class="text-xl font-bold text-red-700"><?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?> VND</span>
                         </div>
                     </div>
 

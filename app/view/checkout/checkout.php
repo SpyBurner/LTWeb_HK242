@@ -35,6 +35,15 @@
             </div>
         <?php endif; ?>
 
+        <?php
+        // Lấy danh sách liên hệ của khách hàng
+        $contactResult = \service\ContactService::findAllByCustomerId($userId);
+        if (!$contactResult['success'] || empty($contactResult['data'])): ?>
+            <div class="alert alert-warning mb-4">
+                Bạn chưa có thông tin liên hệ. Vui lòng <a href="/account/contacts" class="link link-primary">thêm liên hệ</a> trước khi thanh toán.
+            </div>
+        <?php endif; ?>
+
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Left Column - Payment Form -->
             <div class="w-full md:w-2/3">
@@ -45,18 +54,41 @@
                     <div class="card-body">
                         <h3 class="text-lg font-semibold mb-4">Thông tin khách hàng</h3>
                         <div class="space-y-4">
+                            <!-- Dropdown for selecting contact -->
+                            <div>
+                                <label class="label">
+                                    <span class="label-text">Chọn thông tin liên hệ</span>
+                                </label>
+                                <select id="contactId" class="select select-bordered w-full" onchange="loadContactInfo(this)" required>
+                                    <option value="">Chọn một liên hệ</option>
+                                    <?php
+                                    if ($contactResult['success'] && !empty($contactResult['data'])) {
+                                        foreach ($contactResult['data'] as $contact) {
+                                            echo '<option value="' . htmlspecialchars($contact->getContactId()) . '" 
+                                                        data-name="' . htmlspecialchars($contact->getName()) . '" 
+                                                        data-phone="' . htmlspecialchars($contact->getPhone()) . '" 
+                                                        data-address="' . htmlspecialchars($contact->getAddress()) . '">
+                                                        ' . htmlspecialchars($contact->getName()) . ' - ' . htmlspecialchars($contact->getPhone()) . '
+                                                  </option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <!-- Display selected contact information -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="label">
                                         <span class="label-text">Họ và tên</span>
                                     </label>
-                                    <input type="text" id="name" class="input input-bordered w-full" value="" required>
+                                    <input type="text" id="name" class="input input-bordered w-full" value="" readonly>
                                 </div>
                                 <div>
                                     <label class="label">
                                         <span class="label-text">Số điện thoại</span>
                                     </label>
-                                    <input type="tel" id="phone" class="input input-bordered w-full" value="" required>
+                                    <input type="tel" id="phone" class="input input-bordered w-full" value="" readonly>
                                 </div>
                             </div>
                             <div>
@@ -69,7 +101,7 @@
                                 <label class="label">
                                     <span class="label-text">Địa chỉ giao hàng</span>
                                 </label>
-                                <textarea id="address" class="textarea textarea-bordered w-full" rows="2" required></textarea>
+                                <textarea id="address" class="textarea textarea-bordered w-full" rows="2" readonly></textarea>
                             </div>
                             <div>
                                 <label class="label">
@@ -123,9 +155,9 @@
                                          class="w-16 h-16 object-cover rounded-lg">
                                     <div class="flex-1">
                                         <h4 class="font-medium"><?= htmlspecialchars($product['name']) ?></h4>
-                                        <p class="text-gray-500"><?= number_format($product['price'], 0, ',', '.') ?>đ × <?= $product['amount'] ?></p>
+                                        <p class="text-gray-500"><?= number_format($product['price'], 0, ',', '.') ?> VND × <?= $product['amount'] ?></p>
                                     </div>
-                                    <p class="font-semibold"><?= number_format($product['price'] * $product['amount'], 0, ',', '.') ?>đ</p>
+                                    <p class="font-semibold"><?= number_format($product['price'] * $product['amount'], 0, ',', '.') ?> VND</p>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -141,15 +173,15 @@
                     <div class="space-y-4 mb-6">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Tạm tính:</span>
-                            <span class="font-semibold"><?= number_format($cart->getTotalcost(), 0, ',', '.') ?>đ</span>
+                            <span class="font-semibold"><?= number_format($cart->getTotalcost(), 0, ',', '.') ?> VND</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Phí vận chuyển:</span>
-                            <span class="font-semibold">30,000đ</span>
+                            <span class="font-semibold">30,000 VND</span>
                         </div>
                         <div class="flex justify-between border-t pt-4">
                             <span class="text-gray-600">Tổng cộng:</span>
-                            <span class="text-xl font-bold text-red-700"><?= number_format($cart->getTotalcost() + 30000, 0, ',', '.') ?>đ</span>
+                            <span class="text-xl font-bold text-red-700"><?= number_format($cart->getTotalcost() + 30000, 0, ',', '.') ?> VND</span>
                         </div>
                     </div>
 
@@ -182,46 +214,49 @@
             element.querySelector('input[type="radio"]').checked = true;
         }
 
-        function placeOrder(userId) {
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-    const address = document.getElementById('address').value;
-    const note = document.getElementById('note').value;
-    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-    const termsAgreed = document.getElementById('terms').checked;
-
-    if (!name || !phone || !email || !address || !paymentMethod || !termsAgreed) {
-        alert('Vui lòng điền đầy đủ thông tin và đồng ý với điều khoản!');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('userId', userId);
-    formData.append('name', name);
-    formData.append('phone', phone);
-    formData.append('email', email);
-    formData.append('address', address);
-    formData.append('note', note);
-    formData.append('payment_method', paymentMethod);
-
-    fetch('/checkout/paymentValid', {
-        method: 'POST',
-        body: formData // Sử dụng FormData thay vì JSON
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = `/checkout/confirmation/${data.orderId}`;
-        } else {
-            alert('Error: ' + data.message);
+        function loadContactInfo(select) {
+            const selectedOption = select.options[select.selectedIndex];
+            document.getElementById('name').value = selectedOption.getAttribute('data-name') || '';
+            document.getElementById('phone').value = selectedOption.getAttribute('data-phone') || '';
+            document.getElementById('address').value = selectedOption.getAttribute('data-address') || '';
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while placing the order');
-    });
-}
+
+        function placeOrder(userId) {
+            const contactId = document.getElementById('contactId').value;
+            const email = document.getElementById('email').value;
+            const note = document.getElementById('note').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+            const termsAgreed = document.getElementById('terms').checked;
+
+            if (!contactId || !email || !paymentMethod || !termsAgreed) {
+                alert('Vui lòng chọn thông tin liên hệ, điền email, chọn phương thức thanh toán và đồng ý với điều khoản!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('contactId', contactId);
+            formData.append('email', email);
+            formData.append('note', note);
+            formData.append('payment_method', paymentMethod);
+
+            fetch('/checkout/paymentValid', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = `/checkout/confirmation/${data.orderId}`;
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while placing the order');
+            });
+        }
     </script>
 </body>
 </html>
