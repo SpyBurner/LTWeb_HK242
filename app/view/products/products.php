@@ -143,12 +143,12 @@
                                         </p>
                                         <div class="flex items-center justify-between mt-1">
                                             <p class="text-[10px] text-gray-600">
-                                                Đã bán: <span class="font-semibold"><?= $product->getBought() ?></span>
+                                                Sold: <span class="font-semibold"><?= $product->getBought() ?></span>
                                             </p>
                                             <button class="btn btn-primary btn-xxs flex items-center gap-1" 
         onclick="addToCart(<?= $product->getProductid() ?>)">
     <i class="fa-solid fa-cart-plus"></i>
-    <span>Thêm</span>
+    <span>Add</span>
 </button>
 
 <script>

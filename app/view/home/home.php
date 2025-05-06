@@ -81,7 +81,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                                     <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                     <div class="flex items-center">
-                                        <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
+                                        <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
                                         <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                         <div class="flex items-center">
-                                            <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
+                                            <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
                                             <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
                                         </div>
                                     </div>

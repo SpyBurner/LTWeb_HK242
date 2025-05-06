@@ -38,11 +38,11 @@
 
     <div class="flex flex-col md:flex-row gap-8">
         <div class="w-full md:w-2/3">
-            <h2 class="text-2xl font-bold mb-6">Giỏ hàng của bạn</h2>
+            <h2 class="text-2xl font-bold mb-6">Your Cart</h2>
 
             <?php if (empty($cart) || empty($cart->products)): ?>
                 <div class="alert alert-info">
-                    Giỏ hàng của bạn đang trống. <a href="/products" class="link">Tiếp tục mua sắm</a>
+                    Your cart is empty. <a href="/products" class="link">Continue shopping</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($cart->products as $product): ?>
@@ -87,22 +87,22 @@
         <!-- Order Summary -->
         <div class="w-full md:w-1/3">
             <div class="card bg-base-100 shadow-sm p-6 sticky top-6">
-                <h2 class="text-2xl font-bold mb-6">Tóm tắt đơn hàng</h2>
+                <h2 class="text-2xl font-bold mb-6">Order Summary</h2>
 
                 <div class="flex justify-between mb-4">
-                    <span class="text-gray-600">Tạm tính:</span>
+                    <span class="text-gray-600">Subtotal:</span>
                     <span class="text-xl font-semibold">
                         <?= $cart ? number_format($cart->getTotalcost(), 0, ',', '.') . ' VND' : '0 VND' ?>
                     </span>
                 </div>
 
                 <div class="flex justify-between mb-4">
-                    <span class="text-gray-600">Phí vận chuyển:</span>
+                    <span class="text-gray-600">Shipping Fee:</span>
                     <span class="text-xl font-semibold">30,000 VND</span>
                 </div>
 
                 <div class="flex justify-between mb-6">
-                    <span class="text-gray-600">Tổng cộng:</span>
+                    <span class="text-gray-600">Total:</span>
                     <span class="text-2xl font-bold text-red-700">
                         <?= $cart ? number_format($cart->getTotalcost() + 30000, 0, ',', '.') . ' VND' : '30,000 VND' ?>
                     </span>
@@ -110,7 +110,7 @@
 
                 <a href="/checkout" class="btn btn-primary w-full <?= empty($cart) || empty($cart->products) ? 'btn-disabled' : '' ?>">
                     <i class="fas fa-shopping-cart"></i>
-                    Thanh toán
+                    Checkout
                 </a>
             </div>
         </div>
