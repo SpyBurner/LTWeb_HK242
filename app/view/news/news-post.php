@@ -13,7 +13,7 @@ assert(isset($isLiked));
     <?php require_once __DIR__ . "/../common/head.php"; ?>
     <title>CakeZone Blog</title>
     <meta name="keywords" content="CakeZone, Bánh Kẹo, Ngọt">
-    <meta name="description" content="<?= htmlspecialchars(strtok($blog_info->getContent(), "\n")) ?>">
+    <meta name="description" content="<?= htmlspecialchars(strip_tags($blog_info->getContent())) ?>">
     <style type="text/tailwindcss">
         @media (min-width: 768px) {
             #container {
