@@ -152,23 +152,26 @@
 </button>
 
 <script>
-function addToCart(productId) {
-    fetch('/cart/add/' + productId, {
-        method: 'POST',
+function addToCart(productId, amount = 1, event = null) {
+    if (event) event.preventDefault();
+
+    fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({ product_id: productId, amount: 1 })
+        }
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
             alert('Product added to cart!');
-            window.location.href = '/cart'; // Redirect to cart page
         } else {
             alert('Error: ' + data.message);
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding to cart');
     });
 }
 </script>
