@@ -95,6 +95,17 @@ class ContentManagerController extends BaseController
     {
         $savePath = __DIR__ . '/../../public/assets/img/';
         if (isset($_FILES[$configKey]) && $_FILES[$configKey]['error'] == UPLOAD_ERR_OK) {
+            // check if the file is an image
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($_FILES[$configKey]['tmp_name']);
+
+            $allowedMimeTypes = ['image/jpeg', 'image/png'];
+            if (!in_array($mimeType, $allowedMimeTypes)) {
+                $this->redirectWithMessage('/admin/content-manager', [
+                    'error' => 'Invalid file type. Only JPEG and PNG files are allowed.'
+                ]);
+            }
+
             $file = $_FILES[$configKey];
             //            $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
             if ($config[$configKey] !== '') {

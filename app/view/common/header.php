@@ -17,12 +17,9 @@ use const config\STATIC_IMAGE_URL;
             <i class="fa-solid fa-bars"></i>
         </button>
 
-        <?php
-        require_once __DIR__ . "/serve-image.php"; // ???
-        ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="<?= STATIC_IMAGE_URL . $header_logo ?>" alt="logo" width="150" class="rounded-full">
+            <a href="/"><img src="<?= STATIC_IMAGE_URL . $header_logo ?>" alt="logo" width="150" class="rounded-full"></a>
         </div>
 
         <!-- search, cate dropdown, navigation -->

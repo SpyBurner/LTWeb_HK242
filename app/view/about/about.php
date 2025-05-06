@@ -20,7 +20,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
              style="background-image: url('<?= STATIC_IMAGE_URL . $banner ?>');">
         <div class="absolute inset-0 bg-black opacity-60 flex items-center justify-center">
             <div class="text-center text-white px-4">
-                <h1 class="text-5xl font-bold"><?= $slogan ?></h1>
+                <h1 class="text-5xl font-bold"><?= htmlspecialchars($slogan) ?></h1>
                 <!-- <p class="mt-3 text-lg">Crafting delicious cakes with love & passion.</p> -->
             </div>
         </div>
@@ -31,7 +31,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
         <div class="max-w-5xl mx-auto text-center">
             <h2 class="text-4xl font-semibold">About us</h2>
             <p class="mt-4 text-lg text-gray-600 leading-relaxed">
-                <?= $aboutUs ?>
+                <?= htmlspecialchars($aboutUs) ?>
             </p>
         </div>
 
@@ -113,9 +113,9 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
             <h2 class="text-4xl font-semibold">Our Partners</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
                 <?php foreach ($partners as $partner): ?>
-                    <a href="<?= $partner['url'] ?>" class="p-6 bg-gray-50 rounded-lg shadow-md text-center">
+                    <a href="<?= htmlspecialchars($partner['url']) ?>" class="p-6 bg-gray-50 rounded-lg shadow-md text-center">
                         <img src="<?= STATIC_IMAGE_URL . $partner['logo'] ?>" class="w-24 h-24 mx-auto rounded-full">
-                        <h3 class="mt-4 text-xl font-bold"><?= $partner['name'] ?></h3>
+                        <h3 class="mt-4 text-xl font-bold"><?= htmlspecialchars($partner['name']) ?></h3>
                     </a>
                 <?php endforeach; ?>
             </div>

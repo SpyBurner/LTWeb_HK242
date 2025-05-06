@@ -97,14 +97,14 @@ assert(isset($partners));
                                             <input type="hidden" name="section" value="contact" />
 
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="phone" value="<?= $contactNumber ?>" />
+                                                <input type="text" class="form-control" name="phone" value="<?= htmlspecialchars($contactNumber) ?>" />
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label for="">Address</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="address" value="<?= $address ?>" />
+                                                <input type="text" class="form-control" name="address" value="<?= htmlspecialchars($address) ?>" />
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">
@@ -135,7 +135,7 @@ assert(isset($partners));
                                                 <label for="">Max displayed products for Home page</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="number" class="form-control" name="max-display" required min="2" max="20" value="<?= $maxDisplayedProduct ?>" />
+                                                <input type="number" class="form-control" name="max-display" required min="2" max="20" value="<?= htmlspecialchars($maxDisplayedProduct) ?>" />
                                                 <small class="d-block text-end">Integer between 2 to 20</small>
                                             </div>
 
@@ -173,7 +173,7 @@ assert(isset($partners));
                                                 <label for="">Slogan</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="slogan" value="<?= $slogan ?>" />
+                                                <input type="text" class="form-control" name="slogan" value="<?= htmlspecialchars($slogan) ?>" />
                                             </div>
 
                                             <div class="col-md-4">
@@ -187,7 +187,7 @@ assert(isset($partners));
                                                 <label for="">About us</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <textarea class="form-control" name="aboutUs" rows="4"><?= $aboutUs ?></textarea>
+                                                <textarea class="form-control" name="aboutUs" rows="4"><?= htmlspecialchars($aboutUs) ?></textarea>
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">
@@ -224,7 +224,7 @@ assert(isset($partners));
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Name</label>
-                                                    <input type="text" class="form-control" name="name" value="<?= $partner['name'] ?>" />
+                                                    <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($partner['name']) ?>" />
                                                 </div>
 
                                                 <div class="d-flex justify-content-center gap-2">
