@@ -17,26 +17,29 @@ class UserHomeController extends BaseController {
         // $newest = ProductsService::getTmp($maxDisplayedProducts);
         $newest = ProductsService::getFilteredProducts([
             'sort' =>  'newest',
+            'page' => 1,
             'limit' => $maxDisplayedProducts
         ]);
 
         $topRated = ProductsService::getFilteredProducts([
-            'sort' =>  'newest',
+            'sort' =>  'top_rated',
+            'page' => 1,
             'limit' => $maxDisplayedProducts
         ]);
 
 
         $bestSellers = ProductsService::getFilteredProducts([
-            'sort' =>  'newest',
+            'sort' =>  'popular',
+            'page' => 1,
             'limit' => $maxDisplayedProducts
         ]);
 
         // Render the home page
         $this->render('home/home', [
             'title' => 'Home',
-            'newestProducts' => $newest['success'] ? $newest['data'] : [],
-            'topRatedProducts' => $topRated['success'] ? $topRated['data'] : [],
-            'bestSellers' => $bestSellers['success'] ? $bestSellers['data'] : [],
+            'newestProducts' => $newest['success'] ? $newest['data']['products'] : [],
+            'topRatedProducts' => $topRated['success'] ? $topRated['data']['products'] : [],
+            'bestSellers' => $bestSellers['success'] ? $bestSellers['data']['products'] : [],
             'address' => $config['address'] ?? 'N/A',
         ]);
     }
