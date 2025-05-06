@@ -10,7 +10,7 @@ $base_style = 'alert position-fixed bottom-0 end-0 p-3 d-none text-white rounded
         // Change color based on type
         alertBox.className = ` <?php echo $base_style ?> ${
             type === "success" ? "bg-success" :
-                type === "warning" ? "bg-warning" : "bg-error"
+                type === "warning" ? "bg-warning" : "bg-danger"
         }`;
 
         alertBox.classList.remove("d-none");

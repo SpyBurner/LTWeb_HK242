@@ -34,7 +34,7 @@ assert(isset($title));
                             <!-- Options will be dynamically inserted -->
                         </select>
                     </div>
-        
+
                     <!-- Messages Table -->
                     <div class="table-responsive border border-secondary rounded">
                         <table class="table table-bordered mb-0">
@@ -54,7 +54,7 @@ assert(isset($title));
                     </div>
 
                     <div id="pagination" class="mt-3 text-center"></div>
-        
+
                     <!-- Message View Modal -->
                     <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
@@ -72,7 +72,7 @@ assert(isset($title));
                                     <div id="modalMessage" class="bg-light p-3 rounded"></div>
                                 </div>
                                 <div class="modal-footer">
-<!--                                    <button id="markReadBtn" class="btn btn-outline-info me-2" onclick="markAsRead()">Mark as Read</button>-->
+                                    <!--                                    <button id="markReadBtn" class="btn btn-outline-info me-2" onclick="markAsRead()">Mark as Read</button>-->
                                     <button id="markRepliedBtn" class="btn btn-outline-success" onclick="markAsReplied()">Mark as Replied</button>
                                 </div>
                             </div>
@@ -106,25 +106,39 @@ assert(isset($title));
         }
 
         function renderMessages(messages, page, limit) {
-            let tableBody = document.getElementById("messagesTable");
+            const tableBody = document.getElementById("messagesTable");
             tableBody.innerHTML = "";
 
             messages.forEach((msg, index) => {
-                    tableBody.innerHTML += `
-                    <tr class="${msg.status === 'Unread' ? 'table-warning fw-semibold' : msg.status === 'Replied' ? 'table-success fw-light' : 'fw-light'}">
-                        <td>${(page-1) * limit + index + 1}</td>
-                        <td>${msg.created_at}</td>
-                        <td>${msg.email}</td>
-                        <td>${msg.title}</td>
-<!--                        <td>${msg.title.split(" ").slice(0, 5).join(" ")}...</td>-->
-                        <td>
-                            <button onclick="viewMessage(${msg.contactid})" class="btn icon btn-info"><i class="bi bi-info-circle"></i></button>
-                            <button onclick="deleteMessage(${msg.contactid})" class="btn icon btn-danger"><i class="bi bi-x"></i></button>
-                        </td>
-                    </tr>
-                `;
+                const tr = document.createElement("tr");
+                tr.className = msg.status === 'Unread' ? 'table-warning fw-semibold' :
+                    msg.status === 'Replied' ? 'table-success fw-light' : 'fw-light';
+
+                const cols = [
+                    (page - 1) * limit + index + 1,
+                    msg.created_at,
+                    msg.email,
+                    msg.title
+                ];
+
+                cols.forEach(text => {
+                    const td = document.createElement("td");
+                    td.textContent = text;
+                    tr.appendChild(td);
                 });
+
+                // Buttons
+                const tdAction = document.createElement("td");
+                tdAction.innerHTML = `
+            <button onclick="viewMessage(${msg.contactid})" class="btn icon btn-info"><i class="bi bi-info-circle"></i></button>
+            <button onclick="deleteMessage(${msg.contactid})" class="btn icon btn-danger"><i class="bi bi-x"></i></button>
+        `;
+                tr.appendChild(tdAction);
+
+                tableBody.appendChild(tr);
+            });
         }
+
 
         function renderFilterDropdown(unreadCount, readCount, repliedCount) {
             let filterDropdown = document.getElementById("statusFilter");
