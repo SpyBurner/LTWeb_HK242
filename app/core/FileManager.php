@@ -8,6 +8,7 @@ class FileCategory
 {
     const AVATAR = 'avatar';
     const PRODUCT = 'product';
+    const STATIC = 'static';
 }
 
 /**
@@ -48,7 +49,6 @@ class FileManager
             // Scan the directory (excluding "." and "..")
             $files = array_diff(scandir($dirPath), array('.', '..'));
 
-
             // If there is at least one file, return its path
             if (count($files) > 0) {
                 $result = IMAGE_UPLOAD_URL_PUBLIC . '/' . $category . '/' . $id . '/' . reset($files);
@@ -59,25 +59,7 @@ class FileManager
         return ['success' => false, 'message' => 'File not found'];
     }
 
-    private function FindPath($path)
-    {
-        $dirPath = IMAGE_UPLOAD_URL . '/' . $path;
-
-        if (is_dir($dirPath)) {
-            // Scan the directory (excluding "." and "..")
-            $files = array_diff(scandir($dirPath), array('.', '..'));
-
-            // If there is at least one file, return its path
-            if (count($files) > 0) {
-                $result = IMAGE_UPLOAD_URL_PUBLIC . '/' . $path . '/' . reset($files);
-                return ['success' => true, 'path' => $result];
-            }
-        }
-
-        return ['success' => false, 'message' => 'File not found'];
-    }
-
-    private function FindWithFallback($id, $category)
+    public function FindWithFallback($id, $category)
     {
         $filePath = $this->Find($id, $category);
         if ($filePath['success']) {

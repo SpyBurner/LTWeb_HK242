@@ -58,11 +58,11 @@ abstract class Controller
     /**
      * Check if the user is logged in (session-based authentication).
      *
-     * @return bool
+     * @return array
      */
-    protected function isAuthenticate(): bool
+    protected function isAuthenticate(): array
     {
-        return AuthService::validateSession()['success'];
+        return AuthService::validateSession();
     }
 
     /**
@@ -71,11 +71,19 @@ abstract class Controller
      * Require authentication before allowing access to a page.
      * Redirects to login if the user is not authenticated.
      */
-    protected function requireAuth(): void
+    protected function requireAuth($expectAdmin = false): void
     {
-        if (!$this->isAuthenticate()) {
+        $result = $this->isAuthenticate();
+        if (!$result['success']) {
             $this->redirectWithMessage('/account/login', [
                 'error' => 'You must be logged in to access this page.'
+            ]);
+        }
+
+        $user = $result['user'];
+        if (!$user['role'] && $expectAdmin) {
+            $this->redirectWithMessage('/account/login', [
+                'error' => 'You do not have the required permission.'
             ]);
         }
     }

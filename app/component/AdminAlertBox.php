@@ -34,4 +34,5 @@ $base_style = 'alert position-fixed bottom-0 end-0 p-3 d-none text-white rounded
 function showAlert($message, $type = "error", $duration = 3000) {
     echo "<script>showAlert('$message', '$type', '$duration');</script>\n";
 }
+
 ?>

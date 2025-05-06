@@ -13,6 +13,7 @@ $env = parse_ini_file($env_file);
 
 // Define constants
 define('DB_HOST', $env['DB_HOST']);
+define('DB_PORT', 3306);
 define('DB_NAME', $env['DB_NAME']);
 define('DB_USER', $env['DB_USER']);
 define('DB_PASS', $env['DB_PASS']);
@@ -24,6 +25,10 @@ $conf = parse_ini_file($conf_file);
 define('MESSAGE_DURATION', $conf['MESSAGE_DURATION']);
 define('SECRET_KEY', $conf['SECRET_KEY']);
 define('USE_LOGGER', $conf['USE_LOGGER']);
+
+//Pagination
+define('PAGINATION_SIZE', $conf['PAGINATION_SIZE']);
+define('PAGINATION_NUMBER', $conf['PAGINATION_NUMBER']);
 
 //Token lifetime calculation
 $lifetime_suffix = [
@@ -54,4 +59,11 @@ const NO_IMAGE_URL_PUBLIC = 'assets/img/No_Image_Available.jpg';
 
 const DEFAULT_AVATAR_URL = 'assets/img/avatar_male.png';
 
-const DEFAULT_MOD_AVATAR_URL =  'assets/img/header-logo2-nobg.png';
+const DEFAULT_MOD_AVATAR_URL =  'assets/img/logo_logo.png';
+
+// added by Linh
+const STATIC_IMAGE_URL = '/assets/img/';
+
+const ADMIN_CONFIG_URL = __DIR__ . '/admin-config.json';
+
+const DEFAULT_IMAGE_NAME = 'No_Image_Available.jpg';

@@ -1,11 +1,11 @@
 <?php
- namespace controller;
- 
- use core\Controller;
- use service\AuthService;
- use service\CategoryService;
- 
- class UserController extends Controller {
+namespace controller;
+
+use core\Controller;
+use service\AuthService;
+use service\CategoryService;
+
+class BaseController extends Controller {
     protected array $headerData;
 
     public function __construct() {
@@ -39,4 +39,4 @@
         // Render the view
         parent::render($view, $data);
     }
- }
+}

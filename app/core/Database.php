@@ -14,7 +14,7 @@ class Database
     {
         try {
             // Data Source Name (DSN)
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
 
             // Create PDO instance
             $this->pdo = new PDO($dsn, DB_USER, DB_PASS, [

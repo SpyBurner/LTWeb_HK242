@@ -9,7 +9,7 @@ use service\ContactService;
 use service\CustomerService;
 use service\UserService;
 
-class ProfileController extends Controller {
+class ProfileController extends BaseController {
     public function index() {
         $this->requireAuth();
 
@@ -56,12 +56,15 @@ class ProfileController extends Controller {
     public function editContact(){
         $this->requireAuth();
 
+        $result = AuthService::getCurrentUser();
+        $user = $result['user'];
+
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
             $contactId = $this->post('contactid');
             $name = $this->post('name');
             $phone = $this->post('phone');
             $address = $this->post('address');
-            $customerId = $this->post('customerid');
+            $customerId = $user->getUserid();
 
             $model = new ContactModel($contactId, $name, $phone, $address, $customerId);
             $result = ContactService::save($model);

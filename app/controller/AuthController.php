@@ -5,7 +5,7 @@ use core\Controller;
 use service\AuthService;
 use core\SessionHelper;
 
-class AuthController extends Controller {
+class AuthController extends BaseController {
 //    TESTING ZONE
     public function test_token(){
         $token = $_COOKIE['auth_token'] ?? null;
@@ -28,7 +28,7 @@ class AuthController extends Controller {
 //    TESTING ZONE
     public function register()
     {
-        if ($this->isAuthenticate()){
+        if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
                 'success' => "You are already logged in"
             ]);
@@ -72,7 +72,7 @@ class AuthController extends Controller {
     }
 
     public function login() {
-        if ($this->isAuthenticate()){
+        if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
                 'success' => "You are already logged in"
             ]);

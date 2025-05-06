@@ -1,13 +1,14 @@
 <?php
 namespace controller;
 
-use core\Controller;
+
+// use core\Controller;
 use Service\BlogPostService;
 use Service\CommentService;
 use service\UserService;
 use service\AuthService;
 
-class AdminController extends Controller {
+class AdminController extends BaseController {
     public function index() {
         if (isset($_SESSION['REQUEST_METHOD']) && $_SESSION['REQUEST_METHOD']  === 'POST'){
             echo "TODO HANDLE POST REQUEST AT AdminController";
@@ -55,7 +56,11 @@ class AdminController extends Controller {
             echo "TODO HANDLE POST REQUEST AT BLOGCONTROLLER";
         }
 
-        require_once __DIR__ . "/../view/admin/bloglist.php";
+        $this->render('admin/bloglist', [
+            'posts' => $posts,
+            'authors' => $authors,
+            'likes' => $likes,
+        ]);
     }
 
     public function getCommentsByBlogid() {
@@ -71,7 +76,11 @@ class AdminController extends Controller {
             return UserService::findById($comment->getUserid())['data']->getUsername();    
         }, $comments);
 
-        require_once __DIR__ . "/../view/admin/blog-comment.php";
+        $this->render('admin/blog-comment', [
+            'id' => $id,
+            'comments' => $comments,
+            'commentUser' => $commentUser,
+        ]);
     }
 
     public function deleteComment() {
@@ -112,7 +121,7 @@ class AdminController extends Controller {
             $this->redirectWithMessage('/admin/blog', $result['message']);
         }
         else{
-            require_once __DIR__ . "/../view/admin/create-post.php";
+            $this->render('admin/create-post');
         }
     }
 
@@ -136,7 +145,10 @@ class AdminController extends Controller {
             $post = $result['data'];
             $admin = UserService::findById($post->getAdminid())['data']->getUsername();
 
-            require_once __DIR__ . "/../view/admin/edit-post.php";
+            $this->render('admin/edit-post', [
+                'post' => $post,
+                'admin' => $admin,
+            ]);
         }
     }
 
@@ -156,7 +168,11 @@ class AdminController extends Controller {
             return BlogPostService::allLikesByBlogId($post->getBlogid())['data'];
         }, $posts);
 
-        require_once __DIR__ . "/../view/admin/bloglist.php";
+        $this->render('admin/bloglist', [
+            'posts' => $posts,
+            'authors' => $authors,
+            'likes' => $likes,
+        ]);
     }
 
     public function searchComment() {
@@ -174,6 +190,10 @@ class AdminController extends Controller {
             return UserService::findById($comment->getUserid())['data']->getUsername();    
         }, $comments);
         
-        require_once __DIR__ . "/../view/admin/blog-comment.php";
+        $this->render('admin/blog-comment', [
+            'id' => $id,
+            'comments' => $comments,
+            'commentUser' => $commentUser,
+        ]);
     }
 }

@@ -2,14 +2,21 @@
 namespace controller;
 
 use core\Controller;
+use const config\ADMIN_CONFIG_URL;
+use const config\DEFAULT_IMAGE_NAME;
 
-class AboutController extends Controller {
-    public function index() {
-        if (isset($_SESSION['REQUEST_METHOD']) && $_SESSION['REQUEST_METHOD']  === 'POST'){
-            echo "TODO HANDLE POST REQUEST AT ABOUTCONTROLLER";
-        }
-        else{
-            require_once __DIR__ . "/../view/about/about.php";
-        }
+class AboutController extends BaseController {
+    public function index() : void
+    {
+        $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
+
+        // Render the about page
+        $this->render('about/about', [
+            'title' => 'About Us',
+            'slogan' => $config['slogan'] ?? 'N/A',
+            'aboutUs' => $config['aboutUs'] ?? 'N/A',
+            'partners' => $config['partners'] ?? [],
+            'banner' => $config['banner'] ?? DEFAULT_IMAGE_NAME,
+        ]);
     }
 }

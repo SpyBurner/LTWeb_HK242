@@ -54,12 +54,13 @@ PRIMARY KEY (blogid, userid, commentdate)
 );
 
 CREATE TABLE QnaEntry (
-qnaid int PRIMARY KEY
+qnaid int PRIMARY KEY AUTO_INCREMENT
 );
 
 CREATE TABLE Message (
-msgid int PRIMARY KEY,
+msgid int PRIMARY KEY AUTO_INCREMENT,
 senddate date DEFAULT CURRENT_DATE,
+content varchar(255) NOT NULL,
 qnaid int NOT NULL,
 userid int,
 CONSTRAINT refqnaid_msg FOREIGN KEY (qnaid) REFERENCES QnaEntry(qnaid) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -144,20 +145,25 @@ CREATE TABLE ContactMessage(
     email varchar(255) NOT NULL,
     title varchar(255),
     message varchar(255) NOT NULL,
-    status varchar(20) DEFAULT 'Unread'
+    status varchar(20) DEFAULT 'Unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Password1
+-- Password2
+-- Password3
+-- ...
 INSERT INTO User (username, password, email, isadmin) VALUES
-('admin1', '$2y$10$dXH5SrJdbDz0Zkv/x9c1.OMCzkIr8kSL8wDzsh2Lr1eZXDRe1I1C6', 'admin1@example.com', TRUE),
-('admin2', '$2y$10$J21m1bQiDakEhFLiMIfPaept8LzAepSWIsc2MNsy6TTcRSJ1dTfee', 'admin2@example.com', TRUE),
-('admin3', '$2y$10$f7sl1wFPIIHxMhJzOw0b6uhlFcnthpDBXG2QkGMtM3OGmYCyDBuzW', 'admin3@example.com', TRUE),
-('user1', '$2y$10$ocFmzQLZhbX1NZ24IFuSsO.Sd6MrWEGWmiX/7nRKh6GeuJHteCSF.', 'user1@example.com', FALSE),
-('user2', '$2y$10$H40G7xWKNrcjRvpPtZ5.peeCb4ENe5YxSDNegBN8ngH1hlOw/sW4i', 'user2@example.com', FALSE),
-('user3', '$2y$10$FGv.fkV0croo0OPc8AMnoOs.Ccr4YAHhSOSR0NjHBCVFP5dh45zBy', 'user3@example.com', FALSE),
-('user4', '$2y$10$XF0uqsMr7ACoRq8HXhSzju9JE7cDkgLrsL7jeP2vozvt/EnTXdIKW', 'user4@example.com', FALSE),
-('user5', '$2y$10$En82pJ9eSojCRT5fk2Pm8OhRdFJr5hPFXTC/y3ZsOuOvXZ/ONb4hi', 'user5@example.com', FALSE),
-('user6', '$2y$10$ym6PkRC/n/zGQ.jdILa55uWIwpxBFrW1ADc3V3KQBi68hEYb88jQq', 'user6@example.com', FALSE),
-('user7', '$2y$10$Zne5EGh1UUBomkqBIGhZGe5kVuDlyPo5BR.0l3URRRht22Fghggi.', 'user7@example.com', FALSE);
+('admin1', '$2y$10$dqxqb8t4hgUfUhXnq6gBbe0IlVtQ9vIYfRRurXkz2NSUF3pDYB3oS', 'admin1@example.com', TRUE),
+('admin2', '$2y$10$IOtBfhEgTICPChw3Rs2.W.UoNdDaHKGsr2wjjLqmK.yoDG8RTc11m', 'admin2@example.com', TRUE),
+('admin3', '$2y$10$GNUjqZhP0gGXgpj7fV9neu8phGHbybnsNnnl1cqN4ThUu6M/4fiUS', 'admin3@example.com', TRUE),
+('user1', '$2y$10$1KFonwKOW.lcabeyAMMuheqgwIbFkgkluHTixmPmsTS1fTd77orbW', 'user1@example.com', FALSE),
+('user2', '$2y$10$QHlDCCxt5iRKJW7xaAaJiOoNOzL8CYjseBLdhTVx06pN7KUIgxFTG', 'user2@example.com', FALSE),
+('user3', '$2y$10$qteyJua6GJOx2QV.xgM3J.0g4PCneV8CeNqeiUuPwFBdSiMtjQHHa', 'user3@example.com', FALSE),
+('user4', '$2y$10$fykafLPbiquUcNgc2w8kQuiIqnF.3u0PfbkyszDUk5wEQQfRRDTOy', 'user4@example.com', FALSE),
+('user5', '$2y$10$1bnvsyeByF9DS8/NoGluA.z47D5vghWzZGUH9t7h6jdH9ZqlHcKsC', 'user5@example.com', FALSE),
+('user6', '$2y$10$GKKrlr6mGErGEg2dUTUYweZ536BBUzne5rifj3lqohBwi3FijqtP2', 'user6@example.com', FALSE),
+('user7', '$2y$10$jK51kdGlA.pntVFK.wNsb.X0kjsF0v7FYBw..gTBpaBCyXY1s70bi', 'user7@example.com', FALSE);
 
 -- Insert admins into the Admin table
 INSERT INTO Admin (userid)
@@ -188,17 +194,20 @@ INSERT INTO BlogComment (blogid, userid, content) VALUES
 (2, 6, 'Comment 1 on blog post 2'),
 (3, 7, 'Comment 1 on blog post 3');
 
--- Insert random data into the QnaEntry table
+-- Insert initial QnaEntry records
 INSERT INTO QnaEntry (qnaid) VALUES
 (1),
 (2),
 (3);
 
--- Insert random data into the Message table
-INSERT INTO Message (msgid, qnaid, userid) VALUES
-(1, 1, 4),
-(2, 2, 5),
-(3, 3, 6);
+-- Insert improved Messages for entries 1 to 3
+INSERT INTO Message (msgid, content, qnaid, userid) VALUES
+(1, "How do I deploy a PHP site to a live server?", 1, 4),
+(2, "You can use tools like FileZilla or Git to upload your project.", 1, 5),
+(3, "What’s the difference between INNER JOIN and LEFT JOIN?", 2, 5),
+(4, "INNER JOIN returns matching records only; LEFT JOIN keeps all from the left table.", 2, 6),
+(5, "Why won’t my CSS changes reflect after saving?", 3, 6),
+(6, "Try clearing the browser cache or using a hard refresh.", 3, 4);
 
 -- Insert random data into the Contact table
 INSERT INTO Contact (name, phone, address, customerid) VALUES
@@ -242,11 +251,19 @@ INSERT INTO RateProduct (orderid, productid, rating, comment) VALUES
 (2, 2, 4, 'Good product!'),
 (3, 3, 3, 'Average product.');
 
--- Insert random data into the FaqEntry table
+-- Insert meaningful FAQ entries
 INSERT INTO FaqEntry (answer, question) VALUES
-('Answer 1', 'Question 1'),
-('Answer 2', 'Question 2'),
-('Answer 3', 'Question 3');
+('You can reset your password by clicking "Forgot Password" on the login page and following the instructions.', 'How do I reset my password?'),
+('Check your spam folder first. If it’s not there, ensure you entered the correct email or try resending the verification email.', 'I didn’t receive a verification email. What should I do?'),
+('Navigate to Settings > Profile, then click "Edit" to update your personal information.', 'How can I update my profile information?'),
+('Our platform supports JPG, PNG, and PDF files. Each file must be under 10MB.', 'What file types are supported for uploads?'),
+('You can contact support through the Help Center or by emailing support@example.com.', 'How do I contact customer support?'),
+('Yes, your data is encrypted in transit and at rest. We follow industry-standard security practices.', 'Is my data secure on your platform?'),
+('Go to the dashboard and click "Create New Project" to start building your first project.', 'How do I start a new project?'),
+('You can delete your account by navigating to Account Settings and clicking "Delete Account" at the bottom.', 'How do I delete my account permanently?'),
+('We support all modern browsers including Chrome, Firefox, Safari, and Edge. Internet Explorer is not supported.', 'Which browsers are supported?'),
+('Make sure JavaScript is enabled and that your browser is up to date. Clear cache if the issue persists.', 'Why isn’t the site loading correctly?');
+
 
 INSERT INTO ContactMessage (name, email, title, message, status) VALUES
 ('Alice Smith', 'alice.smith@example.com', 'Inquiry', 'I would like to know more about your services.', 'Unread'),
