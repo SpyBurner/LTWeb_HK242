@@ -46,7 +46,7 @@
 
         <h2 class="text-2xl font-bold mb-6">Đơn hàng của tôi</h2>
 
-        <!-- Filters
+        <!-- Filters -->
         <div class="card bg-base-100 shadow-sm mb-6">
             <div class="card-body">
                 <div class="flex flex-col md:flex-row gap-4">
@@ -67,7 +67,7 @@
                     <button class="btn btn-primary" onclick="applyFilters()">Lọc</button>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <!-- Orders List -->
         <div class="card bg-base-100 shadow-sm">
