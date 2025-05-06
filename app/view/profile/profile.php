@@ -129,6 +129,9 @@ assert(isset($avatar));
             </div>
         </section>
 
+        <?php
+            if (!$user->getIsadmin()) {
+        ?>
         <section class="max-w-5xl mx-auto p-6">
             <h2 class="text-3xl font-bold text-center mb-6">Contacts</h2>
             <div id="admin-mode">
@@ -259,6 +262,9 @@ assert(isset($avatar));
             </div>
 
         </section>
+        <?php
+            }
+        ?>
     </main>
 
 

@@ -97,7 +97,7 @@ assert(isset($partners));
                                             <input type="hidden" name="section" value="contact" />
 
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control" name="phone" value="<?= htmlspecialchars($contactNumber) ?>" />
+                                                <input type="number" class="form-control" name="phone" value="<?= htmlspecialchars($contactNumber) ?>" />
                                             </div>
 
                                             <div class="col-md-4">
