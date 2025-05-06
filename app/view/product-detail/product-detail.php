@@ -223,6 +223,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function addToCart(productId, amount = 1, event = null) {
     if (event) event.preventDefault();
 
+    console.log(`Adding product ${productId} with amount ${amount} to cart`);
+
     fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
         method: 'GET',
         headers: {

@@ -1,4 +1,5 @@
 <?php
+
 use const config\STATIC_IMAGE_URL;
 
 assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address) && isset($carousel1) && isset($carousel2) && isset($carousel3) && isset($phone));
@@ -41,9 +42,9 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         <div class="relative w-full mx-auto overflow-hidden rounded-lg">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
-                <img src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0"  alt="banner 1"/>
-                <img src="<?= STATIC_IMAGE_URL . $carousel2 ?>" class="w-full flex-shrink-0" alt="banner 2"/>
-                <img src="<?= STATIC_IMAGE_URL . $carousel3 ?>" class="w-full flex-shrink-0" alt="banner 3"/>
+                <img src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0" alt="banner 1" />
+                <img src="<?= STATIC_IMAGE_URL . $carousel2 ?>" class="w-full flex-shrink-0" alt="banner 2" />
+                <img src="<?= STATIC_IMAGE_URL . $carousel3 ?>" class="w-full flex-shrink-0" alt="banner 3" />
             </div>
 
             <!-- Navigation Buttons -->
@@ -71,22 +72,27 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                     <!-- product grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <?php foreach ($newestProducts as $product): ?>
-                        <!-- product card -->
-                        <div class="card bg-base-100 shadow-sm relative w-full">
-                            <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
-                                <div class="card-body">
-                                    <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                    <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
-                                    <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+                            <!-- product card -->
+                            <div class="card bg-base-100 shadow-sm relative w-full">
+                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
+                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
-                                    <div class="flex items-center">
-                                        <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
-                                        <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
+                                            <button
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= $product->getProductid() ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
@@ -111,7 +117,12 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
                                         <div class="flex items-center">
                                             <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
-                                            <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                            <button
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= $product->getProductid() ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </a>
@@ -140,7 +151,12 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
                                         <div class="flex items-center">
                                             <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
-                                            <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                            <button
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= $product->getProductid() ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </a>
@@ -185,7 +201,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
                                 <label class="input rounded-md w-full">
                                     <input name="title" type="text" class="tabular-nums" placeholder="Title""
-                                        maxlength="50"/>
+                                        maxlength=" 50" />
                                 </label>
 
                                 <label>
@@ -242,6 +258,46 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         // Pause auto-slide on hover
         document.querySelector(".relative").addEventListener("mouseenter", () => clearInterval(interval));
         document.querySelector(".relative").addEventListener("mouseleave", () => interval = setInterval(nextSlide, 3000));
+
+        // add to cart
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".add-to-cart").forEach(button => {
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+
+                    const productId = this.dataset.productId;
+                    const amount = this.dataset.amount || 1;
+                    addToCart(productId, amount);
+                });
+            });
+        });
+
+        function addToCart(productId, amount = 1) {
+            console.log(`Adding product ${productId} with amount ${amount} to cart`);
+
+            function addToCart(productId, amount = 1, event = null) {
+                if (event) event.preventDefault();
+
+                fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Product added to cart!');
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding to cart');
+                    });
+            }
+        }
     </script>
 
 </body>
