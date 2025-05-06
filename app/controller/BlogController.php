@@ -1,13 +1,13 @@
 <?php
 namespace controller;
-use Core\Controller;
+// use core\BaseController;
 use service\AuthService;
 use Service\BlogPostService;
 use Service\CommentService;
 use service\UserService;
 use core\SessionHelper;
 
-class BlogController extends Controller {
+class BlogController extends BaseController {
     public function index() {
         $result = BlogPostService::findAll();
         if (!$result['success']){
@@ -19,7 +19,9 @@ class BlogController extends Controller {
             echo "TODO HANDLE POST REQUEST AT BLOGCONTROLLER";
         }
 
-        require_once __DIR__ . "/../view/news/news.php";
+        $this->render('news/news', [
+            'posts' => $posts,
+        ]);
     }
 
     public function search() {
@@ -31,7 +33,9 @@ class BlogController extends Controller {
 
         $posts = $result['data'];
 
-        require_once __DIR__ . "/../view/news/news.php";
+        $this->render('news/news', [
+            'posts' => $posts,
+        ]);
     }
 
     public function getBlogInfo() {
@@ -97,7 +101,14 @@ class BlogController extends Controller {
                 echo "TODO HANDLE POST REQUEST AT BLOGCONTROLLER";
             }
 
-            require_once __DIR__ . "/../view/news/news-post.php";
+            $this->render('news/news-post', [
+                'blog_info' => $blog_info,
+                'comments' => $comments,
+                'commentUser' => $commentUser,
+                'likes' => $likes,
+                'related_posts' => $related_posts,
+                'isLiked' => $isLiked
+            ]);
         }
     }
 

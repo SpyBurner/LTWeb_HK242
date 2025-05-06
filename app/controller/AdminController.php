@@ -2,7 +2,7 @@
 namespace controller;
 
 
-use core\Controller;
+// use core\Controller;
 use Service\BlogPostService;
 use Service\CommentService;
 use service\UserService;
@@ -56,7 +56,11 @@ class AdminController extends BaseController {
             echo "TODO HANDLE POST REQUEST AT BLOGCONTROLLER";
         }
 
-        require_once __DIR__ . "/../view/admin/bloglist.php";
+        $this->render('admin/bloglist', [
+            'posts' => $posts,
+            'authors' => $authors,
+            'likes' => $likes,
+        ]);
     }
 
     public function getCommentsByBlogid() {
@@ -72,7 +76,11 @@ class AdminController extends BaseController {
             return UserService::findById($comment->getUserid())['data']->getUsername();    
         }, $comments);
 
-        require_once __DIR__ . "/../view/admin/blog-comment.php";
+        $this->render('admin/blog-comment', [
+            'id' => $id,
+            'comments' => $comments,
+            'commentUser' => $commentUser,
+        ]);
     }
 
     public function deleteComment() {
@@ -113,7 +121,7 @@ class AdminController extends BaseController {
             $this->redirectWithMessage('/admin/blog', $result['message']);
         }
         else{
-            require_once __DIR__ . "/../view/admin/create-post.php";
+            $this->render('admin/create-post');
         }
     }
 
@@ -137,7 +145,10 @@ class AdminController extends BaseController {
             $post = $result['data'];
             $admin = UserService::findById($post->getAdminid())['data']->getUsername();
 
-            require_once __DIR__ . "/../view/admin/edit-post.php";
+            $this->render('admin/edit-post', [
+                'post' => $post,
+                'admin' => $admin,
+            ]);
         }
     }
 
@@ -157,7 +168,11 @@ class AdminController extends BaseController {
             return BlogPostService::allLikesByBlogId($post->getBlogid())['data'];
         }, $posts);
 
-        require_once __DIR__ . "/../view/admin/bloglist.php";
+        $this->render('admin/bloglist', [
+            'posts' => $posts,
+            'authors' => $authors,
+            'likes' => $likes,
+        ]);
     }
 
     public function searchComment() {
@@ -175,6 +190,10 @@ class AdminController extends BaseController {
             return UserService::findById($comment->getUserid())['data']->getUsername();    
         }, $comments);
         
-        require_once __DIR__ . "/../view/admin/blog-comment.php";
+        $this->render('admin/blog-comment', [
+            'id' => $id,
+            'comments' => $comments,
+            'commentUser' => $commentUser,
+        ]);
     }
 }
