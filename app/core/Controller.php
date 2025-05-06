@@ -93,7 +93,7 @@ abstract class Controller
      * @param string $url The target URL.
      * @param array $params An associative array of flash (session-stored) messages to set in the session. Use SessionHelper::getFlash(<message>) extract.
      */
-    #[NoReturn] protected function redirectWithMessage($url, $params = []): void
+    protected function redirectWithMessage($url, $params = []): void
     {
         Logger::log("Redirecting to $url " . json_encode($params));
         foreach ($params as $key => $value) {
