@@ -128,8 +128,8 @@
                                                             <?= htmlspecialchars(substr($product->getDescription(), 0, 50)) ?>...
                                                         </small>
                                                     </td>
-                                                    <td><?= htmlspecialchars($product->manufacturerName) ?></td>
-                                                    <td><?= htmlspecialchars($product->categoryName) ?></td>
+                                                    <td><?= htmlspecialchars($product->getManufacturerName()) ?></td>
+                                                    <td><?= htmlspecialchars($product->getCategoryName()) ?></td>
                                                     <td class="fw-bold text-primary">
                                                         <?= number_format($product->getPrice(), 0, ',', '.') ?>  VND
                                                     </td>

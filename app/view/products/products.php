@@ -133,7 +133,7 @@
                                          class="w-full h-32 object-cover" />
                                     <div class="card-body p-3">
                                         <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
-                                            <?= htmlspecialchars($product->manufacturerName ?? 'Unknown') ?>
+                                            <?= htmlspecialchars($product->getManufacturerName() ?? 'Unknown') ?>
                                         </p>
                                         <h2 class="text-xs font-bold text-gray-800 truncate">
                                             <?= htmlspecialchars($product->getName()) ?>

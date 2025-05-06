@@ -8,6 +8,58 @@ use model\OrderModel;
 use function core\handleException;
 
 class OrderService implements IService {
+    public static function findUserOrders($userId, $filters = []) {
+        try {
+            $query = "SELECT o.*, u.username as customer_name 
+                     FROM `Order` o
+                     JOIN User u ON o.customerid = u.userid
+                     WHERE o.status != 'Cart' AND o.customerid = :customerid";
+            
+            $params = [':customerid' => $userId];
+            
+            if (!empty($filters['search'])) {
+                $query .= " AND (u.username LIKE :search OR o.orderid LIKE :search)";
+                $params[':search'] = '%' . $filters['search'] . '%';
+            }
+            
+            if (!empty($filters['status'])) {
+                $query .= " AND o.status = :status";
+                $params[':status'] = $filters['status'];
+            }
+            
+            $query .= " ORDER BY o.orderid DESC";
+            
+            $stmt = Database::getInstance()->getConnection()->prepare($query);
+            $stmt->execute($params);
+            $orders = $stmt->fetchAll();
+
+            $ordersWithDetails = [];
+            foreach ($orders as $order) {
+                $orderModel = OrderModel::toObject($order);
+                $orderModel->customerName = $order['customer_name'];
+                
+                $productsStmt = Database::getInstance()->getConnection()->prepare(
+                    "SELECT p.productid, p.name, p.price, p.description, p.avgrating, 
+                            p.bought, p.stock, p.avatarurl, hp.amount,
+                            c.name as category_name, m.name as manufacturer_name
+                     FROM HasProduct hp
+                     JOIN Product p ON hp.productid = p.productid
+                     JOIN Category c ON p.cateid = c.cateid
+                     JOIN Manufacturer m ON p.mfgid = m.mfgid
+                     WHERE hp.orderid = :orderid"
+                );
+                $productsStmt->execute([':orderid' => $order['orderid']]);
+                $orderModel->products = $productsStmt->fetchAll();
+                
+                $ordersWithDetails[] = $orderModel;
+            }
+            
+            return ['success' => true, 'data' => $ordersWithDetails];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
     public static function findAllWithDetails($filters = []) {
         try {
             $query = "SELECT o.*, u.username as customer_name 

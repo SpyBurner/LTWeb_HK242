@@ -67,16 +67,18 @@
     </div>
 
     <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-4">Thông tin chi tiết</h2>
+        <h2 class="text-2xl font-bold mb-4">Detailed Information</h2>
         <ul class="list-disc list-inside text-gray-600">
             <li>Category: <?= htmlspecialchars($product->getCategoryName()) ?></li>
+            <li>Description: <?= nl2br(htmlspecialchars($product->getDescription())) ?></li>
+            <li>Average Rating: <?= number_format($product->getAvgrating(), 1) ?>/5</li>
             <li>Stock: <?= $product->getStock() ?> available</li>
             <li>Sold: <?= $product->getBought() ?> items</li>
         </ul>
     </div>
 
     <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-6">Đánh giá sản phẩm</h2>
+        <h2 class="text-2xl font-bold mb-6">Product Reviews</h2>
         <div class="flex items-center gap-4 mb-6">
             <div class="text-4xl font-bold"><?= number_format($avgRating, 1) ?></div>
             <div class="rating rating-md">
@@ -90,15 +92,15 @@
                     />
                 <?php endfor; ?>
             </div>
-            <span class="text-gray-600">(<?= $ratingCount ?> đánh giá)</span>
+            <span class="text-gray-600">(<?= $ratingCount ?> reviews)</span>
         </div>
 
         <div class="mb-6">
-            <h3 class="text-xl font-bold mb-4">Thống kê đánh giá</h3>
+            <h3 class="text-xl font-bold mb-4">Rating Statistics</h3>
             <div class="space-y-2">
                 <?php for ($i = 5; $i >= 1; $i--): ?>
                     <div class="flex items-center gap-2">
-                        <span class="w-16"><?= $i ?> sao</span>
+                        <span class="w-16"><?= $i ?> stars</span>
                         <progress
                             class="progress progress-primary w-64"
                             value="<?= $ratingCount > 0 ? ($ratingStats[$i] / $ratingCount * 100) : 0 ?>"
@@ -111,10 +113,10 @@
         </div>
 
         <div>
-            <h3 class="text-xl font-bold mb-4">Bình luận đánh giá</h3>
+            <h3 class="text-xl font-bold mb-4">Review Comments</h3>
             <div class="space-y-6">
                 <?php if (empty($reviews)): ?>
-                    <p class="text-gray-600">Chưa có đánh giá nào cho sản phẩm này.</p>
+                    <p class="text-gray-600">No reviews for this product yet.</p>
                 <?php else: ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="pb-4">
@@ -124,7 +126,7 @@
                                         <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                                     </div>
                                 </div>
-                                <span class="font-semibold">Người dùng</span>
+                                <span class="font-semibold">User</span>
                             </div>
                             <div class="rating rating-sm mb-2">
                                 <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -151,7 +153,7 @@
     </div>
 
     <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
+        <h2 class="text-2xl font-bold mb-6">Related Products</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <?php foreach ($relatedProducts as $related): ?>
                 <div class="card bg-base-100 shadow-sm relative w-full">
@@ -171,12 +173,12 @@
                             <p class="text-base font-semibold text-primary"><?= number_format($related->getPrice(), 0, ',', '.') ?> VND</p>
                             <div class="flex items-center justify-between mt-1">
                                 <p class="text-[10px] text-gray-600">
-                                    Đã bán: <span class="font-semibold"><?= $related->getBought() ?></span>
+                                    Sold: <span class="font-semibold"><?= $related->getBought() ?></span>
                                 </p>
                                 <button class="btn btn-primary btn-xxs flex items-center gap-1" 
                                         onclick="addToCart(<?= $related->getProductid() ?>, 1, event)">
                                     <i class="fa-solid fa-cart-plus"></i>
-                                    <span>Thêm</span>
+                                    <span>Add</span>
                                 </button>
                             </div>
                         </div>

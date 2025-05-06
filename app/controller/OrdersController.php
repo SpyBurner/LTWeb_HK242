@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 
-use core\Controller;
 use core\SessionHelper;
 use service\AuthService;
 use service\OrderService;
@@ -9,14 +8,18 @@ use service\ContactService;
 use service\RateProductService;
 use model\RateProductModel;
 
-class OrdersController extends BaseController  {
-    public function myOrders() {
+class OrdersController extends BaseController
+{
+    /**
+     * Display the list of the authenticated user's orders.
+     */
+    public function myOrders()
+    {
         $this->requireAuth(false);
 
-
         $result = AuthService::getCurrentUser();
-        if (!$result['success']){
-            $this->redirectWithMessage('/',[
+        if (!$result['success']) {
+            $this->redirectWithMessage('/', [
                 'error' => $result['message']
             ]);
         }
@@ -27,7 +30,8 @@ class OrdersController extends BaseController  {
             'status' => $this->get('status'),
         ];
 
-        $ordersResult = OrderService::findAllWithDetails($filters);
+        // Use the new findUserOrders method
+        $ordersResult = OrderService::findUserOrders($userId, $filters);
         
         $this->render('orders/my-orders', [
             'orders' => $ordersResult['success'] ? $ordersResult['data'] : [],
@@ -37,27 +41,47 @@ class OrdersController extends BaseController  {
         ]);
     }
 
-    public function orderDetail($orderId) {
+    /**
+     * Display details of a specific order and handle product rating submissions.
+     *
+     * @param int $orderId The ID of the order to display
+     */
+    public function orderDetail($orderId)
+    {
+        // Ensure user is authenticated
         $this->requireAuth(false);
 
-
-        $result = AuthService::getCurrentUser();
-        if (!$result['success']){
-            $this->redirectWithMessage('/',[
-                'error' => $result['message']
+        // Get current user
+        $authResult = AuthService::getCurrentUser();
+        if (!$authResult['success']) {
+            $this->redirectWithMessage('/', [
+                'error' => $authResult['message']
             ]);
+            return;
         }
 
-        $userId = $result['user']->getUserid();
+        $userId = $authResult['user']->getUserid();
+
+        // Fetch order details
         $orderResult = OrderService::getOrderById($orderId);
         if (!$orderResult['success']) {
-            $this->redirectWithMessage('/orders/my-orders', ['error' => $orderResult['message']]);
+            $this->redirectWithMessage('/orders/my-orders', [
+                'error' => $orderResult['message']
+            ]);
             return;
         }
 
         $order = $orderResult['data'];
 
-        // Fetch contact information using contactId from the order
+        // Verify that the order belongs to the current user
+        if ($order->getCustomerid() !== $userId) {
+            $this->redirectWithMessage('/orders/my-orders', [
+                'error' => 'You do not have permission to view this order'
+            ]);
+            return;
+        }
+
+        // Fetch contact information if available
         $contact = null;
         if ($order->getContactId()) {
             $contactResult = ContactService::findById($order->getContactId());
@@ -66,6 +90,7 @@ class OrdersController extends BaseController  {
             }
         }
 
+        // Fetch existing ratings for delivered orders
         $existingRatings = [];
         if ($order->getStatus() === 'Delivered') {
             $ratingsResult = RateProductService::findByOrderId($orderId);
@@ -76,6 +101,7 @@ class OrdersController extends BaseController  {
             }
         }
 
+        // Handle rating submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $productId = $this->post('product_id');
             $rating = $this->post('rating');
@@ -90,7 +116,8 @@ class OrdersController extends BaseController  {
                     date('Y-m-d H:i:s')
                 );
 
-                $saveResult = isset($existingRatings[$productId]) 
+                // Update or save rating
+                $saveResult = isset($existingRatings[$productId])
                     ? RateProductService::update($rateModel)
                     : RateProductService::save($rateModel);
 
@@ -98,14 +125,20 @@ class OrdersController extends BaseController  {
                     $this->redirectWithMessage("/orders/detail/$orderId", [
                         'success' => 'Rating submitted successfully!'
                     ]);
+                    return;
                 } else {
                     SessionHelper::setFlash('messages', [
                         'error' => $saveResult['message']
                     ]);
                 }
+            } else {
+                SessionHelper::setFlash('messages', [
+                    'error' => 'Invalid rating submission'
+                ]);
             }
         }
 
+        // Render the order detail view
         $this->render('orders/order-detail', [
             'order' => $order,
             'contact' => $contact,
