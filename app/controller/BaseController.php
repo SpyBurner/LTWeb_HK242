@@ -39,8 +39,4 @@ class BaseController extends Controller {
         // Render the view
         parent::render($view, $data);
     }
-<<<<<<< HEAD
 }
-=======
- }
->>>>>>> minh

@@ -35,9 +35,7 @@ $router->addRoute('qna', 'QnaController', 'index');
 $router->addRoute('qna/add_question', 'QnaController', 'addQuestion');
 $router->addRoute('qna/qna_detail', 'QnaController', 'qnaDetail_API');
 $router->addRoute('qna/add_message' , 'QnaController', 'addMessage');
-$router->addRoute('', 'HomeController', 'index');
-$router->addRoute('home', 'HomeController', 'index');
-$router->addRoute('about', 'AboutController', 'index');
+
 
 //Chung
 $router->addRoute('admin', 'AdminController', 'index');

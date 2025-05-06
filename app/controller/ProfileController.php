@@ -9,7 +9,7 @@ use service\ContactService;
 use service\CustomerService;
 use service\UserService;
 
-class ProfileController extends Controller {
+class ProfileController extends BaseController {
     public function index() {
         $this->requireAuth();
 
