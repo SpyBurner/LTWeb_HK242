@@ -2,6 +2,8 @@
 use const config\STATIC_IMAGE_URL;
 
 assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address));
+
+// var_dump($newestProducts, $topRatedProducts, $bestSellers, $address); // Debugging line to check the variables
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +76,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                             <a href="<?= "/products/detail/" . $product->getProductid() ?>">
                                 <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
                                 <div class="card-body">
-                                    <p class="brand-name"><?= $product->getManufacturer() ?></p>
+                                    <p class="brand-name"><?= $product->getManufacturerName() ?></p>
                                     <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
                                     <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
@@ -103,7 +105,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                                 <a href="<?= "/products/detail/" . $product->getProductid() ?>">
                                     <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
                                     <div class="card-body">
-                                        <p class="brand-name"><?= $product->getManufacturer() ?></p>
+                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
                                         <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
@@ -132,7 +134,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                                 <a href="<?= "/products/detail/" . $product->getProductid() ?>">
                                     <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
                                     <div class="card-body">
-                                        <p class="brand-name"><?= $product->getManufacturer() ?></p>
+                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
                                         <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 

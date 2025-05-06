@@ -11,7 +11,7 @@ $router->addRoute('', 'UserHomeController', 'index');
 $router->addRoute('contact-message', 'ContactMessageController', 'submit');
 $router->addRoute('about', 'AboutController', 'index');
 
-$router->addRoute('admin', 'AdminDashboardController', 'index');
+$router->addRoute('admin', 'ContactMessageController', 'index');
 $router->addRoute('admin/contact-message', 'ContactMessageController', 'index');
 $router->addRoute('admin/contact-message/fetch', 'ContactMessageController', 'getMessages');
 $router->addRoute('admin/contact-message/view/:id', 'ContactMessageController', 'viewMessage');
@@ -38,7 +38,6 @@ $router->addRoute('qna/add_message' , 'QnaController', 'addMessage');
 
 
 //Chung
-$router->addRoute('admin', 'AdminController', 'index');
 $router->addRoute('admin/blog', 'AdminController', 'getAllBlog');
 $router->addRoute('admin/blog/comment', 'AdminController', 'getCommentsByBlogid');
 $router->addRoute('admin/blog/comment/delete', 'AdminController', 'deleteComment');

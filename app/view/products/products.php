@@ -108,7 +108,7 @@
                             <li><a href="?sort=price_asc<?= $this->getQueryString(['sort', 'page']) ?>">Price: Low to High</a></li>
                             <li><a href="?sort=price_desc<?= $this->getQueryString(['sort', 'page']) ?>">Price: High to Low</a></li>
                             <li><a href="?sort=popular<?= $this->getQueryString(['sort', 'page']) ?>">Popularity</a></li>
-                            <li><a href="?sort=top_rated<?= $this->getQueryString(['sort', 'page']) ?>">Popularity</a></li>
+                            <li><a href="?sort=top_rated<?= $this->getQueryString(['sort', 'page']) ?>">Top rated</a></li>
                         </ul>
                     </div>
                 </div>

@@ -28,9 +28,9 @@ use const config\STATIC_IMAGE_URL;
         <div id="search-nav" class="flex-5 flex flex-col gap-6 justify-between max-md:hidden">
             <!-- search bar -->
             <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between" action="/products" method="GET">
-                <label>
+                <!-- <label> -->
                     <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
-                </label>
+                <!-- </label> -->
                 <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search"></i>
                 </button>
