@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php
+=======
+<?php 
+>>>>>>> minh
     use const config\MAZER_BASE_URL;
 ?>
 <!-- put at the end of <head> -->
@@ -14,3 +18,9 @@ type="image/png"> -->
 
 <!-- gsap -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+// <style>
+//     * {
+//         font-family: var(--bs-font-sans-serif) !important;
+//     }
+// </style>

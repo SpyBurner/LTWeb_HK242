@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <script src="<?php echo MAZER_BASE_URL . '/static/js/initTheme.js' ?>"></script>
     <div id="app">
         <?php require_once __DIR__ . "/../common/admin-sidebar.php"; ?>
 

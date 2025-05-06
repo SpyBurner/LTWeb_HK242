@@ -30,7 +30,7 @@ CREATE TABLE BlogPost (
 blogid int PRIMARY KEY AUTO_INCREMENT,
 adminid int NOT NULL,
 postdate DATE DEFAULT CURRENT_DATE,
-content varchar(255) NOT NULL,
+content longtext NOT NULL,
 title varchar(255) NOT NULL,
 CONSTRAINT refadminid_blogpost FOREIGN KEY (adminid) REFERENCES Admin(userid) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -49,7 +49,7 @@ userid int,
 CONSTRAINT refblogid_blogcomment FOREIGN KEY (blogid) REFERENCES BlogPost(blogid) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT refuserid_blogcomment FOREIGN KEY (userid) REFERENCES User(userid) ON DELETE CASCADE ON UPDATE CASCADE,
 commentdate DATE DEFAULT CURRENT_DATE,
-content varchar(255) NOT NULL,
+content text NOT NULL,
 PRIMARY KEY (blogid, userid, commentdate)
 );
 
