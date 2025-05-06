@@ -28,7 +28,7 @@ class AuthController extends Controller {
 //    TESTING ZONE
     public function register()
     {
-        if ($this->isAuthenticate()){
+        if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
                 'success' => "You are already logged in"
             ]);
@@ -72,7 +72,7 @@ class AuthController extends Controller {
     }
 
     public function login() {
-        if ($this->isAuthenticate()){
+        if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
                 'success' => "You are already logged in"
             ]);
@@ -122,5 +122,12 @@ class AuthController extends Controller {
         else{
             $this->render('account/login', []);
         }
+    }
+
+    public function logout() {
+        AuthService::logout();
+        $this->redirectWithMessage("/", [
+            'success' => "Logout successful"
+        ]);
     }
 }

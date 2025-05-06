@@ -12,3 +12,7 @@
 
 <!-- gsap -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+<script>
+    const BASE_URL = "<?php echo BASE_URL; ?>";
+</script>

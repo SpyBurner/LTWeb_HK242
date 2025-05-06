@@ -45,7 +45,9 @@ class UserModel implements IModel{
     }
 
 // Setters
-//    NO SET USERNAME
+    public function setUserid($userid) {
+        $this->userid = $userid;
+    }
 
     public function setEmail($email) {
         $this->email = $email;
@@ -59,7 +61,9 @@ class UserModel implements IModel{
         $this->joindate = $joindate;
     }
 
-//    NO SET ADMIN
+    public function setIsadmin($isadmin) {
+        $this->isadmin = $isadmin;
+    }
 
     public function __toString() {
         return "User ID: $this->userid, Name: $this->username, Email: $this->email, Password: $this->password, Join Date: $this->joindate, Is Admin: $this->isadmin";
