@@ -41,12 +41,8 @@ class ProductModel implements IModel {
         $this->stock = $stock;
         $this->cateid = $cateid;
         $this->avatarurl = $avatarurl;
-<<<<<<< HEAD
         $this->manufacturerName = $manufacturerName;
         $this->categoryName = $categoryName;
-=======
-        $this->manufacturer = $manufacturer;
->>>>>>> php/home
     }
 
     // Getters
@@ -78,13 +74,6 @@ class ProductModel implements IModel {
         return $this->mfgid;
     }
 
-<<<<<<< HEAD
-=======
-    public function getManufacturer() {
-        return $this->manufacturer;
-    }
-
->>>>>>> php/home
     public function getStock() {
         return $this->stock;
     }
@@ -97,7 +86,6 @@ class ProductModel implements IModel {
         return $this->avatarurl;
     }
 
-<<<<<<< HEAD
     public function getManufacturerName() {
         return $this->manufacturerName;
     }
@@ -106,8 +94,6 @@ class ProductModel implements IModel {
         return $this->categoryName;
     }
 
-=======
->>>>>>> php/home
     // Setters
     public function setName($name) {
         $this->name = $name;
@@ -145,7 +131,6 @@ class ProductModel implements IModel {
         $this->avatarurl = $avatarurl;
     }
 
-<<<<<<< HEAD
     public function setManufacturerName($manufacturerName) {
         $this->manufacturerName = $manufacturerName;
     }
@@ -154,8 +139,6 @@ class ProductModel implements IModel {
         $this->categoryName = $categoryName;
     }
 
-=======
->>>>>>> php/home
     public function __toString() {
         return "Product ID: $this->productid, Name: $this->name, Price: $this->price, Category ID: $this->cateid";
     }
@@ -169,18 +152,11 @@ class ProductModel implements IModel {
             $row['stock'],
             $row['cateid'],
             $row['avatarurl'],
-<<<<<<< HEAD
             $row['manufacturer_name'] ?? null, // Updated
             $row['category_name'] ?? null,     // Updated
             $row['productid'] ?? null,
             $row['avgrating'] ?? 0.0,
             $row['bought'] ?? 0
-=======
-            $row['productid'] ?? null,
-            $row['avgrating'] ?? 0.0,
-            $row['bought'] ?? 0,
-            $row['manufacturer'] ?? null
->>>>>>> php/home
         );
     }
 
@@ -195,13 +171,9 @@ class ProductModel implements IModel {
             'mfgid' => $obj->getMfgid(),
             'stock' => $obj->getStock(),
             'cateid' => $obj->getCateid(),
-<<<<<<< HEAD
             'avatarurl' => $obj->getAvatarurl(),
             'manufacturerName' => $obj->getManufacturerName(), // Added
             'categoryName' => $obj->getCategoryName()         // Added
-=======
-            'avatarurl' => $obj->getAvatarurl()
->>>>>>> php/home
         ];
     }
 }

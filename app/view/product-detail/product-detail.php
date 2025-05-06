@@ -39,7 +39,7 @@
 
         <div class="w-full md:w-1/2">
             <h1 class="text-3xl font-bold mb-4"><?= htmlspecialchars($product->getName()) ?></h1>
-            <p class="text-gray-500 mb-4">Brand: <?= htmlspecialchars($product->manufacturerName) ?></p>
+            <p class="text-gray-500 mb-4">Brand: <?= htmlspecialchars($product->getManufacturerName()) ?></p>
             <p class="text-2xl text-red-700 font-semibold mb-4"><?= number_format($product->getPrice(), 0, ',', '.') ?> VND</p>
             <p class="text-gray-600 mb-6">
                 <?= nl2br(htmlspecialchars($product->getDescription())) ?>
@@ -69,7 +69,7 @@
     <div class="mt-10 border-t pt-6">
         <h2 class="text-2xl font-bold mb-4">Thông tin chi tiết</h2>
         <ul class="list-disc list-inside text-gray-600">
-            <li>Category: <?= htmlspecialchars($product->categoryName) ?></li>
+            <li>Category: <?= htmlspecialchars($product->getCategoryName()) ?></li>
             <li>Stock: <?= $product->getStock() ?> available</li>
             <li>Sold: <?= $product->getBought() ?> items</li>
         </ul>
@@ -163,7 +163,7 @@
                         />
                         <div class="card-body p-2">
                             <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
-                                <?= htmlspecialchars($related->manufacturerName) ?>
+                                <?= htmlspecialchars($related->getManufacturerName()) ?>
                             </p>
                             <h2 class="text-xs font-bold text-gray-800 truncate">
                                 <?= htmlspecialchars($related->getName()) ?>
