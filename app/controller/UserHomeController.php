@@ -14,9 +14,22 @@ class UserHomeController extends BaseController {
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
         $maxDisplayedProducts = $config['max_displayed_products'] ?? 16;
 
-        $newest = ProductsService::getTmp($maxDisplayedProducts);
-        $topRated = ProductsService::getTmp($maxDisplayedProducts);
-        $bestSellers = ProductsService::getTmp($maxDisplayedProducts);
+        // $newest = ProductsService::getTmp($maxDisplayedProducts);
+        $newest = ProductsService::getFilteredProducts([
+            'sort' =>  'newest',
+            'limit' => $maxDisplayedProducts
+        ]);
+
+        $topRated = ProductsService::getFilteredProducts([
+            'sort' =>  'newest',
+            'limit' => $maxDisplayedProducts
+        ]);
+
+
+        $bestSellers = ProductsService::getFilteredProducts([
+            'sort' =>  'newest',
+            'limit' => $maxDisplayedProducts
+        ]);
 
         // Render the home page
         $this->render('home/home', [
