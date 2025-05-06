@@ -18,13 +18,13 @@
         <nav>
             <h6 class="footer-title">Social</h6>
             <div class="grid grid-flow-col gap-4">
-                <a>
+                <a href="https://web.facebook.com/ducnt.uit">
                     <i class="fa-solid fa-map-location-dot fa-2xl"></i>
                 </a>
-                <a>
+                <a href="https://web.facebook.com/ducnt.uit">
                     <i class="fa-brands fa-instagram fa-2xl"></i>
                 </a>
-                <a>
+                <a href="https://web.facebook.com/ducnt.uit">
                     <i class="fa-brands fa-facebook fa-2xl"></i>
                 </a>
             </div>

@@ -2,7 +2,7 @@
 
 use const config\STATIC_IMAGE_URL;
 
-assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address) && isset($carousel1) && isset($carousel2) && isset($carousel3) && isset($phone));
+assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address) && isset($carousel1) && isset($carousel2) && isset($carousel3) && isset($phone) && isset($header_logo));
 
 // var_dump($newestProducts, $topRatedProducts, $bestSellers, $address); // Debugging line to check the variables
 ?>
@@ -12,7 +12,8 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
 <head>
     <?php require_once __DIR__ . "/../common/head.php"; ?>
-    <title>CakeZone | Home</title>
+    <title>Buy Delicious Cakes Online | CakeZone</title>
+    <meta name="description" content="Discover freshly baked cakes at CakeZone. Explore our best sellers, top-rated treats, and newest arrivals. Order online now!">
 
     <style type="text/tailwindcss">
         .brand-name {
@@ -32,6 +33,58 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         }
 
     </style>
+
+    <!-- JSON-LD for SEO -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "CakeZone",
+            "url": "<?= BASE_URL ?>",
+            "logo": "<?= STATIC_IMAGE_URL . $header_logo ?>",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "<?= $phone ?>",
+                "contactType": "Customer Service"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "<?= $address ?>",
+                "addressCountry": "VN"
+            }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": [
+                <?php foreach ($bestSellers as $index => $product): ?> {
+                        "@type": "ListItem",
+                        "position": <?= $index + 1 ?>,
+                        "item": {
+                            "@type": "Product",
+                            "name": "<?= htmlspecialchars($product->getName()) ?>",
+                            "image": "<?= htmlspecialchars($product->getAvatarurl()) ?>",
+                            "brand": {
+                                "@type": "Brand",
+                                "name": "<?= htmlspecialchars($product->getManufacturerName()) ?>"
+                            },
+                            "offers": {
+                                "@type": "Offer",
+                                "priceCurrency": "VND",
+                                "price": "<?= $product->getPrice() ?>",
+                                "availability": "https://schema.org/InStock",
+                                "url": "/products/detail/<?= $product->getProductid() ?>"
+                            }
+                        }
+                    }
+                    <?= $index < count($bestSellers) - 1 ? ',' : '' ?>
+                <?php endforeach; ?>
+            ]
+        }
+    </script>
 </head>
 
 <body>
@@ -42,9 +95,9 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         <div class="relative w-full mx-auto overflow-hidden rounded-lg aspect-[3/1] bg-white">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
-                <img src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0" alt="banner 1" />
-                <img src="<?= STATIC_IMAGE_URL . $carousel2 ?>" class="w-full flex-shrink-0" alt="banner 2" />
-                <img src="<?= STATIC_IMAGE_URL . $carousel3 ?>" class="w-full flex-shrink-0" alt="banner 3" />
+                <img loading="lazy" src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0" alt="banner 1" />
+                <img loading="lazy" src="<?= STATIC_IMAGE_URL . $carousel2 ?>" class="w-full flex-shrink-0" alt="banner 2" />
+                <img loading="lazy" src="<?= STATIC_IMAGE_URL . $carousel3 ?>" class="w-full flex-shrink-0" alt="banner 3" />
             </div>
 
             <!-- Navigation Buttons -->
@@ -63,6 +116,8 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
             </div>
         </div>
 
+        <h1 class="text-4xl font-bold text-center">Freshly Baked Cakes Delivered to Your Door</h1>
+
         <!-- products -->
         <div id="content" class="rounded-lg flex flex-col gap-6">
             <h2 class="text-3xl font-bold">OUR PRODUCTS</h2>
@@ -75,15 +130,16 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full">
                                 <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
                                     <div class="card-body">
                                         <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <h2 class="product-name"><?= $product->getName() ?></h2>
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                         <div class="flex items-center">
                                             <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
                                             <button
+                                                aria-label="Add <?= $product->getName() ?> to cart"
                                                 class="btn btn-soft add-to-cart"
                                                 data-product-id="<?= $product->getProductid() ?>"
                                                 data-amount="1">
@@ -105,19 +161,20 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                 <div class="tab-content bg-base-100 border-base-300 p-6">
                     <!-- product grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <?php foreach ($newestProducts as $product): ?>
+                        <?php foreach ($topRatedProducts as $product): ?>
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full">
                                 <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
                                     <div class="card-body">
                                         <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <h2 class="product-name"><?= $product->getName() ?></h2>
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                         <div class="flex items-center">
                                             <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
                                             <button
+                                            aria-label="Add <?= $product->getName() ?> to cart"
                                                 class="btn btn-soft add-to-cart"
                                                 data-product-id="<?= $product->getProductid() ?>"
                                                 data-amount="1">
@@ -139,19 +196,20 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                 <div class="tab-content bg-base-100 border-base-300 p-6">
                     <!-- product grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <?php foreach ($newestProducts as $product): ?>
+                        <?php foreach ($bestSellers as $product): ?>
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full">
                                 <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
                                     <div class="card-body">
                                         <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <h2 class="product-name"><?= $product->getName() ?></h2>
                                         <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                         <div class="flex items-center">
                                             <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
                                             <button
+                                            aria-label="Add <?= $product->getName() ?> to cart"
                                                 class="btn btn-soft add-to-cart"
                                                 data-product-id="<?= $product->getProductid() ?>"
                                                 data-amount="1">
@@ -200,7 +258,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                                 <div class="validator-hint hidden">Enter valid email address</div>
 
                                 <label class="input rounded-md w-full">
-                                    <input name="title" type="text" class="tabular-nums" placeholder="Title""
+                                    <input name="title" type="text" class="tabular-nums" placeholder="Title"
                                         maxlength=" 50" />
                                 </label>
 
