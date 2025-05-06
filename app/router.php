@@ -50,8 +50,6 @@ $router->addRoute('admin/blog/create', 'AdminController', 'createBlog');
 $router->addRoute('admin/blog/search', 'AdminController', 'searchBlog');
 $router->addRoute('admin/blog/comment/search', 'AdminController', 'searchComment');
 
-//Tài
-$router->addRoute('qna', 'QnaController', 'index');
 
 // Minh
 $router->addRoute('news', 'BlogController', 'index');
