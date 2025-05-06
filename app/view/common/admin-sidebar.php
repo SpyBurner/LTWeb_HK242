@@ -1,10 +1,11 @@
 <!-- put at the top of #app -->
 <?php
+
 use const config\STATIC_IMAGE_URL;
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
-assert(isset($header_username));
+assert(isset($header_username) && isset($header_logo));
 ?>
 
 <div id="sidebar">
@@ -12,8 +13,13 @@ assert(isset($header_username));
         <!-- Sidebar header -->
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
+                <!-- <div class="logo col-6">
+                    <a class="d-block" href="#"><img class="w-100 h-auto" src="<?php echo STATIC_IMAGE_URL . $header_logo ?>" alt="logo"></a>
+                </div> -->
                 <div class="logo col-6">
-                    <a class="d-block" href="#"><img class="w-100 h-auto" src="<?php echo STATIC_IMAGE_URL . "logo_logo.png" ?>" alt="logo"></a>
+                    <a class="d-block" href="#">
+                        <img class="w-100 h-auto rounded-circle" src="<?php echo STATIC_IMAGE_URL . $header_logo ?>" alt="logo">
+                    </a>
                 </div>
 
                 <div class="col-6 theme-toggle d-flex gap-2 align-items-center justify-content-end">
@@ -62,29 +68,50 @@ assert(isset($header_username));
                 </li> -->
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
                     <a href="/admin/content-manager" class='sidebar-link'>
-                    <i class="bi bi-pencil-square"></i>
+                        <i class="fa-solid fa-pen-to-square"></i>
                         <span>Content Manager</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'contact-message.php') ? 'active' : '' ?>">
                     <a href="/admin/contact-message" class='sidebar-link'>
-                        <i class="bi bi-envelope"></i>
+                        <i class="fa-solid fa-inbox"></i>
                         <span>Contact Messages</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
-                    <a href="/admin/orders" class='sidebar-link'>
-                    <i class="bi bi-pencil-square"></i>
+                    <a href="/admin/order" class='sidebar-link'>
+                        <i class="fa-solid fa-clipboard-list"></i>
                         <span>Orders</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
-                    <a href="/admin/orders" class='sidebar-link'>
-                    <i class="bi bi-pencil-square"></i>
-                        <span>Orders</span>
+                    <a href="/admin/products" class='sidebar-link'>
+                        <i class="fa-solid fa-cake-candles"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin" class='sidebar-link'>
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span>FAQ</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/blog" class='sidebar-link'>
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Blogs</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/blog/create" class='sidebar-link'>
+                        <i class="fa-solid fa-feather"></i>
+                        <span>Create Blog</span>
                     </a>
                 </li>
 
@@ -92,7 +119,7 @@ assert(isset($header_username));
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-person"></i>
-                        <span><?=$header_username?></span>
+                        <span><?= $header_username ?></span>
                     </a>
 
                     <ul class="submenu">

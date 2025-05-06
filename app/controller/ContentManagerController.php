@@ -1,9 +1,11 @@
 <?php
+
 namespace controller;
 
 
 use core\Controller;
 use core\SessionHelper;
+use core\Logger;
 use http\Header;
 use service\ProductsService;
 use service\CategoryService;
@@ -11,8 +13,12 @@ use service\OrderService;
 use const config\ADMIN_CONFIG_URL;
 use const config\STATIC_IMAGE_URL;
 
-class ContentManagerController extends BaseController {
-    public function index() {
+class ContentManagerController extends BaseController
+{
+    public function index()
+    {
+        $this->requireAuth(true);
+
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
         $carousel1 = $config['carousel1'] ?? '';
         $carousel2 = $config['carousel2'] ?? '';
@@ -43,7 +49,10 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    public function edit() {
+    public function edit()
+    {
+        $this->requireAuth(true);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $section = $_POST['section'] ?? '';
             if ($section === 'carousel') {
@@ -68,7 +77,9 @@ class ContentManagerController extends BaseController {
         }
     }
 
-    private function editCarousel() { // upload files
+    private function editCarousel()
+    { // upload files
+
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
         $config = $this->saveStaticImage('carousel1', $config);
         $config = $this->saveStaticImage('carousel2', $config);
@@ -80,11 +91,12 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    private function saveStaticImage($configKey, $config) {
+    private function saveStaticImage($configKey, $config)
+    {
         $savePath = __DIR__ . '/../../public/assets/img/';
         if (isset($_FILES[$configKey]) && $_FILES[$configKey]['error'] == UPLOAD_ERR_OK) {
             $file = $_FILES[$configKey];
-//            $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
+            //            $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
             if ($config[$configKey] !== '') {
                 // delete the old file
                 $oldFile = $savePath . $config[$configKey];
@@ -96,12 +108,13 @@ class ContentManagerController extends BaseController {
             $newFile = $savePath . "{$configKey}_{$fileName}";
             move_uploaded_file($file['tmp_name'], $newFile);
             $config[$configKey] =  "{$configKey}_{$fileName}";
-//            file_put_contents(ADMIN_CONFIG_URL, json_encode($config));
+            //            file_put_contents(ADMIN_CONFIG_URL, json_encode($config));
         }
         return $config;
     }
 
-    private function editContactInfo() {
+    private function editContactInfo()
+    {
         $contactNumber = $_POST['phone'];
         $address = $_POST['address'];
 
@@ -116,7 +129,8 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    private function editDisplayConfig() {
+    private function editDisplayConfig()
+    {
         $maxProducts = $_POST['max-display'];
 
         // save to JSON file
@@ -129,7 +143,8 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    private function editIntroduction() {
+    private function editIntroduction()
+    {
         $slogan = $_POST['slogan'];
         $aboutUs = $_POST['aboutUs'];
 
@@ -147,7 +162,8 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    private function editPartner() {
+    private function editPartner()
+    {
         $name = $_POST['name'];
         $id = $_POST['id'];
 
@@ -165,7 +181,10 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    public function add() {
+    public function add()
+    {
+        $this->requireAuth(true);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $section = $_POST['section'] ?? '';
             if ($section === 'partner') {
@@ -182,7 +201,8 @@ class ContentManagerController extends BaseController {
         }
     }
 
-    private function addPartner() {
+    private function addPartner()
+    {
         $name = $_POST['name'];
 
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
@@ -203,7 +223,10 @@ class ContentManagerController extends BaseController {
         ]);
     }
 
-    public function delete() {
+    public function delete()
+    {
+        $this->requireAuth(true);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $section = $_POST['section'] ?? '';
             if ($section === 'partner') {
@@ -220,18 +243,18 @@ class ContentManagerController extends BaseController {
         }
     }
 
-    private function deletePartner() {
+    private function deletePartner()
+    {
         $id = $_POST['id'];
 
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
-        // delete the partner
         // temporary not delete logo since they are saved as same prefix
-//        if (isset($config['partners'][$id]['logo'])) {
-//            $oldFile = "{STATIC_IMAGE_URL}/partner_{$config['partners'][$id]['logo']}";
-//            if (file_exists($oldFile)) {
-//                unlink($oldFile);
-//            }
-//        }
+        //        if (isset($config['partners'][$id]['logo'])) {
+        //            $oldFile = "{STATIC_IMAGE_URL}/partner_{$config['partners'][$id]['logo']}";
+        //            if (file_exists($oldFile)) {
+        //                unlink($oldFile);
+        //            }
+        //        }
         unset($config['partners'][$id]);
         file_put_contents(ADMIN_CONFIG_URL, json_encode($config));
 

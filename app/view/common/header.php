@@ -4,6 +4,7 @@ assert(isset($header_isAdmin));
 assert(isset($header_username));
 assert(isset($header_avatar));
 assert(isset($header_categories));
+assert(isset($header_logo));
 
 use const config\STATIC_IMAGE_URL;
 ?>
@@ -17,11 +18,11 @@ use const config\STATIC_IMAGE_URL;
         </button>
 
         <?php
-            require_once __DIR__."/serve-image.php"; // ???
+        require_once __DIR__ . "/serve-image.php"; // ???
         ?>
         <!-- logo -->
         <div id="logo-header">
-            <img src="<?= STATIC_IMAGE_URL . "logo_logo.png" ?>" alt="logo" width="150">
+            <img src="<?= STATIC_IMAGE_URL . $header_logo ?>" alt="logo" width="150" class="rounded-full">
         </div>
 
         <!-- search, cate dropdown, navigation -->
@@ -29,7 +30,7 @@ use const config\STATIC_IMAGE_URL;
             <!-- search bar -->
             <form class="p-2 bg-base-100 border border-gray-300 rounded-lg flex gap-2 justify-between" action="/products" method="GET">
                 <!-- <label> -->
-                    <input type="text" placeholder="Search for products" class="input border-0 w-full rounded-md" />
+                <input type="text" placeholder="Search for products" name="search" class="input border-0 w-full rounded-md" />
                 <!-- </label> -->
                 <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search"></i>
@@ -46,7 +47,7 @@ use const config\STATIC_IMAGE_URL;
                     <ul tabindex="0"
                         class="dropdown-content menu bg-base-100 rounded-md z-1 w-52 p-2 shadow-sm mt-2">
                         <?php
-                        forEach ($header_categories as $category) {
+                        foreach ($header_categories as $category) {
                             echo '<li><a href="/products?category=' . $category->getCateid() . '">' . $category->getName() . '</a></li>';
                         }
                         ?>
@@ -66,49 +67,52 @@ use const config\STATIC_IMAGE_URL;
         <!-- profile/login, cart -->
         <div id="profile-cart" class="flex flex-col gap-4 items-center">
             <?php if ($header_isLoggedIn) { ?>
-            <!-- PROFILE -->
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
-                    <div class="avatar">
-                        <div class="w-12 rounded-full">
-                            <img src="<?=$header_avatar?>" alt="avatar"/>
+                <!-- PROFILE -->
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
+                        <div class="avatar">
+                            <div class="w-12 rounded-full">
+                                <img src="/<?= $header_avatar ?>" alt="avatar" />
+                            </div>
+                        </div>
+
+                        <div class="username flex gap-2 items-center">
+                            <span><?= $header_username ?></span>
+                            <i class="fas fa-angle-down"></i>
                         </div>
                     </div>
-
-                    <div class="username flex gap-2 items-center">
-                        <span><?=$header_username?></span>
-                        <i class="fas fa-angle-down"></i>
-                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li>
+                            <a href="/profile">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/orders/my-orders">My Orders</a>
+                        </li>
+                        <!--                    <li><a>Settings</a></li>-->
+                        <li><a href="/account/logout">Logout</a></li>
+                    </ul>
                 </div>
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                    <li>
-                        <a href="/profile">Profile</a>
-                    </li>
-<!--                    <li><a>Settings</a></li>-->
-                    <li><a href="/account/logout">Logout</a></li>
-                </ul>
-            </div>
 
-            <div class="flex gap-4 items-center">
-                <a href="#" class="btn btn-outline btn-primary rounded-lg btn-lg">
-                    <i class="fas fa-shopping-cart"></i>
-                    Cart
-                </a>
+                <div class="flex gap-4 items-center">
+                    <a href="/cart" class="btn btn-outline btn-primary rounded-lg btn-lg">
+                        <i class="fas fa-shopping-cart"></i>
+                        Cart
+                    </a>
 
-                <?php if ($header_isAdmin) { ?>
-                <a href="/admin" class="btn btn-ghost btn-neutral rounded-full btn-lg">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                </a>
-                <?php } ?>
-            </div>
+                    <?php if ($header_isAdmin) { ?>
+                        <a href="/admin" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </a>
+                    <?php } ?>
+                </div>
 
             <?php } else { ?>
-            <!-- LOGIN/REGISTER -->
-            <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
-                <a href="/account/login">Login</a>
-                <a href="/account/register" class="btn btn-primary rounded-md">Register</a>
-            </div>
+                <!-- LOGIN/REGISTER -->
+                <div id="login-register" class="flex-none flex items-center gap-6 justify-center max-md:hidden">
+                    <a href="/account/login">Login</a>
+                    <a href="/account/register" class="btn btn-primary rounded-md">Register</a>
+                </div>
             <?php } ?>
         </div>
     </div>
