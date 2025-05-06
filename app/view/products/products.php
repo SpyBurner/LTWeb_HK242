@@ -85,7 +85,7 @@
                         <option value="">All Prices</option>
                         <option value="under_100k" <?= ($filters['price_range'] ?? '') === 'under_100k' ? 'selected' : '' ?>>Under 100,000 VND</option>
                         <option value="100k_to_200k" <?= ($filters['price_range'] ?? '') === '100k_to_200k' ? 'selected' : '' ?>>100,000đ - 200,000 VND</option>
-                        <option value="200k_to_500k" <?= ($filters['price_range'] ?? '') === '200k_to_500k' ? 'selected' : '' ?>>200,000đ - 500,000 VND</option>
+                        <option value="200k_to_500k" <?= ($filters['price_range'] ?? '') === '200k_to_500k' ? 'selected' : '' ?>>Over 200,000đ - 500,000 VND</option>
                         <option value="over_500k" <?= ($filters['price_range'] ?? '') === 'over_500k' ? 'selected' : '' ?>>Over 500,000 VND</option>
                     </select>
                 </div>
