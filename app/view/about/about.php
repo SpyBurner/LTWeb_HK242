@@ -1,4 +1,6 @@
 <?php
+
+use const config\DEFAULT_AVATAR_URL;
 use const config\STATIC_IMAGE_URL;
 assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) && isset($banner));
 ?>
@@ -114,7 +116,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
                 <?php foreach ($partners as $partner): ?>
                     <a href="<?= htmlspecialchars($partner['url']) ?>" class="p-6 bg-gray-50 rounded-lg shadow-md text-center">
-                        <img src="<?= STATIC_IMAGE_URL . $partner['logo'] ?>" class="w-24 h-24 mx-auto rounded-full">
+                        <img src="<?= $partner['logo'] === '' ? DEFAULT_AVATAR_URL : STATIC_IMAGE_URL . $partner['logo'] ?>" class="w-24 h-24 mx-auto rounded-full">
                         <h3 class="mt-4 text-xl font-bold"><?= htmlspecialchars($partner['name']) ?></h3>
                     </a>
                 <?php endforeach; ?>

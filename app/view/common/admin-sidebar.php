@@ -18,7 +18,7 @@ assert(isset($header_username) && isset($header_logo));
                 </div> -->
                 <div class="logo col-6">
                     <a class="d-block" href="#">
-                        <img class="w-100 h-auto rounded-circle" src="<?php echo STATIC_IMAGE_URL . $header_logo ?>" alt="logo">
+                        <img class="w-100 h-auto" src="<?php echo STATIC_IMAGE_URL . $header_logo ?>" alt="logo">
                     </a>
                 </div>
 

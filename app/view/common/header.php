@@ -19,7 +19,7 @@ use const config\STATIC_IMAGE_URL;
 
         <!-- logo -->
         <div id="logo-header">
-            <a href="/"><img src="<?= STATIC_IMAGE_URL . $header_logo ?>" alt="logo" width="150" class="rounded-full"></a>
+            <a href="/"><img src="<?= STATIC_IMAGE_URL . $header_logo ?>" alt="logo" width="150" class="max-h-[100px]"></a>
         </div>
 
         <!-- search, cate dropdown, navigation -->

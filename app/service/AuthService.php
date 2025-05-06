@@ -8,7 +8,7 @@ use core\Logger;
 //Special service, no IService implementation
 class AuthService
 {
-    public static function register($username, $email, $password)
+    public static function register($username, $email, $password): array|int
     {
         $hashed_password = self::getPassword_hash($password);
 
@@ -29,148 +29,138 @@ class AuthService
         }
 
         if (!password_verify($password, $result['data']->getPassword())) {
-            return ['success' => false, 'message' => 'Invalid password'];
+            return ['success' => false, 'message' => 'Invalid username or password'];
         }
 
         // User is authenticated, create a session token
         $payload = [
             'userid' => $result['data']->getUserid(),
             'role' => $result['data']->getIsadmin(),
-            'expire' => time() + TOKEN_LIFETIME
+            'exp' => time() + TOKEN_LIFETIME
         ];
 
-        $token = AuthService::encrypt($payload);
+        $token = self::generateJWT($payload);
         return ['success' => true, 'message' => 'Login successful', 'token' => $token];
     }
 
-    public static function logout(){
-        try{
-            session_start();
+    public static function generateJWT($payload): string
+    {
+        $header = ['alg' => 'HS256', 'typ' => 'JWT'];
+        $base64UrlHeader = self::base64url_encode(json_encode($header));
+        $base64UrlPayload = self::base64url_encode(json_encode($payload));
+
+        $signature = hash_hmac('sha256', "$base64UrlHeader.$base64UrlPayload", SECRET_KEY, true);
+        $base64UrlSignature = self::base64url_encode($signature);
+
+        return "$base64UrlHeader.$base64UrlPayload.$base64UrlSignature";
+    }
+
+    private static function base64url_encode($data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    public static function logout(): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
         }
-        catch (Exception $e){
-            //Session already started
-        }
-        session_destroy();
+
         if (isset($_COOKIE['auth_token'])) {
-            setcookie('auth_token', '', time() - 3600, '/'); // Expire the cookie
+            setcookie('auth_token', '', time() - 3600, '/');
         }
+        
         session_start();
     }
 
     public static function changePassword($oldPassword, $newPassword){
-        $user = AuthService::getCurrentUser()['user'];
+        $user = self::getCurrentUser()['user'];
 
         assert($user instanceof UserModel);
 
         Logger::log("Changing password for user: " . $user->getUserid());
 
         if (!password_verify($oldPassword, $user->getPassword())) {
-            Logger::log("Old password is incorrect");
+            // Logger::log("Old password is incorrect");
             return ['success' => false, 'message' => "Old password is incorrect"];
         }
 
         if (password_verify($newPassword, $user->getPassword())) {
-            Logger::log("New password is the same as old password");
+            // Logger::log("New password is the same as old password");
             return ['success' => false, 'message' => 'New password cannot be the same as old password'];
         }
 
         $hashed = self::getPassword_hash($newPassword);
-
         $user->setpassword($hashed);
 
         $result = UserService::save($user);
         if (!$result['success']) {
-            Logger::log("Failed to update password: " . $result['message']);
+            // Logger::log("Failed to update password: " . $result['message']);
             return ['success' => false, 'message' => $result['message']];
         }
 
         return ['success' => true, 'message' => 'Password updated successfully'];
     }
 
-    /**
-     *
-     * @return array ['success' => true,  'user' => ('userid' => int, 'role' => string, 'expire' => int)]
-     * OR ['success' => false, 'message' => ...]
-     */
     public static function validateSession(): array
     {
         if (!isset($_COOKIE['auth_token'])) {
-            return ['success' => false, 'message' => 'No active session'];
+            return ['success' => false, 'message' => 'You are not logged in'];
         }
 
-        $payload = AuthService::decrypt($_COOKIE['auth_token']);
-        if (!$payload || $payload['expire'] < time()) {
-            return ['success' => false, 'message' => 'Session expired'];
+        $payload = self::verifyJWT($_COOKIE['auth_token']);
+        if (!$payload) {
+            return ['success' => false, 'message' => 'Invalid token'];
+        }
+
+        if ($payload['exp'] < time()) {
+            return ['success' => false, 'message' => 'Token expired'];
         }
 
         return ['success' => true, 'user' => $payload];
     }
 
-    public static function getCurrentUser(){
-        $result = AuthService::validateSession();
-        if (!$result['success']) return $result;
-
-        $userId = $result['user']['userid'];
-
-        $result = UserService::findById($userId);
-        if (!$result['success']) return $result;
-
-        return ['success' => true, 'user' => $result['data'], 'avatar' => $result['avatar']];
-    }
-
-
-    /* Encrypts a payload using a secret key
-     * @param array $payload The payload to encrypt
-     * @return string The encrypted payload
-     * */
-    private static function encrypt($payload): ?string
+    private static function verifyJWT(string $jwt): ?array
     {
-        try {
-            $method = ENCRYPT_METHOD;// 'aes-256-gcm'
-            $key = hash('sha256', SECRET_KEY, true);// Derive a 32-byte key
-            $iv = random_bytes(openssl_cipher_iv_length($method));// Secure IV
-            $tag = '';// Authentication tag (used for integrity)
-            $jsonPayload = json_encode($payload);
-            $ciphertext = openssl_encrypt($jsonPayload, $method, $key, OPENSSL_RAW_DATA, $iv, $tag);
+        $parts = explode('.', $jwt);
+        if (count($parts) !== 3) return null;
 
-            // Store IV + Tag + Ciphertext (Base64-encoded)
-            return base64_encode($iv . $tag . $ciphertext);
-        } catch (Exception $e) {
-            Logger::log($e->getMessage());
-            return null;
-        }
+        list($headerB64, $payloadB64, $signatureB64) = $parts;
+
+        $header = json_decode(self::base64url_decode($headerB64), true);
+        $payload = json_decode(self::base64url_decode($payloadB64), true);
+        $signature = self::base64url_decode($signatureB64);
+
+        if (!$header || !$payload || !isset($payload['exp'])) return null;
+
+        $expectedSig = hash_hmac('sha256', "$headerB64.$payloadB64", SECRET_KEY, true);
+        if (!hash_equals($expectedSig, $signature)) return null;
+
+        // if ($payload['exp'] < time()) return null;
+
+        return $payload;
     }
 
-    /* Decrypts a payload using a secret key
-     * @param string $encryptedPayload The encrypted payload to decrypt
-     * @return array The decrypted payload
-     * */
-    private static function decrypt($encryptedPayload)
+    private static function base64url_decode(string $data): string
     {
-        $method = ENCRYPT_METHOD;
-        $key = hash('sha256', SECRET_KEY, true);
-
-        $decodedData = base64_decode($encryptedPayload);
-        $ivLength = openssl_cipher_iv_length($method);
-
-        // Extract IV, Tag, and Ciphertext
-        $iv = substr($decodedData, 0, $ivLength);
-        $tag = substr($decodedData, $ivLength, 16); // AES-GCM tag is 16 bytes
-        $ciphertext = substr($decodedData, $ivLength + 16);
-
-        // Decrypt
-        $decryptedJson = openssl_decrypt($ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv, $tag);
-        return json_decode($decryptedJson, true); // Convert back to an array
+        return base64_decode(strtr($data, '-_', '+/'));
     }
 
-    /**
-     * @param $password
-     * @return string
-     */
     public static function getPassword_hash($password): string
     {
         return password_hash($password, PASSWORD_BCRYPT);
     }
 
+    public static function getCurrentUser()
+    {
+        $result = self::validateSession();
+        if (!$result['success']) return $result;
+
+        $userId = $result['user']['userid'];
+        $result = UserService::findById($userId);
+        if (!$result['success']) return $result;
+
+        return ['success' => true, 'user' => $result['data'], 'avatar' => $result['avatar']];
+    }
 
 }

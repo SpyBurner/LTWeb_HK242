@@ -39,7 +39,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
     <div id="body" class="m-6 md:w-3/4 md:mx-auto flex flex-col gap-10">
         <!-- carousel -->
-        <div class="relative w-full mx-auto overflow-hidden rounded-lg">
+        <div class="relative w-full mx-auto overflow-hidden rounded-lg aspect-[3/1] bg-white">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
                 <img src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0" alt="banner 1" />
@@ -57,7 +57,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
             <!-- Indicators -->
             <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                <span class="dot w-3 h-3 bg-white rounded-full cursor-pointer"></span>
+                <span class="dot w-3 h-3 bg-primary rounded-full cursor-pointer"></span>
                 <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer"></span>
                 <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer"></span>
             </div>
@@ -232,7 +232,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
 
         function updateCarousel() {
             carousel.style.transform = `translateX(-${index * 100}%)`;
-            dots.forEach((dot, i) => dot.classList.toggle("bg-white", i === index));
+            dots.forEach((dot, i) => dot.classList.toggle("bg-primary", i === index));
             dots.forEach((dot, i) => dot.classList.toggle("bg-gray-400", i !== index));
         }
 

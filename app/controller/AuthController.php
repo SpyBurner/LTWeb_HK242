@@ -26,7 +26,7 @@ class AuthController extends BaseController {
     }
 
 //    TESTING ZONE
-    public function register()
+    public function register(): void
     {
         if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
@@ -71,7 +71,8 @@ class AuthController extends BaseController {
         }
     }
 
-    public function login() {
+    public function login(): void
+    {
         if ($this->isAuthenticate()['success']){
             $this->redirectWithMessage("/", [
                 'success' => "You are already logged in"
@@ -104,8 +105,8 @@ class AuthController extends BaseController {
                 'expires' => $expires,
                 'path' => '/',           // Available across the whole domain
                 'domain' => 'localhost',          // Set to your domain (optional)
-//                    'secure' => true,        // Only send over HTTPS
-//                    'httponly' => true,      // Prevent JavaScript access (XSS protection)
+//                    'secure' => true, // Only send over HTTPS
+                'httponly' => true,      // Prevent JavaScript access (XSS protection)
             ]);
 
             if (!$setcookie_result) {
@@ -118,6 +119,7 @@ class AuthController extends BaseController {
                 $return_to = SessionHelper::getFlash('return_to');
                 $this->redirect($return_to);
             }
+
 
             $this->redirectWithMessage("/", [
                 'success' => "Login successful"

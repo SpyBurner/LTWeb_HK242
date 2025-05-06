@@ -76,7 +76,7 @@ abstract class Controller
         $result = $this->isAuthenticate();
         if (!$result['success']) {
             $this->redirectWithMessage('/account/login', [
-                'error' => 'You must be logged in to access this page.'
+                'error' => $result['message']
             ]);
         }
 
