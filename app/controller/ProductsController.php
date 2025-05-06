@@ -85,6 +85,7 @@ class ProductsController extends BaseController  {
     }
 
     public function create() {
+<<<<<<< HEAD
     }
 
     public function edit() {
@@ -92,6 +93,103 @@ class ProductsController extends BaseController  {
 
     public function delete() {
     
+=======
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productData = [
+                'name' => $this->post('name'),
+                'price' => $this->post('price'),
+                'description' => $this->post('description'),
+                'mfgid' => $this->post('mfgid'),
+                'stock' => $this->post('stock'),
+                'cateid' => $this->post('cateid'),
+                'avatarurl' => $this->post('avatarurl')
+            ];
+
+            $product = new \model\ProductModel(
+                $productData['name'],
+                $productData['price'],
+                $productData['description'],
+                $productData['mfgid'],
+                $productData['stock'],
+                $productData['cateid'],
+                $productData['avatarurl']
+            );
+
+            $result = ProductsService::save($product);
+
+            if ($result['success']) {
+                $this->redirectWithMessage('/products', [
+                    'success' => 'Product created successfully!'
+                ]);
+            } else {
+                SessionHelper::setFlash('form_data', $productData);
+                $this->redirectWithMessage('/products/create', [
+                    'error' => $result['message']
+                ]);
+            }
+        } else {
+            $this->render('products/create', [
+                'form_data' => SessionHelper::getFlash('form_data')
+            ]);
+        }
+    }
+
+    public function edit($id) {
+        $product = ProductsService::findById($id);
+
+        if (!$product['success']) {
+            $this->redirectWithMessage('/products', [
+                'error' => 'Product not found'
+            ]);
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productData = [
+                'name' => $this->post('name'),
+                'price' => $this->post('price'),
+                'description' => $this->post('description'),
+                'mfgid' => $this->post('mfgid'),
+                'stock' => $this->post('stock'),
+                'cateid' => $this->post('cateid'),
+                'avatarurl' => $this->post('avatarurl')
+            ];
+
+            $productModel = $product['data'];
+            $productModel->setName($productData['name']);
+            $productModel->setPrice($productData['price']);
+            $productModel->setDescription($productData['description']);
+            $productModel->setMfgid($productData['mfgid']);
+            $productModel->setStock($productData['stock']);
+            $productModel->setCateid($productData['cateid']);
+            $productModel->setAvatarurl($productData['avatarurl']);
+
+            $result = ProductsService::save($productModel);
+
+            if ($result['success']) {
+                $this->redirectWithMessage('/products', [
+                    'success' => 'Product updated successfully!'
+                ]);
+            } else {
+                SessionHelper::setFlash('form_data', $productData);
+                $this->redirectWithMessage("/products/edit/$id", [
+                    'error' => $result['message']
+                ]);
+            }
+        } else {
+            $this->render('products/edit', [
+                'product' => $product['data'],
+                'form_data' => SessionHelper::getFlash('form_data') ?? ProductsService::toArray($product['data'])
+            ]);
+        }
+    }
+
+    public function delete($id) {
+        $result = ProductsService::deleteById($id);
+        $this->redirectWithMessage('/products', [
+            $result['success'] ? 'success' : 'error' => $result['message']
+        ]);
+>>>>>>> php/home
     }
 
     public function view($id) {

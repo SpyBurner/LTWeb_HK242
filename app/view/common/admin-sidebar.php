@@ -1,6 +1,10 @@
 <!-- put at the top of #app -->
 <?php
-    $current_page = basename($_SERVER['PHP_SELF']);
+use const config\STATIC_IMAGE_URL;
+
+$current_page = basename($_SERVER['PHP_SELF']);
+
+assert(isset($header_username));
 ?>
 
 <div id="sidebar">
@@ -9,7 +13,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo col-6">
-                    <a class="d-block" href="#"><img class="w-100 h-auto" src="../../../public/assets/img/header-logo2-nobg.png" alt="Logo"></a>
+                    <a class="d-block" href="#"><img class="w-100 h-auto" src="<?php echo STATIC_IMAGE_URL . "logo_logo.png" ?>" alt="logo"></a>
                 </div>
 
                 <div class="col-6 theme-toggle d-flex gap-2 align-items-center justify-content-end">
@@ -51,38 +55,21 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 <li class="sidebar-item <?= ($current_page == 'dashboard.php') ? 'active' : '' ?>">
-                    <a href="../admin/dashboard.php" class='sidebar-link'>
+                    <a href="/admin" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
 
-                <li class="sidebar-item <?= ($current_page == 'contact.php') ? 'active' : '' ?>">
-                    <a href="../admin/contact.php" class='sidebar-link'>
+                <li class="sidebar-item <?= ($current_page == 'contact-message.php') ? 'active' : '' ?>">
+                    <a href="/admin/contact-message" class='sidebar-link'>
                         <i class="bi bi-envelope"></i>
                         <span>Contact</span>
                     </a>
                 </li>
 
-                <!-- <li class="sidebar-item has-sub <?= (str_contains($current_page, 'cm-')) ? 'active' : '' ?>">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-pencil-square"></i>
-                        <span>Content Manager</span>
-                    </a>
-
-                    <ul class="submenu">
-                        <li class="submenu-item <?= ($current_page == 'cm-home.php') ? 'active' : '' ?>">
-                            <a href="../admin/cm-home.php" class="submenu-link">Home</a>
-                        </li>
-
-                        <li class="submenu-item <?= ($current_page == 'cm-about.php') ? 'active' : '' ?>">
-                            <a href="cm-about.php" class="submenu-link">About</a>
-                        </li>
-                    </ul>
-                </li> -->
-
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
-                    <a href="../admin/content-manager.php" class='sidebar-link'>
+                    <a href="/admin/content-manager" class='sidebar-link'>
                     <i class="bi bi-pencil-square"></i>
                         <span>Content Manager</span>
                     </a>
@@ -92,18 +79,24 @@
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-person"></i>
-                        <span>Linh Thinh</span>
+                        <span><?=$header_username?></span>
                     </a>
 
                     <ul class="submenu">
                         <li class="submenu-item <?= ($current_page == 'profile.php') ? 'active' : '' ?>">
-                            <a href="profile.php" class="submenu-link">Profile</a>
+                            <a href="/profile" class="submenu-link">Profile</a>
                         </li>
 
                         <li class="submenu-item">
-                            <a href="logout.php" class="submenu-link">Logout</a>
+                            <a href="/account/logout" class="submenu-link">Logout</a>
                         </li>
                     </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/" class='sidebar-link'>
+                        <i class="bi bi-person-workspace"></i>
+                        <span>User Mode</span>
+                    </a>
                 </li>
             </ul>
         </div>

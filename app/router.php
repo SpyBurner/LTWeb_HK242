@@ -7,12 +7,21 @@ require_once __DIR__ . '/core/Router.php';
 $router = new Router();
 
 // Linh
-$router->addRoute('', 'HomeController', 'index');
-$router->addRoute('home', 'HomeController', 'index');
+$router->addRoute('', 'UserHomeController', 'index');
+$router->addRoute('contact-message', 'ContactMessageController', 'submit');
 $router->addRoute('about', 'AboutController', 'index');
 
-//Chung
-$router->addRoute('admin', 'AdminController', 'index');
+$router->addRoute('admin', 'AdminDashboardController', 'index');
+$router->addRoute('admin/contact-message', 'ContactMessageController', 'index');
+$router->addRoute('admin/contact-message/fetch', 'ContactMessageController', 'getMessages');
+$router->addRoute('admin/contact-message/view/:id', 'ContactMessageController', 'viewMessage');
+$router->addRoute('admin/contact-message/delete/:id', 'ContactMessageController', 'deleteMessage');
+$router->addRoute('admin/contact-message/mark-as-read/:id', 'ContactMessageController', 'markAsRead');
+$router->addRoute('admin/contact-message/mark-as-replied/:id', 'ContactMessageController', 'markAsReplied');
+$router->addRoute('admin/content-manager', 'ContentManagerController', 'index');
+$router->addRoute('admin/content-manager/add', 'ContentManagerController', 'add');
+$router->addRoute('admin/content-manager/edit', 'ContentManagerController', 'edit');
+$router->addRoute('admin/content-manager/delete', 'ContentManagerController', 'delete');
 
 $router->addRoute('admin/products', 'AdminProductsController', 'index');
 $router->addRoute('admin/products/create', 'AdminProductsController', 'create');

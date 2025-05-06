@@ -59,4 +59,11 @@ const NO_IMAGE_URL_PUBLIC = 'assets/img/No_Image_Available.jpg';
 
 const DEFAULT_AVATAR_URL = 'assets/img/avatar_male.png';
 
-const DEFAULT_MOD_AVATAR_URL =  'assets/img/header-logo2-nobg.png';
+const DEFAULT_MOD_AVATAR_URL =  'assets/img/logo_logo.png';
+
+// added by Linh
+const STATIC_IMAGE_URL = '/assets/img/';
+
+const ADMIN_CONFIG_URL = __DIR__ . '/admin-config.json';
+
+const DEFAULT_IMAGE_NAME = 'No_Image_Available.jpg';

@@ -39,7 +39,10 @@ class AdminProductsController extends BaseController  {
     }
 
     public function create() {
+<<<<<<< HEAD
         $this->requireAuth(true);
+=======
+>>>>>>> php/home
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $this->post('name');
             $price = $this->post('price');
@@ -47,15 +50,34 @@ class AdminProductsController extends BaseController  {
             $stock = $this->post('stock');
             $cateid = $this->post('cateid');
             $mfgid = $this->post('mfgid');
+<<<<<<< HEAD
 
+=======
+    
+            $avatarurl = '/assets/images/default-product.png';
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../../public/assets/repo/products/';
+                $fileName = uniqid() . '-' . basename($_FILES['image']['name']);
+                $uploadPath = $uploadDir . $fileName;
+    
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                    $avatarurl = '/assets/repo/products/' . $fileName;
+                }
+            }
+    
+>>>>>>> php/home
             if (empty($name) || empty($price) || empty($cateid) || empty($mfgid) || empty($stock)) {
                 $this->redirectWithMessage('/admin/products', [
                     'error' => 'Please fill in all required fields'
                 ]);
                 return;
             }
+<<<<<<< HEAD
 
             // Prepare product data with default avatarurl
+=======
+    
+>>>>>>> php/home
             $productData = [
                 'name' => $name,
                 'price' => $price,
@@ -63,6 +85,7 @@ class AdminProductsController extends BaseController  {
                 'stock' => $stock,
                 'cateid' => $cateid,
                 'mfgid' => $mfgid,
+<<<<<<< HEAD
                 'avatarurl' => 'assets/repo/product',
                 'avgrating' => 0,
                 'bought' => 0
@@ -146,21 +169,46 @@ class AdminProductsController extends BaseController  {
             $this->redirectWithMessage('/admin/products', [
                 'success' => 'Product created successfully'
             ]);
+=======
+                'avatarurl' => $avatarurl,
+                'avgrating' => 0,
+                'bought' => 0
+            ];
+    
+            $result = ProductsService::save($productData);
+    
+            if ($result['success']) {
+                $this->redirectWithMessage('/admin/products', [
+                    'success' => 'Product created successfully'
+                ]);
+            } else {
+                $this->redirectWithMessage('/admin/products', [
+                    'error' => $result['message']
+                ]);
+            }
+>>>>>>> php/home
         } else {
             $this->redirect('/admin/products');
         }
     }
 
     public function edit($productId = null) {
+<<<<<<< HEAD
         $this->requireAuth(true);
 
+=======
+>>>>>>> php/home
         if (empty($productId)) {
             $this->redirectWithMessage('/admin/products', [
                 'error' => 'Invalid product ID'
             ]);
             return;
         }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> php/home
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $this->post('name');
             $price = $this->post('price');
@@ -168,6 +216,7 @@ class AdminProductsController extends BaseController  {
             $stock = $this->post('stock');
             $cateid = $this->post('cateid');
             $mfgid = $this->post('mfgid');
+<<<<<<< HEAD
 
             if (empty($name) || empty($price) || empty($cateid) || empty($mfgid) || empty($stock)) {
                 $this->redirectWithMessage('/admin/products', [
@@ -177,6 +226,10 @@ class AdminProductsController extends BaseController  {
             }
 
             // Fetch the current product to retain existing values
+=======
+    
+            // Lấy thông tin sản phẩm hiện tại để giữ các giá trị cũ nếu không thay đổi ảnh
+>>>>>>> php/home
             $productResult = ProductsService::findById($productId);
             if (!$productResult['success']) {
                 $this->redirectWithMessage('/admin/products', [
@@ -185,6 +238,7 @@ class AdminProductsController extends BaseController  {
                 return;
             }
             $currentProduct = $productResult['data'];
+<<<<<<< HEAD
 
             // Initialize avatarurl with the current value
             $avatarurl = $currentProduct->getAvatarurl();
@@ -219,6 +273,29 @@ class AdminProductsController extends BaseController  {
             }
 
             // Prepare product data for update
+=======
+            $avatarurl = $currentProduct->getAvatarurl();
+    
+            // Xử lý upload ảnh nếu có
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../../public/uploads/products/';
+                $fileName = uniqid() . '-' . basename($_FILES['image']['name']);
+                $uploadPath = $uploadDir . $fileName;
+    
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                    $avatarurl = '/uploads/products/' . $fileName;
+                }
+            }
+    
+            if (empty($name) || empty($price) || empty($cateid) || empty($mfgid) || empty($stock)) {
+                $this->redirectWithMessage('/admin/products', [
+                    'error' => 'Please fill in all required fields'
+                ]);
+                return;
+            }
+    
+            // Chuẩn bị dữ liệu để cập nhật
+>>>>>>> php/home
             $productData = [
                 'productid' => $productId,
                 'name' => $name,
@@ -228,6 +305,7 @@ class AdminProductsController extends BaseController  {
                 'cateid' => $cateid,
                 'mfgid' => $mfgid,
                 'avatarurl' => $avatarurl,
+<<<<<<< HEAD
                 'avgrating' => $currentProduct->getAvgrating(),
                 'bought' => $currentProduct->getBought()
             ];
@@ -247,14 +325,34 @@ class AdminProductsController extends BaseController  {
             $this->redirectWithMessage('/admin/products', [
                 'success' => 'Product updated successfully'
             ]);
+=======
+                'avgrating' => $currentProduct->getAvgrating(), // Giữ nguyên giá trị cũ
+                'bought' => $currentProduct->getBought()        // Giữ nguyên giá trị cũ
+            ];
+    
+            $result = ProductsService::save($productData);
+    
+            if ($result['success']) {
+                $this->redirectWithMessage('/admin/products', [
+                    'success' => 'Product updated successfully'
+                ]);
+            } else {
+                $this->redirectWithMessage('/admin/products', [
+                    'error' => $result['message']
+                ]);
+            }
+>>>>>>> php/home
         } else {
             $this->redirect('/admin/products');
         }
     }
 
     public function delete($productId = null) {
+<<<<<<< HEAD
         $this->requireAuth(true);
 
+=======
+>>>>>>> php/home
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($productId)) {
                 header('Content-Type: application/json');
@@ -280,6 +378,10 @@ class AdminProductsController extends BaseController  {
         }
     }
 
+<<<<<<< HEAD
+=======
+    // View chi tiết sản phẩm (chuyển hướng đến trang chi tiết công khai)
+>>>>>>> php/home
     public function view($productId = null) {
         if (empty($productId)) {
             $this->redirectWithMessage('/admin/products', [
@@ -289,4 +391,8 @@ class AdminProductsController extends BaseController  {
         }
         $this->redirect("/products/detail/$productId");
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> php/home

@@ -2,14 +2,41 @@
 namespace controller;
 
 use core\Controller;
+use service\AuthService;
+use service\CategoryService;
 
-class AboutController extends Controller {
-    public function index() {
-        if (isset($_SESSION['REQUEST_METHOD']) && $_SESSION['REQUEST_METHOD']  === 'POST'){
-            echo "TODO HANDLE POST REQUEST AT ABOUTCONTROLLER";
+class BaseController extends Controller {
+    protected array $headerData;
+
+    public function __construct() {
+        $this->initializeHeaderData();
+    }
+
+    protected function initializeHeaderData(): void
+    {
+        $categories = CategoryService::findAll();
+        $this->headerData['header_categories'] = $categories['success'] ? $categories['data'] : [];
+
+        $user = AuthService::getCurrentUser();
+        if ($user['success']){
+            $this->headerData['header_isLoggedIn'] = true;
+            $this->headerData['header_isAdmin'] = $user['user']->getIsadmin();
+            $this->headerData['header_username'] = $user['user']->getUsername();
+            $this->headerData['header_avatar'] = $user['avatar'];
+        } else {
+            $this->headerData['header_isLoggedIn'] = false;
+            $this->headerData['header_isAdmin'] = false;
+            $this->headerData['header_username'] = '';
+            $this->headerData['header_avatar'] = '';
         }
-        else{
-            require_once __DIR__ . "/../view/about/about.php";
-        }
+    }
+
+    protected function render($view, $data = []): void
+    {
+        // Merge header data with view data
+        $data = array_merge($this->headerData, $data);
+
+        // Render the view
+        parent::render($view, $data);
     }
 }

@@ -36,7 +36,10 @@ class AdminOrderController extends BaseController  {
     }
 
     public function updateStatus() {
+<<<<<<< HEAD
         $this->requireAuth(true);
+=======
+>>>>>>> php/home
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = json_decode(file_get_contents('php://input'), true);
             $orderId = $input['orderId'] ?? null;

@@ -39,6 +39,7 @@ class OrdersController extends BaseController  {
     }
 
     public function orderDetail($orderId) {
+<<<<<<< HEAD
         $this->requireAuth(false);
 
 
@@ -50,6 +51,20 @@ class OrdersController extends BaseController  {
         }
 
         $userId = $result['user']['userid'];
+=======
+        if (!$this->isAuthenticate()) {
+            $this->redirectWithMessage('/account/login', ['error' => 'Please login to view order details']);
+            return;
+        }
+
+        $authResult = AuthService::validateSession();
+        if (!$authResult['success']) {
+            $this->redirectWithMessage('/account/login', ['error' => 'Invalid session. Please login again.']);
+            return;
+        }
+
+        $userId = $authResult['user']['userid'];
+>>>>>>> php/home
 
         $orderResult = OrderService::getOrderById($orderId);
         if (!$orderResult['success']) {

@@ -1,3 +1,9 @@
+<?php
+use const config\STATIC_IMAGE_URL;
+
+assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address));
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 
@@ -33,9 +39,9 @@
         <div class="relative w-full mx-auto overflow-hidden rounded-lg">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
-                <img src="/assets/img/banner-1.jpg" class="w-full flex-shrink-0" />
-                <img src="/assets/img/banner-2.jpg" class="w-full flex-shrink-0" />
-                <img src="/assets/img/banner-3.jpg" class="w-full flex-shrink-0" />
+                <img src="<?= STATIC_IMAGE_URL . "carousel1_banner-1.jpg" ?>" class="w-full flex-shrink-0"  alt="banner 1"/>
+                <img src="<?= STATIC_IMAGE_URL . "carousel2_banner-2.jpg" ?>" class="w-full flex-shrink-0" alt="banner 2"/>
+                <img src="<?= STATIC_IMAGE_URL . "carousel3_banner-3.jpg" ?>" class="w-full flex-shrink-0" alt="banner 3"/>
             </div>
 
             <!-- Navigation Buttons -->
@@ -60,41 +66,91 @@
             <div class="tabs tabs-lift">
                 <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Newest" checked="checked" />
                 <div class="tab-content bg-base-100 border-base-300 p-6">
-                    <!-- products grid -->
+                    <!-- product grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <?php foreach ($newestProducts as $product): ?>
                         <!-- product card -->
                         <div class="card bg-base-100 shadow-sm relative w-full">
-                            <a href="#">
-                                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                                    alt="product img" />
+                            <a href="<?= "/products/detail/" . $product->getProductid() ?>">
+                                <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
                                 <div class="card-body">
-                                    <p class="brand-name">CALBEE</p>
+                                    <p class="brand-name"><?= $product->getManufacturer() ?></p>
                                     <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
-                                    <p class="price text-error">139,000đ</p>
+                                    <p class="price text-error"><?= $product->getPrice() ?> VND</p>
 
                                     <div class="flex items-center">
-                                        <p class="sold-amt">Đã bán: 206</p>
+                                        <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
                                         <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
                                     </div>
                                 </div>
                             </a>
                         </div>
+                        <?php endforeach; ?>
                     </div>
 
                     <div class="text-center mt-6">
-                        <button class="btn btn-lg btn-outline px-8">View all</button>
+                        <a class="btn btn-lg btn-outline px-8" href="/products?sort=newest">View all</a>
                     </div>
                 </div>
 
-                <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Top rating" />
+                <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Top rated" />
                 <div class="tab-content bg-base-100 border-base-300 p-6">
+                    <!-- product grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <?php foreach ($newestProducts as $product): ?>
+                            <!-- product card -->
+                            <div class="card bg-base-100 shadow-sm relative w-full">
+                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= $product->getManufacturer() ?></p>
+                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
+                                            <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="text-center mt-6">
+                        <a class="btn btn-lg btn-outline px-8" href="/products?sort=top_rated">View all</a>
+                    </div>
                 </div>
 
                 <input type="radio" name="my_tabs_3" class="tab text-xl" aria-label="Best seller" />
                 <div class="tab-content bg-base-100 border-base-300 p-6">
+                    <!-- product grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <?php foreach ($newestProducts as $product): ?>
+                            <!-- product card -->
+                            <div class="card bg-base-100 shadow-sm relative w-full">
+                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
+                                    <img src="<?= $product->getAvatarurl() ?>" alt="<?= $product->getName() ?>" />
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= $product->getManufacturer() ?></p>
+                                        <h2 class="product-name">Card Title Should Be Longer Than Ever</h2>
+                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Đã bán: <?= $product->getBought() ?></p>
+                                            <button class="btn btn-soft"><i class="fa-solid fa-cart-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="text-center mt-6">
+                        <a class="btn btn-lg btn-outline px-8" href="/products?sort=popular">View all</a>
+                    </div>
                 </div>
             </div>
-
         </div>
 
         <!-- contact info -->
@@ -107,38 +163,37 @@
                         back
                         to you as soon as possible.
                         <br><br>
-                        <strong>
-                            Or you can visit us at our bakery at 123 Sweet Street, Sweetville, Sweetland.
-                        </strong>
+                        <strong>Or you can visit us at our bakery at <?= $address ?>.</strong>
                     </p>
                 </div>
                 <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                    <div class="card-body">
-                        <fieldset class="fieldset">
-                            <label class="input rounded-md w-full">
-                                <i class="fa-solid fa-user"></i>
-                                <input type="input" required placeholder="name" />
-                            </label>
+                    <form method="POST" action="/contact-message">
+                        <div class="card-body">
+                            <fieldset class="fieldset">
+                                <label class="input rounded-md w-full">
+                                    <i class="fa-solid fa-user"></i>
+                                    <input name="name" type="text" placeholder="Name" required />
+                                </label>
 
+                                <label class="input validator rounded-md w-full">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <input name="email" type="email" placeholder="mail@site.com" required />
+                                </label>
+                                <div class="validator-hint hidden">Enter valid email address</div>
 
-                            <label class="input validator rounded-md w-full">
-                                <i class="fa-solid fa-envelope"></i>
-                                <input type="email" placeholder="mail@site.com" required />
-                            </label>
-                            <div class="validator-hint hidden">Enter valid email address</div>
+                                <label class="input rounded-md w-full">
+                                    <input name="title" type="text" class="tabular-nums" placeholder="Title""
+                                        maxlength="50"/>
+                                </label>
 
-                            <label class="input validator rounded-md w-full">
-                                <i class="fa-solid fa-phone"></i>
-                                <input type="tel" class="tabular-nums" required placeholder="Phone" pattern="[0-9]*"
-                                    maxlength="11" title="Must be less than 12 digits" />
-                            </label>
-                            <p class="validator-hint hidden">Must be less than 12 digits</p>
+                                <label>
+                                    <textarea name="message" class="textarea rounded-md w-full" placeholder="Message"></textarea>
+                                </label>
 
-                            <textarea class="textarea rounded-md w-full" placeholder="Message"></textarea>
-
-                            <button class="btn btn-neutral mt-6 w-3/4 mx-auto">Send</button>
-                        </fieldset>
-                    </div>
+                                <button type="submit" class="btn btn-neutral mt-6 w-3/4 mx-auto">Send</button>
+                            </fieldset>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -147,7 +202,7 @@
     <?php require_once __DIR__ . "/../common/footer.php"; ?>
 
     <script>
-        // Carousel
+        // CAROUSEL ANIMATION
         const carousel = document.getElementById("carousel");
         const dots = document.querySelectorAll(".dot");
         const prevBtn = document.getElementById("prevBtn");
