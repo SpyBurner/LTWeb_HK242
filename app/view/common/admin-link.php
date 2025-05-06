@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 <?php
-=======
-<?php 
->>>>>>> minh
-    use const config\MAZER_BASE_URL;
+use const config\MAZER_BASE_URL;
 ?>
+
 <!-- put at the end of <head> -->
 <link rel="shortcut icon" href="<?php echo MAZER_BASE_URL . '/compiled/svg/favicon.svg' ?>" type="image/x-icon">
 <!-- <link rel="shortcut icon"
@@ -18,9 +15,3 @@ type="image/png"> -->
 
 <!-- gsap -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-
-// <style>
-//     * {
-//         font-family: var(--bs-font-sans-serif) !important;
-//     }
-// </style>

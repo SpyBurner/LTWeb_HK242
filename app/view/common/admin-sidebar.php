@@ -54,24 +54,37 @@ assert(isset($header_username));
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                <li class="sidebar-item <?= ($current_page == 'dashboard.php') ? 'active' : '' ?>">
+                <!-- <li class="sidebar-item <?= ($current_page == 'dashboard.php') ? 'active' : '' ?>">
                     <a href="/admin" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
+                    </a>
+                </li> -->
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/content-manager" class='sidebar-link'>
+                    <i class="bi bi-pencil-square"></i>
+                        <span>Content Manager</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'contact-message.php') ? 'active' : '' ?>">
                     <a href="/admin/contact-message" class='sidebar-link'>
                         <i class="bi bi-envelope"></i>
-                        <span>Contact</span>
+                        <span>Contact Messages</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
-                    <a href="/admin/content-manager" class='sidebar-link'>
+                    <a href="/admin/orders" class='sidebar-link'>
                     <i class="bi bi-pencil-square"></i>
-                        <span>Content Manager</span>
+                        <span>Orders</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/orders" class='sidebar-link'>
+                    <i class="bi bi-pencil-square"></i>
+                        <span>Orders</span>
                     </a>
                 </li>
 

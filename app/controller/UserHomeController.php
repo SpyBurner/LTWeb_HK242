@@ -14,16 +14,32 @@ class UserHomeController extends BaseController {
         $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
         $maxDisplayedProducts = $config['max_displayed_products'] ?? 16;
 
-        $newest = ProductsService::getTmp($maxDisplayedProducts);
-        $topRated = ProductsService::getTmp($maxDisplayedProducts);
-        $bestSellers = ProductsService::getTmp($maxDisplayedProducts);
+        // $newest = ProductsService::getTmp($maxDisplayedProducts);
+        $newest = ProductsService::getFilteredProducts([
+            'sort' =>  'newest',
+            'page' => 1,
+            'limit' => $maxDisplayedProducts
+        ]);
+
+        $topRated = ProductsService::getFilteredProducts([
+            'sort' =>  'top_rated',
+            'page' => 1,
+            'limit' => $maxDisplayedProducts
+        ]);
+
+
+        $bestSellers = ProductsService::getFilteredProducts([
+            'sort' =>  'popular',
+            'page' => 1,
+            'limit' => $maxDisplayedProducts
+        ]);
 
         // Render the home page
         $this->render('home/home', [
             'title' => 'Home',
-            'newestProducts' => $newest['success'] ? $newest['data'] : [],
-            'topRatedProducts' => $topRated['success'] ? $topRated['data'] : [],
-            'bestSellers' => $bestSellers['success'] ? $bestSellers['data'] : [],
+            'newestProducts' => $newest['success'] ? $newest['data']['products'] : [],
+            'topRatedProducts' => $topRated['success'] ? $topRated['data']['products'] : [],
+            'bestSellers' => $bestSellers['success'] ? $bestSellers['data']['products'] : [],
             'address' => $config['address'] ?? 'N/A',
         ]);
     }
