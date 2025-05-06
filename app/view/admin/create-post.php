@@ -35,9 +35,17 @@
             }
         });
         
-        // Copy Quill content to textarea before form submission
-        document.querySelector('form').addEventListener('submit', function() {
-            textareaElement.value = quill.root.innerHTML;
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const content = quill.root.innerHTML.trim();
+            
+            // Check if content is empty or just contains white space/HTML tags
+            if (!content || content === '<p><br></p>' || content === '<p></p>') {
+                e.preventDefault(); // Stop form submission
+                alert('Nội dung không được để trống');
+                return false;
+            }
+            
+            textareaElement.value = content;
         });
     });
     </script>
@@ -111,7 +119,7 @@
                                         
                                         <div class="mb-3">
                                             <label for="articleContent" class="form-label">Nội dung</label>
-                                            <textarea class="form-control" id="articleContent" name="content" rows="12" required></textarea>
+                                            <textarea class="form-control" id="articleContent" name="content" rows="12"></textarea>
                                         </div>
                                 
                                         <div class="d-flex justify-content-end gap-2">

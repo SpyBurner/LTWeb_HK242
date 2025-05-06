@@ -142,7 +142,7 @@ assert(isset($isLiked));
                     <a href="<?= $url ?>" class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $count ?>">
                         <h2 class="card-title"><?= $title ?></h2>
                         <p class="italic"><?= $postdate ?></p>
-                        <p class="line-clamp-3"><?= nl2br(htmlspecialchars($content)) ?></p>
+                        <p class="line-clamp-3"><?= strip_tags(html_entity_decode($content)) ?></p>
                     </a>
                 <?php 
                 $count++;
