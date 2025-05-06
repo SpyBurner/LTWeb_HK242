@@ -138,7 +138,6 @@ assert($admin);
                                         
                                         <div class="d-flex justify-content-end gap-2">
                                             <a href="/admin/blog" class="btn btn-secondary">Hủy</a>
-                                            <button type="reset" class="btn btn-danger">Reset</button>
                                             <button type="submit" class="btn btn-primary">Cập nhật</button>
                                         </div>
                                     </form>

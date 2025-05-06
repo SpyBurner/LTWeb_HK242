@@ -52,7 +52,9 @@ assert($commentUser);
                             <div class="modal-body">
                                 <div class="comment-management">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h6 class="my-2"><?= count($comments) ?> Bình luận</h6>
+                                    <h6 class="my-2">
+                                        <?= count($comments) && $comments[0] !== null ? count($comments) : 0 ?> Bình luận
+                                    </h6>
                                         <!-- <div class="btn-group">
                                             <button class="btn btn-outline-secondary btn-sm">
                                                 <i class="fas fa-sort-alpha-down"></i> Mới nhất
@@ -65,19 +67,25 @@ assert($commentUser);
                                             <form class="input-group" action="/admin/blog/comment/search">
                                                 <input type="hidden" name="blogid" value="<?= $id ?>">
                                                 <input type="text" name="term" class="form-control" id="searchComments" placeholder="Search comments...">
-                                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                                                <button class="btn btn-outline-secondary" type="submit" <?= ($comments[0] === null) ? 'disabled' : '' ?>>
+                                                    <i class="fas fa-search"></i> Search
+                                                </button>
                                             </form>
+                                            <?php if ($comments[0] === null): ?>
+                                                <p class="text-muted mt-2 d-block">Search is disabled when there are no comments</p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                     
                                     <?php
                                         $i = 0;
-                                        while ($i < count($comments)):
-                                            $username = htmlspecialchars($commentUser[$i]);
-                                            $userid = htmlspecialchars($comments[$i]->getUserid());
-                                            $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
-                                            $content = nl2br(htmlspecialchars($comments[$i]->getContent()));
-                                            $blogId = (int) $id;
+                                        if (!empty($comments) && $comments[0] !== null):
+                                            while ($i < count($comments)):
+                                                $username = htmlspecialchars($commentUser[$i]);
+                                                $userid = htmlspecialchars($comments[$i]->getUserid());
+                                                $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
+                                                $content = nl2br(htmlspecialchars($comments[$i]->getContent()));
+                                                $blogId = (int) $id;
                                     ?>
                                         <div class="card mb-3">
                                             <div class="card-body">
@@ -97,10 +105,17 @@ assert($commentUser);
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php
-                                            $i++;
-                                        endwhile;
-                                    ?>
+                                        <?php
+                                                    $i++;
+                                                endwhile;
+                                            else:
+                                        ?>
+                                            <div>
+                                                Chưa có bình luận nào cho bài viết này.
+                                            </div>
+                                        <?php
+                                            endif;
+                                        ?>
                                 </div>
                             </div>
                             <div class="modal-footer">
