@@ -235,9 +235,9 @@ INSERT INTO Manufacturer (name, country) VALUES
 
 -- Insert random data into the Product table
 INSERT INTO Product (name, price, description, avgrating, bought, mfgid, stock, cateid) VALUES
-('Product 1', 10, 'Description 1', 4.5, 100, 1, 'In Stock', 1),
-('Product 2', 20, 'Description 2', 4.0, 200, 2, 'In Stock', 2),
-('Product 3', 30, 'Description 3', 3.5, 300, 3, 'In Stock', 3);
+('Product 1', 100000, 'Description 1', 4.5, 100, 1, 'In Stock', 1),
+('Product 2', 200000, 'Description 2', 4.0, 200, 2, 'In Stock', 2),
+('Product 3', 300000, 'Description 3', 3.5, 300, 3, 'In Stock', 3);
 
 -- Insert random data into the HasProduct table
 INSERT INTO HasProduct (orderid, productid, amount) VALUES

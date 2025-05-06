@@ -41,11 +41,14 @@ class ProfileController extends BaseController {
     public function addContact(){
         $this->requireAuth();
 
+        $result = AuthService::getCurrentUser();
+        $user = $result['user'];
+
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
             $name = $this->post('name');
             $phone = $this->post('phone');
             $address = $this->post('address');
-            $customerId = $this->post('customerid');
+            $customerId = $user->getUserid();
 
             $model = new ContactModel(null, $name, $phone, $address, $customerId);
 

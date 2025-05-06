@@ -182,7 +182,7 @@ assert(isset($avatar));
                             </label>
 
                             <label class="block font-medium mb-1">Phone
-                                <input type="text" name="phone" class="input input-bordered w-full mb-3" placeholder="Enter phone (optional)" />
+                                <input type="number" name="phone" class="input input-bordered w-full mb-3" placeholder="Enter phone (optional)" />
                             </label>
 
                             <label class="block font-medium mb-1">Address
@@ -209,7 +209,7 @@ assert(isset($avatar));
                             <input type="text" name="name" id="edit-contact-name" class="input input-bordered w-full mb-3" required />
 
                             <label class="block font-medium mb-1">Phone</label>
-                            <input type="text" name="phone" id="edit-contact-phone" class="input input-bordered w-full mb-3" />
+                            <input type="number" name="phone" id="edit-contact-phone" class="input input-bordered w-full mb-3" />
 
                             <label class="block font-medium mb-1">Address</label>
                             <textarea name="address" id="edit-contact-address" class="textarea textarea-bordered w-full mb-3"></textarea>
