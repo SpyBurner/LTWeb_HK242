@@ -5,6 +5,7 @@ use core\Controller;
 use Service\BlogPostService;
 use Service\CommentService;
 use service\UserService;
+use service\AuthService;
 
 class AdminController extends Controller {
     public function index() {
@@ -75,7 +76,7 @@ class AdminController extends Controller {
 
     public function deleteComment() {
         $blogid = $_GET['blogid'];
-        $userid = 6;
+        $userid = $_GET['userid'];
         $commentdate = $_GET['commentdate'];
         $result = CommentService::deleteComment($blogid, $userid, $commentdate);
         if (!$result['success']){
@@ -100,7 +101,10 @@ class AdminController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $title = $_POST['title'];
             $content = $_POST['content'];
-            $adminid = 1;
+            
+            $result = AuthService::validateSession();
+            $adminid = $result['user']['userid'];
+
             $result = BlogPostService::save(BlogPostService::createInstance(null, $title, $content, $adminid));
             if (!$result['success']){
                 $this->redirectWithMessage('/blog', $result['message']);

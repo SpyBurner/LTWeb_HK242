@@ -74,6 +74,7 @@ assert($commentUser);
                                         $i = 0;
                                         while ($i < count($comments)):
                                             $username = htmlspecialchars($commentUser[$i]);
+                                            $userid = htmlspecialchars($comments[$i]->getUserid());
                                             $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
                                             $content = nl2br(htmlspecialchars($comments[$i]->getContent()));
                                             $blogId = (int) $id;
@@ -89,7 +90,7 @@ assert($commentUser);
                                                 <p class="comment-text my-2"><?= $content ?></p>
                                                 <div class="d-flex">
                                                     <div class="btn-group btn-group-sm">
-                                                        <button type="button" class="btn btn-outline-danger mt-2 delete-comment" blog-id="<?= $blogId ?>" postdate="<?= $commentDate ?>">
+                                                        <button type="button" class="btn btn-outline-danger mt-2 delete-comment" blog-id="<?= $blogId ?>" postdate="<?= $commentDate ?>" userid="<?= $userid ?>">
                                                             <i class="fas fa-trash"></i> Delete
                                                         </button>
                                                     </div>
@@ -136,14 +137,14 @@ assert($commentUser);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteCommentModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteCommentModalLabel">Xác nhận</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this comment? This action cannot be undone.
+                    Bạn có chắc chắn muốn xóa bình luận này không? Hành động này không thể hoàn tác.
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-danger" id="confirmDeleteComment">Delete</a>
+                    <a href="#" class="btn btn-danger" id="confirmDeleteComment">Xóa</a>
                 </div>
             </div>
         </div>
@@ -161,7 +162,8 @@ assert($commentUser);
                 button.addEventListener('click', function() {
                     const blogId = this.getAttribute('blog-id');
                     const commentDate = this.getAttribute('postdate');
-                    document.getElementById('confirmDeleteComment').href = `/admin/blog/comment/delete?blogid=${blogId}&commentdate=${commentDate}`;
+                    const userId = this.getAttribute('userid');
+                    document.getElementById('confirmDeleteComment').href = `/admin/blog/comment/delete?blogid=${blogId}&userid=${userId}&commentdate=${commentDate}`;
                     // Show confirmation modal
                     new bootstrap.Modal(document.getElementById('deleteCommentModal')).show();
                 });

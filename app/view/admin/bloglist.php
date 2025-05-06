@@ -165,14 +165,14 @@ assert(isset($likes));
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteArticleModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteArticleModalLabel">Xác nhận</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this article? This action cannot be undone.
+                    Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-danger" id="confirmDeleteArticle">Delete</a>
+                    <a href="#" class="btn btn-danger" id="confirmDeleteArticle">Xóa</a>
                 </div>
             </div>
         </div>
