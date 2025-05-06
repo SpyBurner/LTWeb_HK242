@@ -35,7 +35,7 @@ class MessageService implements IService
             }
             else {
                 $stmt = Database::getInstance()->getConnection()->prepare("
-                    INSERT INTO FaqEntry (content, qnaid, userid)
+                    INSERT INTO Message (content, qnaid, userid)
                     VALUES (:content, :qnaid, :userid)
                 ");
 
@@ -139,4 +139,5 @@ class MessageService implements IService
             return handleException($e);
         }
     }
+
 }

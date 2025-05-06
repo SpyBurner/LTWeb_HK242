@@ -16,6 +16,9 @@ $router->addRoute('admin', 'AdminController', 'index');
 
 //Tài
 $router->addRoute('qna', 'QnaController', 'index');
+$router->addRoute('qna/add_question', 'QnaController', 'addQuestion');
+$router->addRoute('qna/qna_detail', 'QnaController', 'qnaDetail_API');
+$router->addRoute('qna/add_message' , 'QnaController', 'addMessage');
 
 $router->addRoute('profile', 'ProfileController', 'index');
 $router->addRoute('profile/add_contact', 'ProfileController', 'addContact');

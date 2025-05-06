@@ -189,11 +189,6 @@ assert(isset($avatar));
                                 <textarea name="address" class="textarea textarea-bordered w-full mb-3" placeholder="Enter address (optional)"></textarea>
                             </label>
 
-                            <label class="block font-medium mb-1">Customer ID
-                            <input type="number" name="customerid" class="input input-bordered w-full mb-3 readonly:text-gray-500 readonly:bg-gray-100 readonly:border-gray-300" value="<?php echo $user->getUserid();?>" required readonly />
-                            </label>
-
-
                             <div class="modal-action">
                                 <button type="submit" class="btn btn-primary">Add</button>
                                 <button type="button" class="btn" onclick="closeModal('contact-add')">Close</button>
@@ -218,10 +213,6 @@ assert(isset($avatar));
 
                             <label class="block font-medium mb-1">Address</label>
                             <textarea name="address" id="edit-contact-address" class="textarea textarea-bordered w-full mb-3"></textarea>
-
-                            <label class="block font-medium mb-1">Customer ID
-                                <input type="number" name="customerid" class="input input-bordered w-full mb-3 readonly:text-gray-500 readonly:bg-gray-100 readonly:border-gray-300" value="<?php echo $user->getUserid();?>" required readonly />
-                            </label>
 
                             <div class="modal-action">
                                 <button type="submit" class="btn btn-primary">Save</button>

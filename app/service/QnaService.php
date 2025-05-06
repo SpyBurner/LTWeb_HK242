@@ -13,28 +13,41 @@ class QnaService implements IService
 {
     public static function save($model)
     {
-        if (!$model instanceof QnaModel) {
+        if (!$model instanceof QnaEntryModel) {
             return ['success' => false, 'message' => 'Invalid model type'];
         }
 
         if ($model->getQnaid()){
+            Logger::log("[IMPOSSIBLE]QnaController::addQuestion " . $model->getQnaid());
             //Update existing
             //SHOULDN'T HAPPEN
         }
         else{
             //Insert new
             try {
+                if ($model->getMessage() == null){
+                    throw new Exception('Set first message before saving');
+                }
+
+                Logger::log("Before inserting QnaEntry");
                 $pdo = Database::getInstance()->getConnection();
                 $stmt = $pdo->prepare("
-                    INSERT INTO QnaEntry (question, answer, created_at) 
-                    VALUES (:question, :answer, :created_at)
+                    INSERT INTO QnaEntry () VALUES ();
                 ");
-                $params = [
-                    ':question' => $model->getQuestion(),
-                    ':answer' => $model->getAnswer(),
-                    ':created_at' => $model->getCreatedAt()
-                ];
-                $stmt->execute($params);
+                $stmt->execute();
+                Logger::log("After inserting QnaEntry");
+
+                $last_id = $pdo->lastInsertId();
+
+                $message = $model->getMessage();
+                $message->setQnaid($last_id);
+
+                $result = MessageService::save($message);
+
+                if (!$result['success']) {
+                    Logger::log("Error saving message for QnaEntry with id " . $last_id . ": " . $result['message']);
+                    return ['success' => false, 'message' => 'Error saving message for QnaEntry'];
+                }
 
                 return [
                     'success' => true,
@@ -97,6 +110,7 @@ class QnaService implements IService
 
             $stmt = Database::getInstance()->getConnection()->prepare(
                 "SELECT * FROM QnaEntry"
+                . " ORDER BY qnaid DESC"
                 . $stmtLimit
                 . $stmtOffset
             );

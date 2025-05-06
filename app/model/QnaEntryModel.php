@@ -34,8 +34,9 @@ class QnaEntryModel implements IModel{
         $this->message = $message;
     }
 
-    public function __construct($qnaid) {
+    public function __construct($qnaid, $message = null) {
         $this->qnaid = $qnaid;
+        $this->message = $message;
     }
 
     public function __toString() {

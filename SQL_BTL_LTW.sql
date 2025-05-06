@@ -54,11 +54,11 @@ PRIMARY KEY (blogid, userid, commentdate)
 );
 
 CREATE TABLE QnaEntry (
-qnaid int PRIMARY KEY
+qnaid int PRIMARY KEY AUTO_INCREMENT
 );
 
 CREATE TABLE Message (
-msgid int PRIMARY KEY,
+msgid int PRIMARY KEY AUTO_INCREMENT,
 senddate date DEFAULT CURRENT_DATE,
 content varchar(255) NOT NULL,
 qnaid int NOT NULL,
