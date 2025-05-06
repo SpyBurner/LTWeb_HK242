@@ -275,28 +275,24 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         function addToCart(productId, amount = 1) {
             console.log(`Adding product ${productId} with amount ${amount} to cart`);
 
-            function addToCart(productId, amount = 1, event = null) {
-                if (event) event.preventDefault();
-
-                fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
-                        method: 'GET',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Product added to cart!');
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while adding to cart');
-                    });
-            }
+            fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Product added to cart!');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding to cart');
+                });
         }
     </script>
 
