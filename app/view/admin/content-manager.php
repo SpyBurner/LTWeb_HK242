@@ -41,12 +41,15 @@ assert(isset($partners));
                                 <small>Images should have a ratio of 5:2</small>
                             </div>
                             <div class="card-body">
-                                <form class="form form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/content-manager/edit-carousel">
+                                <form class="form form-horizontal" method="POST" enctype="multipart/form-data" action="/admin/content-manager/edit">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label for="slide-1">Slide 1</label>
                                             </div>
+
+                                            <input type="hidden" name="section" value="carousel" />
+
                                             <div class="col-md-8 form-group">
                                                 <input type="file" id="slide-1" class="form-control" name="carousel1" />
                                             </div>
@@ -132,8 +135,8 @@ assert(isset($partners));
                                                 <label for="">Max displayed products for Home page</label>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <input type="number" class="form-control" name="max-display" required min="4" max="20" value="<?= $maxDisplayedProduct ?>" />
-                                                <small class="d-block text-end">Integer between 4 to 20</small>
+                                                <input type="number" class="form-control" name="max-display" required min="2" max="20" value="<?= $maxDisplayedProduct ?>" />
+                                                <small class="d-block text-end">Integer between 2 to 20</small>
                                             </div>
 
                                             <div class="col-sm-12 d-flex justify-content-end">

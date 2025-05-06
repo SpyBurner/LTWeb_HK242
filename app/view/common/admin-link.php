@@ -15,3 +15,5 @@ type="image/png"> -->
 
 <!-- gsap -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+<script src="https://kit.fontawesome.com/d2a9bab36d.js" crossorigin="anonymous"></script>

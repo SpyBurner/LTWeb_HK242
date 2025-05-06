@@ -11,8 +11,8 @@ $router->addRoute('', 'UserHomeController', 'index');
 $router->addRoute('contact-message', 'ContactMessageController', 'submit');
 $router->addRoute('about', 'AboutController', 'index');
 
-$router->addRoute('admin', 'ContactMessageController', 'index');
 $router->addRoute('admin/contact-message', 'ContactMessageController', 'index');
+$router->addRoute('admin', 'ContentManagerController', 'index');
 $router->addRoute('admin/contact-message/fetch', 'ContactMessageController', 'getMessages');
 $router->addRoute('admin/contact-message/view/:id', 'ContactMessageController', 'viewMessage');
 $router->addRoute('admin/contact-message/delete/:id', 'ContactMessageController', 'deleteMessage');

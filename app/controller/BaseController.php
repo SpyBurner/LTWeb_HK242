@@ -4,6 +4,8 @@ namespace controller;
 use core\Controller;
 use service\AuthService;
 use service\CategoryService;
+use const config\ADMIN_CONFIG_URL;
+use const config\DEFAULT_IMAGE_NAME;
 
 class BaseController extends Controller {
     protected array $headerData;
@@ -16,6 +18,8 @@ class BaseController extends Controller {
     {
         $categories = CategoryService::findAll();
         $this->headerData['header_categories'] = $categories['success'] ? $categories['data'] : [];
+        $config = json_decode(file_get_contents(ADMIN_CONFIG_URL), true);
+        $this->headerData['header_logo'] = $config['logo'] ?? DEFAULT_IMAGE_NAME;
 
         $user = AuthService::getCurrentUser();
         if ($user['success']){

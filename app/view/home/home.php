@@ -1,7 +1,7 @@
 <?php
 use const config\STATIC_IMAGE_URL;
 
-assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address));
+assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address) && isset($carousel1) && isset($carousel2) && isset($carousel3) && isset($phone));
 
 // var_dump($newestProducts, $topRatedProducts, $bestSellers, $address); // Debugging line to check the variables
 ?>
@@ -41,9 +41,9 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
         <div class="relative w-full mx-auto overflow-hidden rounded-lg">
             <!-- Carousel Wrapper -->
             <div id="carousel" class="flex transition-transform duration-500">
-                <img src="<?= STATIC_IMAGE_URL . "carousel1_banner-1.jpg" ?>" class="w-full flex-shrink-0"  alt="banner 1"/>
-                <img src="<?= STATIC_IMAGE_URL . "carousel2_banner-2.jpg" ?>" class="w-full flex-shrink-0" alt="banner 2"/>
-                <img src="<?= STATIC_IMAGE_URL . "carousel3_banner-3.jpg" ?>" class="w-full flex-shrink-0" alt="banner 3"/>
+                <img src="<?= STATIC_IMAGE_URL . $carousel1 ?>" class="w-full flex-shrink-0"  alt="banner 1"/>
+                <img src="<?= STATIC_IMAGE_URL . $carousel2 ?>" class="w-full flex-shrink-0" alt="banner 2"/>
+                <img src="<?= STATIC_IMAGE_URL . $carousel3 ?>" class="w-full flex-shrink-0" alt="banner 3"/>
             </div>
 
             <!-- Navigation Buttons -->
@@ -165,7 +165,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                         back
                         to you as soon as possible.
                         <br><br>
-                        <strong>Or you can visit us at our bakery at <?= $address ?>.</strong>
+                        <strong>You can visit us at our bakery at <?= $address ?> or contact us via <?= $phone ?>.</strong>
                     </p>
                 </div>
                 <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
