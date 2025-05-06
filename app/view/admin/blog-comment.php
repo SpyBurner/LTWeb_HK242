@@ -46,65 +46,65 @@ assert($commentUser);
                 <section class="section">
                     <div class="card">
                         <div class="card-body">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Tất cả bình luận của bài viết <?= $id?></h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="comment-management">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="my-2"><?= count($comments) ?> Bình luận</h6>
-                                    <div class="btn-group">
-                                        <button class="btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-sort-alpha-down"></i> Mới nhất
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="card mb-0">
-                                    <div class="card-body">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="searchComments" placeholder="Search comments...">
-                                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i> Search</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <?php
-                                    $i = 0;
-                                    while ($i < count($comments)):
-                                        $username = htmlspecialchars($commentUser[$i]);
-                                        $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
-                                        $content = nl2br(htmlspecialchars($comments[$i]->getContent()));
-                                        $blogId = (int) $id;
-                                ?>
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <div>
-                                                    <h6 class="mb-2"><?= $username ?></h6>
-                                                    <small class="text-muted"><?= $commentDate ?></small>
-                                                </div>
-                                            </div>
-                                            <p class="comment-text my-2"><?= $content ?></p>
-                                            <div class="d-flex">
-                                                <div class="btn-group btn-group-sm">
-                                                    <button type="button" class="btn btn-outline-danger mt-2 delete-comment" blog-id="<?= $blogId ?>" postdate="<?= $commentDate ?>">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-                                        $i++;
-                                    endwhile;
-                                ?>
+                            <div class="modal-header">
+                                <h5 class="modal-title">Tất cả bình luận của bài viết <?= $id?></h5>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save Changes</button>
-                        </div>
+                            <div class="modal-body">
+                                <div class="comment-management">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="my-2"><?= count($comments) ?> Bình luận</h6>
+                                        <!-- <div class="btn-group">
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-sort-alpha-down"></i> Mới nhất
+                                            </button>
+                                        </div> -->
+                                    </div>
+
+                                    <div class="card mb-0">
+                                        <div class="card-body">
+                                            <form class="input-group" action="/admin/blog/comment/search">
+                                                <input type="hidden" name="blogid" value="<?= $id ?>">
+                                                <input type="text" name="term" class="form-control" id="searchComments" placeholder="Search comments...">
+                                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <?php
+                                        $i = 0;
+                                        while ($i < count($comments)):
+                                            $username = htmlspecialchars($commentUser[$i]);
+                                            $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
+                                            $content = nl2br(htmlspecialchars($comments[$i]->getContent()));
+                                            $blogId = (int) $id;
+                                    ?>
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <div>
+                                                        <h6 class="mb-2"><?= $username ?></h6>
+                                                        <small class="text-muted"><?= $commentDate ?></small>
+                                                    </div>
+                                                </div>
+                                                <p class="comment-text my-2"><?= $content ?></p>
+                                                <div class="d-flex">
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="button" class="btn btn-outline-danger mt-2 delete-comment" blog-id="<?= $blogId ?>" postdate="<?= $commentDate ?>">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php
+                                            $i++;
+                                        endwhile;
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/admin/blog" class="btn btn-secondary me-2">Close</a>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -165,13 +165,6 @@ assert($commentUser);
                     // Show confirmation modal
                     new bootstrap.Modal(document.getElementById('deleteCommentModal')).show();
                 });
-            });
-            
-            // Handle confirm delete comment
-            document.getElementById('confirmDeleteComment').addEventListener('click', function() {
-                alert(`Comment deleted successfully!`);
-                // Close the modal
-                bootstrap.Modal.getInstance(document.getElementById('deleteCommentModal')).hide();
             });
         });
     </script>

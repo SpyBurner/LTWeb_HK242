@@ -71,10 +71,10 @@ assert(isset($likes));
                                     <!-- Search and Filter -->
                                     <div class="row search-container">
                                         <div class="col-md-6">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="searchArticles" placeholder="Search articles...">
-                                                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i> Search</button>
-                                            </div>
+                                            <form class="input-group" action="/admin/blog/search">
+                                                <input type="text" class="form-control" name="term" placeholder="Tìm kiếm bài viết...">
+                                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+                                            </form>
                                         </div>
                                     </div>
                                     
@@ -106,8 +106,8 @@ assert(isset($likes));
                                                     
                                                     $i++;
                                                     // Tạo đường dẫn
-                                                    $url = "/admin/blog/comment?blogid=".$blogId;
-                                                    $edit = "/admin/blog/edit?blogid=".$blogId;
+                                                    $comment_url = "/admin/blog/comment?blogid=".$blogId;
+                                                    $edit_url = "/admin/blog/edit?blogid=".$blogId;
                                                 ?>
                                                 <tr>
                                                     <td><?= $blogId ?></td>
@@ -115,7 +115,7 @@ assert(isset($likes));
                                                     <td><?= $author ?></td>
                                                     <td><?= $postDate ?></td>
                                                     <td class="action-buttons">
-                                                        <a class="btn btn-sm btn-info edit-article" href="<?= $edit ?>" data-id="<?= $blogId ?>">
+                                                        <a class="btn btn-sm btn-info edit-article" href="<?= $edit_url ?>" data-id="<?= $blogId ?>">
                                                             <i class="fas fa-edit"></i> Edit
                                                         </a>
                                                         <button class="btn btn-sm btn-danger delete-article" data-id="<?= $blogId ?>">
@@ -127,7 +127,7 @@ assert(isset($likes));
                                                         <span class="fs-5"><?= $like ?></span>
                                                     </td>
                                                     <td>
-                                                        <a href="<?= $url ?>" class="btn btn-primary">All Comments</a>
+                                                        <a href="<?= $comment_url ?>" class="btn btn-primary">All Comments</a>
                                                     </td>
                                                 </tr>
                                                 <?php 
@@ -137,8 +137,8 @@ assert(isset($likes));
                                         </table>
                                         
                                         <!-- Pagination -->
-                                        <nav>
-                                            <ul class="pagination justify-content-center">
+                                        <nav class="pagination justify-content-center" id="pagination">
+                                            <!-- <ul>
                                                 <li class="page-item disabled">
                                                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                                                 </li>
@@ -148,7 +148,7 @@ assert(isset($likes));
                                                 <li class="page-item">
                                                     <a class="page-link" href="#">Next</a>
                                                 </li>
-                                            </ul>
+                                            </ul> -->
                                         </nav>
                                     </div>
                                 </div>
@@ -181,37 +181,14 @@ assert(isset($likes));
     <?php require_once __DIR__."/../common/admin-script.php"; ?>
     
     <script>
-        // JavaScript for handling article and comment operations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle edit article button clicks
-            document.querySelectorAll('.edit-article').forEach(button => {
-                button.addEventListener('click', function() {
-                    const articleId = this.getAttribute('data-id');
-                    // Fetch article data and populate the form
-                    fetchArticleData(articleId);
-                    // Show the add/edit tab
-                    document.getElementById('article-form-title').textContent = 'Edit Article';
-                    document.getElementById('add-article-tab').click();
-                });
+        document.querySelectorAll('.delete-article').forEach(button => {
+            button.addEventListener('click', function() {
+                const articleId = this.getAttribute('data-id');
+                // Cập nhật href cho nút xác nhận xóa trong modal
+                document.getElementById('confirmDeleteArticle').href = `/admin/blog/delete?blogid=${articleId}`;
+                // Hiển thị modal xác nhận
+                new bootstrap.Modal(document.getElementById('deleteArticleModal')).show();
             });
-            
-            // Handle delete article button clicks
-            // Thay đoạn code xử lý nút xóa hiện tại bằng đoạn code sau
-            document.querySelectorAll('.delete-article').forEach(button => {
-                button.addEventListener('click', function() {
-                    const articleId = this.getAttribute('data-id');
-                    // Cập nhật href cho nút xác nhận xóa trong modal
-                    document.getElementById('confirmDeleteArticle').href = `/admin/blog/delete?blogid=${articleId}`;
-                    // Hiển thị modal xác nhận
-                    new bootstrap.Modal(document.getElementById('deleteArticleModal')).show();
-                });
-            });
-            
-            function deleteArticle(id) {
-                console.log(`Deleting article ID: ${id}`);
-                alert(`Article ${id} deleted successfully!`);
-                // In production, you would remove the row from the DOM after successful deletion
-            }
         });
     </script>
 </body>

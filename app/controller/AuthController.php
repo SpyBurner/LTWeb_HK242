@@ -114,6 +114,11 @@ class AuthController extends Controller {
                 ]);
             }
 
+            if (isset($_SESSION['return_to'])) {
+                $return_to = SessionHelper::getFlash('return_to');
+                $this->redirect($return_to);
+            }
+
             $this->redirectWithMessage("/", [
                 'success' => "Login successful"
             ]);

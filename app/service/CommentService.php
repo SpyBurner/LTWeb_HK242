@@ -80,4 +80,19 @@ class CommentService
             return handleException($e);
         }
     }
+
+    public static function searchComment($blogid, $keyword)
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM blogcomment WHERE blogid = :blogid AND content LIKE :keyword");
+            $stmt->execute([':blogid' => $blogid, ':keyword' => '%' . $keyword . '%']);
+            $data = $stmt->fetchAll();
+
+            return ['success' => true, 'data' => array_map(function ($item) {
+                return CommentModel::toObject($item);
+            }, $data)];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
 }

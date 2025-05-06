@@ -19,9 +19,9 @@ assert(isset($posts));
             </ul>
         </div>
         <div class="flex-1">
-            <form action="" class="flex justify-end">
-                <input type="text" placeholder="Tìm kiếm bài viết" class="input border-1 rounded-md"/>
-                <button type="submit" class="btn btn-primary rounded-lg px-6" fdprocessedid="h4w6ky">
+            <form action="/news/search" class="flex justify-end">
+                <input type="text" name="keyword" placeholder="Tìm kiếm bài viết" class="input border-1 rounded-md"/>
+                <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </button>
             </form>
@@ -37,15 +37,15 @@ assert(isset($posts));
                 <a href="<?= $url ?>" class="card-body rounded-lg bg-white mt-2 <?= $hiddenClass ?>">
                     <h2 class="card-title"><?= htmlspecialchars($row->getTitle()) ?></h2>
                     <p class="italic"><?= htmlspecialchars($row->getPostdate()) ?></p>
-                    <p><?= htmlspecialchars($row->getContent()) ?></p>
+                    <p class="line-clamp-1"><?= htmlspecialchars(substr(strip_tags($row->getContent()), 0, 150)) ?>...</p>
                 </a>
             <?php 
                 $count++;
                 endforeach;
             ?>
             </div>
-            <div class="flex justify-center mt-4 gap-4">
-                <button id="page-1" onclick="pagination('page-1')"><input
+            <div class="flex justify-center mt-4 gap-4" id="pagination">
+                <!-- <button id="page-1" onclick="pagination('page-1')"><input
                   class="join-item btn btn-square"
                   type="radio"
                   name="options"
@@ -53,7 +53,7 @@ assert(isset($posts));
                   checked="checked" /></button>
                 <button id="page-2" onclick="pagination('page-2')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="2" /></button>
                 <button id="page-3" onclick="pagination('page-3')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="3" /></button>
-                <button id="page-4" onclick="pagination('page-4')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="4" /></button>
+                <button id="page-4" onclick="pagination('page-4')"><input class="join-item btn btn-square" type="radio" name="options" aria-label="4" /></button> -->
             </div>
         </div>
     </div>
@@ -80,8 +80,20 @@ assert(isset($posts));
             });
 
             for (let i = (idNum - 1) * 3; i < idNum * 3; i++) {
+                if (i >= allCards.length) break;
                 allCards[i].classList.remove("hidden");
             }
+        }
+
+        let allCards = document.querySelectorAll(".card-body").length;
+        let pageNum = Math.ceil(allCards / 3);
+        for (let i = 1; i <= pageNum; i++) {
+            let inputTag = `<input class="join-item btn btn-square" type="radio" name="options" aria-label="${i}" `
+                + (i === 1 ? 'checked' : '') + ` />`;
+            document.getElementById("pagination").innerHTML += `
+                <button id="page-${i}" onclick="pagination('page-${i}')">
+                    ${inputTag}
+                </button>`;
         }
     </script>
 

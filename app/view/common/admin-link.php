@@ -10,3 +10,9 @@
 <link rel="stylesheet" href="<?php echo MAZER_BASE_URL . '/compiled/css/app.css' ?>">
 <link rel="stylesheet" href="<?php echo MAZER_BASE_URL . '/compiled/css/app-dark.css' ?>">
 <link rel="stylesheet" href="<?php echo MAZER_BASE_URL . '/compiled/css/iconly.css' ?>">
+
+<style>
+    * {
+        font-family: var(--bs-font-sans-serif) !important;
+    }
+</style>

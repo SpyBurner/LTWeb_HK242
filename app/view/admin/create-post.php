@@ -1,9 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Management - Admin Panel</title>
+    <!-- Add these to your head section -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Replace textarea with div for Quill
+        const textareaElement = document.getElementById('articleContent');
+        const quillContainer = document.createElement('div');
+        quillContainer.id = 'quill-editor';
+        quillContainer.style.height = '300px';
+        textareaElement.parentNode.insertBefore(quillContainer, textareaElement);
+        textareaElement.style.display = 'none';
+        
+        // Initialize Quill editor
+        const quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+        
+        // Copy Quill content to textarea before form submission
+        document.querySelector('form').addEventListener('submit', function() {
+            textareaElement.value = quill.root.innerHTML;
+        });
+    });
+    </script>
     
     <?php require_once __DIR__."/../common/admin-link.php"; ?>
     
@@ -72,51 +109,11 @@
                                             <input type="text" class="form-control" id="articleTitle" name="title" required>
                                         </div>
                                         
-                                        <!-- <div class="mb-3">
-                                            <label for="articleCategorySelect" class="form-label">Category</label>
-                                            <select class="form-select" id="articleCategorySelect" required>
-                                                <option value="">Select category</option>
-                                                <option value="tech">Technology</option>
-                                                <option value="health">Health</option>
-                                                <option value="sport">Sport</option>
-                                                <option value="finance">Finance</option>
-                                            </select>
-                                        </div> -->
-                                        
                                         <div class="mb-3">
                                             <label for="articleContent" class="form-label">Nội dung</label>
                                             <textarea class="form-control" id="articleContent" name="content" rows="12" required></textarea>
                                         </div>
-                                        
-                                        <!-- <div class="mb-3">
-                                            <label for="articleImage" class="form-label">Featured Image</label>
-                                            <input class="form-control" type="file" id="articleImage">
-                                        </div> -->
-                                        
-                                        <!-- <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="articleAuthor" class="form-label">Author</label>
-                                                <input type="text" class="form-control" id="articleAuthor" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="articleDate" class="form-label">Publish Date</label>
-                                                <input type="date" class="form-control" id="articleDate" required>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <!-- <div class="mb-3">
-                                            <label for="articleStatus" class="form-label">Status</label>
-                                            <select class="form-select" id="articleStatus" required>
-                                                <option value="published">Published</option>
-                                                <option value="draft">Draft</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="articleFeatured">
-                                            <label class="form-check-label" for="articleFeatured">Feature this article</label>
-                                        </div> -->
-                                        
+                                
                                         <div class="d-flex justify-content-end gap-2">
                                             <a href="/admin/blog" class="btn btn-secondary">Hủy</a>
                                             <button type="reset" class="btn btn-danger">Reset</button>
@@ -135,42 +132,5 @@
     <?php 
         require_once __DIR__."/../common/admin-script.php";
     ?>
-    
-    <!-- <script>
-        // JavaScript for handling article and comment operations
-        document.addEventListener('DOMContentLoaded', function() {            
-            // Handle article form submission
-            document.getElementById('articleForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const articleId = document.getElementById('articleId').value;
-                if (articleId) {
-                    updateArticle(articleId);
-                } else {
-                    createNewArticle();
-                }
-            });
-            
-            // Example function to fetch article data (would be replaced with AJAX in production)
-            function fetchArticleData(id) {
-                console.log(`Fetching data for article ID: ${id}`);
-                // This would be an AJAX call in a real application
-                document.getElementById('articleId').value = id;
-                document.getElementById('articleTitle').value = 'Sample Article ' + id;
-                document.getElementById('articleContent').value = 'This is the content of article ' + id;
-                document.getElementById('articleAuthor').value = 'Admin User';
-                document.getElementById('articleDate').value = '2023-06-15';
-                document.getElementById('articleStatus').value = 'published';
-            }
-            
-            // Example functions for CRUD operations (would be replaced with AJAX in production)
-            function createNewArticle() {
-                console.log('Creating new article');
-                alert('Article created successfully!');
-                // Reset form and switch tabs
-                document.getElementById('articleForm').reset();
-                document.getElementById('articles-tab').click();
-            }
-        });
-    </script> -->
 </body>
 </html>

@@ -135,4 +135,41 @@ class AdminController extends Controller {
             require_once __DIR__ . "/../view/admin/edit-post.php";
         }
     }
+
+    public function searchBlog() {
+        $search = $_GET['term'];
+        $result = BlogPostService::searchTitle($search);
+        if (!$result['success']){
+            $this->redirectWithMessage('/blog', $result['message']);
+        }
+
+        $posts = $result['data'];
+        $authors = array_map(function($post) {
+            return BlogPostService::findAuthorById($post->getAdminid())['data'];
+        }, $posts);
+
+        $likes = array_map(function($post) {
+            return BlogPostService::allLikesByBlogId($post->getBlogid())['data'];
+        }, $posts);
+
+        require_once __DIR__ . "/../view/admin/bloglist.php";
+    }
+
+    public function searchComment() {
+        $blogid = $_GET['blogid'];
+        $search = $_GET['term'];
+        $result = CommentService::searchComment($blogid, $search);
+        if (!$result['success']){
+            $this->redirectWithMessage('/blog', $result['message']);
+        }
+        
+        $id = $blogid;
+        $comments = $result['data'];
+        
+        $commentUser = array_map(function($comment) {
+            return UserService::findById($comment->getUserid())['data']->getUsername();    
+        }, $comments);
+        
+        require_once __DIR__ . "/../view/admin/blog-comment.php";
+    }
 }

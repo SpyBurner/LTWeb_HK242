@@ -3,12 +3,56 @@ assert($post);
 assert($admin);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Management - Admin Panel</title>
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Replace textarea with div for Quill
+        const textareaElement = document.getElementById('articleContent');
+        const quillContainer = document.createElement('div');
+        quillContainer.id = 'quill-editor';
+        quillContainer.style.height = '300px';
+        textareaElement.parentNode.insertBefore(quillContainer, textareaElement);
+        textareaElement.style.display = 'none';
+        
+        // Initialize Quill editor
+        const quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+        
+        quill.root.innerHTML = textareaElement.value;
     
+        // Get specific form by its action URL
+        const form = document.querySelector('form[action^="/admin/blog/edit"]');
+        if (form) {
+            form.addEventListener('submit', function() {
+                // Copy Quill content to textarea
+                textareaElement.value = quill.root.innerHTML;
+                console.log("Form submitting with content:", textareaElement.value);
+            });
+        }
+        });
+    </script>
+
     <?php require_once __DIR__."/../common/admin-link.php"; ?>
     
     <style>
@@ -89,7 +133,7 @@ assert($admin);
                                         
                                         <div class="mb-3">
                                             <label for="articleContent" class="form-label">Nội dung</label>
-                                            <textarea class="form-control" name="content" rows="12" required><?= htmlspecialchars($post->getContent()); ?></textarea>
+                                            <textarea id="articleContent" class="form-control" name="content" rows="12" required><?= htmlspecialchars($post->getContent()); ?></textarea>
                                         </div>
                                         
                                         <div class="d-flex justify-content-end gap-2">

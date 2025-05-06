@@ -4,6 +4,7 @@ assert(isset($comments));
 assert(isset($commentUser));
 assert(isset($related_posts));
 assert(isset($likes));
+assert(isset($isLiked));
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
@@ -11,6 +12,8 @@ assert(isset($likes));
 <head>
     <?php require_once __DIR__ . "/../common/head.php"; ?>
     <title>CakeZone Blog</title>
+    <meta name="keywords" content="CakeZone, Bánh Kẹo, Ngọt">
+    <meta name="description" content="<?= htmlspecialchars(strtok($blog_info->getContent(), "\n")) ?>">
     <style type="text/tailwindcss">
         @media (min-width: 768px) {
             #container {
@@ -37,6 +40,23 @@ assert(isset($likes));
                 @apply w-full;
             }
         }
+
+        .blog-content ul {
+            list-style-type: disc !important;
+            padding-left: 2rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .blog-content ol {
+            list-style-type: decimal !important;
+            padding-left: 2rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .blog-content ul li, .blog-content ol li {
+            margin-bottom: 0.5rem !important;
+        }
+
     </style>
 </head>
 
@@ -52,34 +72,29 @@ assert(isset($likes));
                 </ul>
             </div>
             <div class="flex-1">
-                <h5 class='italic font-semibold'>Bài viết</h5>
+                <p class='italic font-semibold'>Bài viết</p>
                 <h1 class='text-2xl font-bold mt-4'><?= $blog_info->getTitle() ?></h1>
                 <p class='text-sm italic mt-2'><?= $blog_info->getPostdate() ?></p>
-                <p class='mt-4'><?= $blog_info->getContent() ?></p>
+                <div class='mt-10 blog-content'>
+                    <?= $blog_info->getContent() ?>
+                </div>
             </div>
         </div>
         <div class="flex justify-end mt-8">
-            <a href="#"><i class="fa-solid fa-thumbs-up h-full text-2xl"></i></a>
-            <p class="text-xl ml-2"><?= $likes ?></p>
+            <button id="likeButton" data-blogid="<?= $blog_info->getBlogid() ?>">
+                <i id="likeIcon" class="fa-solid fa-thumbs-up text-2xl <?= $isLiked ? 'text-primary' : '' ?>"></i>
+            </button>
+            <span id="likeCount" class="text-xl ml-2"><?= $likes ?></span>
         </div>
         <div class="mt-8 p-4 border rounded-md shadow-md bg-base-100 w-full">                
-            <form method="post" action="/blog/view?id=<?= $blog_info->getBlogid() ?>" class="flex items-start space-x-3">
+            <form method="post" action="/blog/view?id=<?= $blog_info->getBlogid() ?>" class="flex-1">
                 <!-- User Avatar -->
-                <div class="avatar">
-                <div class="w-10 rounded-full">
-                    <img src="https://i.pravatar.cc/100" alt="User Avatar">
-                </div>
-                </div>
-            
-                <!-- Comment Input -->
-                <div class="flex-1">
-                <textarea class="textarea textarea-bordered w-full" name="content" placeholder="Viết bình luận"></textarea>
-                
+                <textarea class="textarea px-4 w-full" name="content" placeholder="Viết bình luận"></textarea>
+                    
                 <!-- Action Buttons -->
                 <div class="flex justify-end space-x-2 mt-2">
                     <button type="reset" class="btn btn-ghost btn-md">Reset</button>
                     <button type="submit" class="btn btn-primary btn-md">Post</button>
-                </div>
                 </div>
             </form>
             <h2 class="font-bold mt-6 text-2xl">Tất cả bình luận</h2>
@@ -87,14 +102,15 @@ assert(isset($likes));
             $i = 0;
             while ($i < count($comments)): 
                 // Bảo vệ dữ liệu đầu ra tránh XSS
-                $username = htmlspecialchars($commentUser[$i]);
+                $username = htmlspecialchars($commentUser[$i]['username']);
+                $avatar = '/'.$commentUser[$i]['avatar'];
                 $commentDate = htmlspecialchars($comments[$i]->getCommentdate());
                 $content = htmlspecialchars($comments[$i]->getContent());
             ?>
                 <div class="flex items-start mt-4 space-x-3">
                     <div class="avatar">
                         <div class="w-10 rounded-full">
-                            <img src="https://i.pravatar.cc/100" alt="User Avatar">
+                            <img src="<?= $avatar ?>" alt="User Avatar">
                         </div>
                     </div>
                     <div class="flex-1">
@@ -107,7 +123,7 @@ assert(isset($likes));
                 </div>
             <?php 
                 $i++;
-            endwhile;
+                endwhile;
             ?>
         </div>
         <div class="mt-8">
@@ -118,15 +134,16 @@ assert(isset($likes));
                 <?php
                     $count = 1;
                     foreach ($related_posts as $post):
+                        $url = "/blog/view?id=" . htmlspecialchars($post->getBlogid());
                         $title = htmlspecialchars($post->getTitle());
                         $postdate = htmlspecialchars($post->getPostdate());
                         $content = htmlspecialchars($post->getContent());
                 ?>
-                    <div class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $count ?>">
+                    <a href="<?= $url ?>" class="carousel-item bg-white card-body rounded-lg other-posts" id="post<?= $count ?>">
                         <h2 class="card-title"><?= $title ?></h2>
                         <p class="italic"><?= $postdate ?></p>
-                        <p class="line-clamp-3"><?= $content ?></p>
-                    </div>
+                        <p class="line-clamp-3"><?= nl2br(htmlspecialchars($content)) ?></p>
+                    </a>
                 <?php 
                 $count++;
                 endforeach; 
@@ -256,6 +273,48 @@ assert(isset($likes));
                     }
                 }, 290);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButton = document.getElementById('likeButton');
+            const likeIcon = document.getElementById('likeIcon');
+            const likeCount = document.getElementById('likeCount');
+            const blogId = likeButton.getAttribute('data-blogid');
+            
+            let isLiked = likeIcon.classList.contains('text-primary');
+            let currentLikes = parseInt(likeCount.textContent);
+            
+            likeButton.addEventListener('click', function() {
+                if (!isLiked) {
+                    likeIcon.classList.add('text-primary');
+                    currentLikes++;
+                    isLiked = true;
+                }
+                else return;
+                
+                likeCount.textContent = currentLikes;
+                
+                // Gửi yêu cầu AJAX đến server
+                fetch('/blog/like', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        blogid: blogId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return Promise.reject('Lỗi khi thích bài viết');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                });
+            });
         });
     </script>
 

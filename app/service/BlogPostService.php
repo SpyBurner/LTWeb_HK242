@@ -115,7 +115,7 @@ class BlogPostService implements IService
     public static function findAll()
     {
         try {
-            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM blogpost");
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT b.* FROM `blogpost` b left join `like` l on b.blogid = l.blogid group by b.blogid order by count(l.userid) desc");
             $stmt->execute();
             $data = $stmt->fetchAll();
 
@@ -134,6 +134,61 @@ class BlogPostService implements IService
             $stmt->execute([':id' => $id]);
 
             return ['success' => true, 'message' => 'News deleted successfully'];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function searchTitle($search)
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM blogpost WHERE title LIKE :search");
+            $stmt->execute([':search' => '%' . $search . '%']);
+            $data = $stmt->fetchAll();
+
+            return ['success' => true, 'data' => array_map(function ($item) {
+                return BlogPostModel::toObject($item);
+            }, $data)];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function searchBlogByKeyword($keyword)
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare(
+                "SELECT * FROM blogpost WHERE title LIKE ? OR content LIKE ?"
+            );
+            $stmt->execute(["%$keyword%", "%$keyword%"]);
+            $data = $stmt->fetchAll();
+
+            return ['success' => true, 'data' => array_map(function ($item) {
+                return BlogPostModel::toObject($item);
+            }, $data)];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function addLike($userid, $blogid) {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("INSERT INTO `like` (userid, blogid) VALUES (:userid, :blogid)");
+            $stmt->execute([':userid' => $userid, ':blogid' => $blogid]);
+
+            return ['success' => true, 'message' => 'Like added successfully'];
+        } catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
+    public static function checkLiked($userid, $blogid) {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM `like` WHERE userid = :userid AND blogid = :blogid");
+            $stmt->execute([':userid' => $userid, ':blogid' => $blogid]);
+            $data = $stmt->fetchAll();
+
+            return ['success' => true, 'data' => count($data) > 0];
         } catch (Exception $e) {
             return handleException($e);
         }

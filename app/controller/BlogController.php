@@ -1,10 +1,11 @@
 <?php
 namespace controller;
 use Core\Controller;
-use Dom\Comment;
+use service\AuthService;
 use Service\BlogPostService;
 use Service\CommentService;
 use service\UserService;
+use core\SessionHelper;
 
 class BlogController extends Controller {
     public function index() {
@@ -21,10 +22,28 @@ class BlogController extends Controller {
         require_once __DIR__ . "/../view/news/news.php";
     }
 
+    public function search() {
+        $keyword = $_GET['keyword'];
+        $result = BlogPostService::searchBlogByKeyword($keyword);
+        if (!$result['success']){
+            $this->redirectWithMessage('/blog', $result['message']);
+        }
+
+        $posts = $result['data'];
+
+        require_once __DIR__ . "/../view/news/news.php";
+    }
+
     public function getBlogInfo() {
         $id = $_GET['id'];
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $userid = $_SESSION['userid'];
+            SessionHelper::setFlash('return_to', "/blog/view?id=$id");
+
+            $this->requireAuth();
+
+            $result = AuthService::validateSession();
+
+            $userid = $result['user']['userid'];
             $content = $_POST['content'];
 
             $model = CommentService::createInstance($id, $userid, $content);
@@ -46,9 +65,14 @@ class BlogController extends Controller {
                 $this->redirectWithMessage('/blog', $comments['message']);
             }
             $comments = $comments['data'];
-
+            
             $commentUser = array_map(function($comment) {
-                return UserService::findById($comment->getUserid())['data']->getUsername();    
+                $user = UserService::findById($comment->getUserid());
+                return [
+                    'username' => $user['data']->getUsername(),
+                    'avatar' => $user['avatar']
+                ];
+                // return UserService::findById($comment->getUserid())['data']->getUsername();    
             }, $comments);
 
             $likes = BlogPostService::allLikesByBlogId($id);
@@ -56,6 +80,16 @@ class BlogController extends Controller {
                 $this->redirectWithMessage('/blog', $likes['message']);
             }
             $likes = $likes['data'];
+
+            $isLiked = false;
+            $authResult = AuthService::validateSession();
+            if ($authResult['success']) {
+                $userid = $authResult['user']['userid'];
+                $likeStatus = BlogPostService::checkLiked($userid, $id);
+                if ($likeStatus['success']) {
+                    $isLiked = $likeStatus['data'];
+                }
+            }
 
             $related_posts = BlogPostService::findAllRelatedPosts($id)['data'];
             
@@ -67,5 +101,21 @@ class BlogController extends Controller {
         }
     }
 
+    public function handleLike() {
+        $this->requireAuth();
+        
+        $result = AuthService::validateSession();
 
+        $userid = $result['user']['userid'];
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        $blogid = $data['blogid'];
+
+        $result = BlogPostService::addLike($userid, $blogid);
+        if (!$result['success']){
+            $this->redirectWithMessage('/blog', $result['message']);
+        }
+    }
 }
