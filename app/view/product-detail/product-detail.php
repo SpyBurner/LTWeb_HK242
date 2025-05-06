@@ -1,357 +1,247 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
-    <?php require_once "../common/head.php"; ?>
-    <title>CakeZone | Home</title>
+    <?php require_once __DIR__ . "/../common/head.php"; ?>
+    <title>CakeZone | <?= htmlspecialchars($product->getName()) ?></title>
 
     <style type="text/tailwindcss">
         .brand-name {
             @apply text-gray-500;
         }
-
         .product-name {
             @apply text-lg font-semibold text-black;
         }
-
         .price {
             @apply text-xl;
         }
-
         .sold-amt {
             @apply text-sm text-gray-500;
         }
-
     </style>
 </head>
 
-  <body>
-  <?php require_once "../common/header.php"; ?>
+<body>
+<?php require_once __DIR__ . "/../common/header.php"; ?>
 
-
-    <div id="body" class="mx-6 md:w-3/4 md:mx-auto my-10">
-      <div class="flex flex-col md:flex-row gap-8">
+<div id="body" class="mx-6 md:w-3/4 md:mx-auto my-10">
+    <div class="flex flex-col md:flex-row gap-8">
         <div class="w-full md:w-1/2">
-          <div class="carousel rounded-box">
-            <div class="carousel-item w-full">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                class="w-full"
-                alt="Product Image 1"
-              />
+            <div class="carousel rounded-box">
+                <div class="carousel-item w-full">
+                    <img
+                        src="/<?= htmlspecialchars($product->getAvatarurl()) ?>"
+                        class="w-full"
+                        alt="<?= htmlspecialchars($product->getName()) ?>"
+                    />
+                </div>
             </div>
-            <div class="carousel-item w-full">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                class="w-full"
-                alt="Product Image 2"
-              />
-            </div>
-            <div class="carousel-item w-full">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                class="w-full"
-                alt="Product Image 3"
-              />
-            </div>
-          </div>
         </div>
 
         <div class="w-full md:w-1/2">
-          <h1 class="text-3xl font-bold mb-4">Product Title</h1>
-          <p class="text-gray-500 mb-4">Brand: CALBEE</p>
-          <p class="text-2xl text-red-700 font-semibold mb-4">139,000đ</p>
-          <p class="text-gray-600 mb-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
+            <h1 class="text-3xl font-bold mb-4"><?= htmlspecialchars($product->getName()) ?></h1>
+            <p class="text-gray-500 mb-4">Brand: <?= htmlspecialchars($product->manufacturerName) ?></p>
+            <p class="text-2xl text-red-700 font-semibold mb-4"><?= number_format($product->getPrice(), 0, ',', '.') ?> VND</p>
+            <p class="text-gray-600 mb-6">
+                <?= nl2br(htmlspecialchars($product->getDescription())) ?>
+            </p>
 
-          <div class="flex items-center gap-4 mb-6">
-            <span class="text-gray-600">Quantity:</span>
-            <div class="flex items-center gap-2">
-              <button class="btn btn-sm btn-outline">-</button>
-              <input
-                type="text"
-                class="input input-bordered w-16 text-center"
-                value="1"
-              />
-              <button class="btn btn-sm btn-outline">+</button>
-            </div>
-          </div>
-
-          <button class="btn btn-primary w-full mb-6">
-            <i class="fas fa-shopping-cart"></i>
-            Add to Cart
-          </button>
-        </div>
-      </div>
-
-      <!-- Product Description -->
-      <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-4">Thông tin chi tiết</h2>
-        <ul class="list-disc list-inside text-gray-600">
-          <li>Material: 100% Cotton</li>
-          <li>Color: Red</li>
-          <li>Size: M</li>
-          <li>Weight: 0.5kg</li>
-          <li>Warranty: 6 months</li>
-          <li>Origin: Vietnam</li>
-        </ul>
-      </div>
-
-      <!-- Rating and Reviews Section -->
-      <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-6">Đánh giá sản phẩm</h2>
-
-        <div class="flex items-center gap-4 mb-6">
-          <div class="text-4xl font-bold">4.5</div>
-          <div class="rating rating-md">
-            <input
-              type="radio"
-              name="rating-2"
-              class="mask mask-star-2 bg-orange-400"
-            />
-            <input
-              type="radio"
-              name="rating-2"
-              class="mask mask-star-2 bg-orange-400"
-              checked
-            />
-            <input
-              type="radio"
-              name="rating-2"
-              class="mask mask-star-2 bg-orange-400"
-            />
-            <input
-              type="radio"
-              name="rating-2"
-              class="mask mask-star-2 bg-orange-400"
-            />
-            <input
-              type="radio"
-              name="rating-2"
-              class="mask mask-star-2 bg-orange-400"
-            />
-          </div>
-          <span class="text-gray-600">(120 đánh giá)</span>
-        </div>
-
-        <!-- Rating -->
-        <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4">Thống kê đánh giá</h3>
-          <div class="space-y-2">
-            <div class="flex items-center gap-2">
-              <span class="w-16">5 sao</span>
-              <progress
-                class="progress progress-primary w-64"
-                value="80"
-                max="100"
-              ></progress>
-              <span class="text-gray-600">80%</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-16">4 sao</span>
-              <progress
-                class="progress progress-primary w-64"
-                value="15"
-                max="100"
-              ></progress>
-              <span class="text-gray-600">15%</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-16">3 sao</span>
-              <progress
-                class="progress progress-primary w-64"
-                value="3"
-                max="100"
-              ></progress>
-              <span class="text-gray-600">3%</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-16">2 sao</span>
-              <progress
-                class="progress progress-primary w-64"
-                value="1"
-                max="100"
-              ></progress>
-              <span class="text-gray-600">1%</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-16">1 sao</span>
-              <progress
-                class="progress progress-primary w-64"
-                value="1"
-                max="100"
-              ></progress>
-              <span class="text-gray-600">1%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Customer Reviews -->
-        <div>
-          <h3 class="text-xl font-bold mb-4">Bình luận đánh giá</h3>
-          <div class="space-y-6">
-            <div class="border-b pb-4">
-              <div class="flex items-center gap-2 mb-2">
-                <div class="avatar">
-                  <div class="w-10 rounded-full">
-                    <img
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+            <div class="flex items-center gap-4 mb-6">
+                <span class="text-gray-600">Quantity:</span>
+                <div class="flex items-center gap-2">
+                    <button class="btn btn-sm btn-outline quantity-btn minus">-</button>
+                    <input
+                        type="text"
+                        class="input input-bordered w-16 text-center input-quantity"
+                        value="1"
+                        min="1"
                     />
-                  </div>
+                    <button class="btn btn-sm btn-outline quantity-btn plus">+</button>
                 </div>
-                <span class="font-semibold">Người dùng 1</span>
-              </div>
-              <div class="rating rating-sm mb-2">
-                <input
-                  type="radio"
-                  name="rating-1"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-1"
-                  class="mask mask-star-2 bg-orange-400"
-                  checked
-                />
-                <input
-                  type="radio"
-                  name="rating-1"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-1"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-1"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-              </div>
-              <p class="text-gray-600">
-                Sản phẩm rất tốt, chất lượng đáng giá tiền!
-              </p>
             </div>
 
-            <div class="border-b pb-4">
-              <div class="flex items-center gap-2 mb-2">
-                <div class="avatar">
-                  <div class="w-10 rounded-full">
-                    <img
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    />
-                  </div>
-                </div>
-                <span class="font-semibold">Người dùng 2</span>
-              </div>
-              <div class="rating rating-sm mb-2">
-                <input
-                  type="radio"
-                  name="rating-2"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-2"
-                  class="mask mask-star-2 bg-orange-400"
-                  checked
-                />
-                <input
-                  type="radio"
-                  name="rating-2"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-2"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-                <input
-                  type="radio"
-                  name="rating-2"
-                  class="mask mask-star-2 bg-orange-400"
-                />
-              </div>
-              <p class="text-gray-600">Giao hàng nhanh, đóng gói cẩn thận.</p>
-            </div>
-          </div>
+            <button class="btn btn-primary w-full mb-6" id="addToCartBtn" data-productid="<?= $product->getProductid() ?>">
+                <i class="fas fa-shopping-cart"></i>
+                Add to Cart
+            </button>
         </div>
-      </div>
-
-      <!-- Related Products -->
-      <div class="mt-10 border-t pt-6">
-        <h2 class="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="card bg-base-100 shadow-sm relative w-full">
-            <a href="#">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="product img"
-                class="w-full h-32 object-cover"
-              />
-              <div class="card-body p-2">
-                <p
-                  class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide"
-                >
-                  CALBEE
-                </p>
-                <h2 class="text-xs font-bold text-gray-800 truncate">
-                  Related Product 1
-                </h2>
-                <p class="text-base font-semibold text-primary">139,000đ</p>
-                <div class="flex items-center justify-between mt-1">
-                  <p class="text-[10px] text-gray-600">
-                    Đã bán: <span class="font-semibold">206</span>
-                  </p>
-                  <button
-                    class="btn btn-primary btn-xxs flex items-center gap-1"
-                  >
-                    <i class="fa-solid fa-cart-plus"></i>
-                    <span>Thêm</span>
-                  </button>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <div class="card bg-base-100 shadow-sm relative w-full">
-            <a href="#">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="product img"
-                class="w-full h-32 object-cover"
-              />
-              <div class="card-body p-2">
-                <p
-                  class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide"
-                >
-                  CALBEE
-                </p>
-                <h2 class="text-xs font-bold text-gray-800 truncate">
-                  Related Product 2
-                </h2>
-                <p class="text-base font-semibold text-primary">159,000đ</p>
-                <div class="flex items-center justify-between mt-1">
-                  <p class="text-[10px] text-gray-600">
-                    Đã bán: <span class="font-semibold">150</span>
-                  </p>
-                  <button
-                    class="btn btn-primary btn-xxs flex items-center gap-1"
-                  >
-                    <i class="fa-solid fa-cart-plus"></i>
-                    <span>Thêm</span>
-                  </button>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <?php require_once "../common/footer.php"; ?>
+    <div class="mt-10 border-t pt-6">
+        <h2 class="text-2xl font-bold mb-4">Thông tin chi tiết</h2>
+        <ul class="list-disc list-inside text-gray-600">
+            <li>Category: <?= htmlspecialchars($product->categoryName) ?></li>
+            <li>Stock: <?= $product->getStock() ?> available</li>
+            <li>Sold: <?= $product->getBought() ?> items</li>
+        </ul>
+    </div>
 
-  </body>
+    <div class="mt-10 border-t pt-6">
+        <h2 class="text-2xl font-bold mb-6">Đánh giá sản phẩm</h2>
+        <div class="flex items-center gap-4 mb-6">
+            <div class="text-4xl font-bold"><?= number_format($avgRating, 1) ?></div>
+            <div class="rating rating-md">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <input
+                        type="radio"
+                        name="rating-2"
+                        class="mask mask-star-2 bg-orange-400"
+                        <?= $i == round($avgRating) ? 'checked' : '' ?>
+                        disabled
+                    />
+                <?php endfor; ?>
+            </div>
+            <span class="text-gray-600">(<?= $ratingCount ?> đánh giá)</span>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-xl font-bold mb-4">Thống kê đánh giá</h3>
+            <div class="space-y-2">
+                <?php for ($i = 5; $i >= 1; $i--): ?>
+                    <div class="flex items-center gap-2">
+                        <span class="w-16"><?= $i ?> sao</span>
+                        <progress
+                            class="progress progress-primary w-64"
+                            value="<?= $ratingCount > 0 ? ($ratingStats[$i] / $ratingCount * 100) : 0 ?>"
+                            max="100"
+                        ></progress>
+                        <span class="text-gray-600"><?= $ratingCount > 0 ? round(($ratingStats[$i] / $ratingCount * 100), 1) : 0 ?>%</span>
+                    </div>
+                <?php endfor; ?>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-bold mb-4">Bình luận đánh giá</h3>
+            <div class="space-y-6">
+                <?php if (empty($reviews)): ?>
+                    <p class="text-gray-600">Chưa có đánh giá nào cho sản phẩm này.</p>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="pb-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="avatar">
+                                    <div class="w-10 rounded-full">
+                                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                    </div>
+                                </div>
+                                <span class="font-semibold">Người dùng</span>
+                            </div>
+                            <div class="rating rating-sm mb-2">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <input
+                                        type="radio"
+                                        name="rating-<?= $review->getProductid() ?>"
+                                        class="mask mask-star-2 bg-orange-400"
+                                        <?= $i == $review->getRating() ? 'checked' : '' ?>
+                                        disabled
+                                    />
+                                <?php endfor; ?>
+                            </div>
+                            <p class="text-gray-600">
+                                <?= nl2br(htmlspecialchars($review->getComment())) ?>
+                            </p>
+                            <p class="text-sm text-gray-500 mt-2">
+                                <?= date('d/m/Y', strtotime($review->getRatingDate())) ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-10 border-t pt-6">
+        <h2 class="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <?php foreach ($relatedProducts as $related): ?>
+                <div class="card bg-base-100 shadow-sm relative w-full">
+                    <a href="/products/detail/<?= $related->getProductid() ?>">
+                        <img
+                            src="/<?= htmlspecialchars($related->getAvatarurl()) ?>"
+                            alt="<?= htmlspecialchars($related->getName()) ?>"
+                            class="w-full h-32 object-cover"
+                        />
+                        <div class="card-body p-2">
+                            <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
+                                <?= htmlspecialchars($related->manufacturerName) ?>
+                            </p>
+                            <h2 class="text-xs font-bold text-gray-800 truncate">
+                                <?= htmlspecialchars($related->getName()) ?>
+                            </h2>
+                            <p class="text-base font-semibold text-primary"><?= number_format($related->getPrice(), 0, ',', '.') ?> VND</p>
+                            <div class="flex items-center justify-between mt-1">
+                                <p class="text-[10px] text-gray-600">
+                                    Đã bán: <span class="font-semibold"><?= $related->getBought() ?></span>
+                                </p>
+                                <button class="btn btn-primary btn-xxs flex items-center gap-1" 
+                                        onclick="addToCart(<?= $related->getProductid() ?>, 1, event)">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm</span>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<?php require_once __DIR__ . "/../common/footer.php"; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const minusBtn = document.querySelector('.quantity-btn.minus');
+    const plusBtn = document.querySelector('.quantity-btn.plus');
+    const quantityInput = document.querySelector('.input-quantity');
+    const min = parseInt(quantityInput.getAttribute('min'));
+
+    minusBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let value = parseInt(quantityInput.value);
+        if (value > min) {
+            quantityInput.value = value - 1;
+        }
+    });
+
+    plusBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let value = parseInt(quantityInput.value);
+        quantityInput.value = value + 1;
+    });
+
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function() {
+            const productId = this.getAttribute('data-productid');
+            const amount = parseInt(quantityInput.value);
+            addToCart(productId, amount);
+        });
+    }
+});
+
+function addToCart(productId, amount = 1, event = null) {
+    if (event) event.preventDefault();
+
+    fetch(`/cart/add/${productId}?product_id=${productId}&amount=${amount}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Product added to cart!');
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding to cart');
+    });
+}
+</script>
+</body>
 </html>

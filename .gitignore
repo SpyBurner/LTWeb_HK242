@@ -3,3 +3,5 @@
 **/errors.log
 **/mazer-template
 **/.idea
+.vscode
+**/repo
