@@ -287,7 +287,7 @@ class OrderService implements IService {
             $checkStmt = $pdo->prepare(
                 "SELECT amount FROM HasProduct WHERE orderid = :orderid AND productid = :productid"
             );
-            $checkStmt->execute([':orderid' => $orderid, ':productid' => $productId]);
+            $checkStmt->execute([':orderid' => $orderId, ':productid' => $productId]);
             $currentAmount = $checkStmt->fetchColumn();
 
             if ($currentAmount === false) {
