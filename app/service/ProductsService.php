@@ -128,12 +128,7 @@ class ProductsService implements IService {
             
             $stmt->execute();
             
-            $products = array_map(function($row) {
-                $product = ProductModel::toObject($row);
-                $product->manufacturerName = $row['manufacturer_name'];
-                $product->categoryName = $row['category_name'];
-                return $product;
-            }, $stmt->fetchAll());
+            $products = array_map([ProductModel::class, 'toObject'], $stmt->fetchAll());
             
             return [
                 'success' => true,
@@ -172,6 +167,8 @@ class ProductsService implements IService {
             $data['avgrating'] = $data['avgrating'] ?? 0;
             $data['bought'] = $data['bought'] ?? 0;
             $data['productid'] = $data['productid'] ?? null;
+            $data['manufacturerName'] = $data['manufacturerName'] ?? null; // Added
+            $data['categoryName'] = $data['categoryName'] ?? null;        // Added
 
             if (empty($data['productid'])) {
                 // Thêm sản phẩm mới (INSERT)
@@ -241,8 +238,6 @@ class ProductsService implements IService {
 
             if ($result) {
                 $product = ProductModel::toObject($result);
-                $product->manufacturerName = $result['manufacturer_name'];
-                $product->categoryName = $result['category_name'];
                 return ['success' => true, 'data' => $product];
             }
             return ['success' => false, 'message' => 'Product not found'];
@@ -291,12 +286,7 @@ class ProductsService implements IService {
 
             $stmt->execute();
 
-            $products = array_map(function($row) {
-                $product = ProductModel::toObject($row);
-                $product->manufacturerName = $row['manufacturer_name'];
-                $product->categoryName = $row['category_name'];
-                return $product;
-            }, $stmt->fetchAll());
+            $products = array_map([ProductModel::class, 'toObject'], $stmt->fetchAll());
 
             return ['success' => true, 'data' => $products];
         } catch (Exception $e) {
@@ -326,12 +316,7 @@ class ProductsService implements IService {
             $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
             $stmt->execute();
             
-            $products = array_map(function($row) {
-                $product = ProductModel::toObject($row);
-                $product->manufacturerName = $row['manufacturer_name'];
-                $product->categoryName = $row['category_name'];
-                return $product;
-            }, $stmt->fetchAll());
+            $products = array_map([ProductModel::class, 'toObject'], $stmt->fetchAll());
 
             return ['success' => true, 'data' => $products];
         } catch (Exception $e) {
@@ -350,12 +335,7 @@ class ProductsService implements IService {
                 ORDER BY p.productid DESC
             ");
             $stmt->execute([':cateid' => $cateid]);
-            $products = array_map(function($row) {
-                $product = ProductModel::toObject($row);
-                $product->manufacturerName = $row['manufacturer_name'];
-                $product->categoryName = $row['category_name'];
-                return $product;
-            }, $stmt->fetchAll());
+            $products = array_map([ProductModel::class, 'toObject'], $stmt->fetchAll());
 
             return ['success' => true, 'data' => $products];
         } catch (Exception $e) {
@@ -374,12 +354,7 @@ class ProductsService implements IService {
                 ORDER BY p.productid DESC
             ");
             $stmt->execute([':mfgid' => $mfgid]);
-            $products = array_map(function($row) {
-                $product = ProductModel::toObject($row);
-                $product->manufacturerName = $row['manufacturer_name'];
-                $product->categoryName = $row['category_name'];
-                return $product;
-            }, $stmt->fetchAll());
+            $products = array_map([ProductModel::class, 'toObject'], $stmt->fetchAll());
 
             return ['success' => true, 'data' => $products];
         } catch (Exception $e) {
@@ -410,7 +385,7 @@ class ProductsService implements IService {
             $newAvg = ($currentRating + $newRating) / 2;
             $productModel->setAvgrating($newAvg);
 
-            return self::save($productModel);
+            return self::save(ProductModel::toArray($productModel));
         } catch (Exception $e) {
             return handleException($e);
         }
@@ -454,7 +429,9 @@ class ProductsService implements IService {
             'mfgid' => $obj->getMfgid(),
             'stock' => $obj->getStock(),
             'cateid' => $obj->getCateid(),
-            'avatarurl' => $obj->getAvatarurl()
+            'avatarurl' => $obj->getAvatarurl(),
+            'manufacturerName' => $obj->getManufacturerName(), // Added
+            'categoryName' => $obj->getCategoryName()         // Added
         ];
     }
 }

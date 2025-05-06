@@ -14,9 +14,23 @@ class ProductModel implements IModel {
     private $stock;
     private $cateid;
     private $avatarurl;
+    private $manufacturerName; // Added property
+    private $categoryName;    // Added property
 
-    public function __construct($name, $price, $description, $mfgid, $stock, $cateid, $avatarurl, 
-                                $productid = null, $avgrating = 0.0, $bought = 0) {
+    public function __construct(
+        $name,
+        $price,
+        $description,
+        $mfgid,
+        $stock,
+        $cateid,
+        $avatarurl,
+        $manufacturerName = null, // Added parameter
+        $categoryName = null,     // Added parameter
+        $productid = null,
+        $avgrating = 0.0,
+        $bought = 0
+    ) {
         $this->productid = $productid;
         $this->name = $name;
         $this->price = $price;
@@ -27,6 +41,8 @@ class ProductModel implements IModel {
         $this->stock = $stock;
         $this->cateid = $cateid;
         $this->avatarurl = $avatarurl;
+        $this->manufacturerName = $manufacturerName;
+        $this->categoryName = $categoryName;
     }
 
     // Getters
@@ -70,6 +86,14 @@ class ProductModel implements IModel {
         return $this->avatarurl;
     }
 
+    public function getManufacturerName() {
+        return $this->manufacturerName;
+    }
+
+    public function getCategoryName() {
+        return $this->categoryName;
+    }
+
     // Setters
     public function setName($name) {
         $this->name = $name;
@@ -107,6 +131,14 @@ class ProductModel implements IModel {
         $this->avatarurl = $avatarurl;
     }
 
+    public function setManufacturerName($manufacturerName) {
+        $this->manufacturerName = $manufacturerName;
+    }
+
+    public function setCategoryName($categoryName) {
+        $this->categoryName = $categoryName;
+    }
+
     public function __toString() {
         return "Product ID: $this->productid, Name: $this->name, Price: $this->price, Category ID: $this->cateid";
     }
@@ -120,6 +152,8 @@ class ProductModel implements IModel {
             $row['stock'],
             $row['cateid'],
             $row['avatarurl'],
+            $row['manufacturer_name'] ?? null, // Updated
+            $row['category_name'] ?? null,     // Updated
             $row['productid'] ?? null,
             $row['avgrating'] ?? 0.0,
             $row['bought'] ?? 0
@@ -137,7 +171,9 @@ class ProductModel implements IModel {
             'mfgid' => $obj->getMfgid(),
             'stock' => $obj->getStock(),
             'cateid' => $obj->getCateid(),
-            'avatarurl' => $obj->getAvatarurl()
+            'avatarurl' => $obj->getAvatarurl(),
+            'manufacturerName' => $obj->getManufacturerName(), // Added
+            'categoryName' => $obj->getCategoryName()         // Added
         ];
     }
 }
