@@ -45,14 +45,14 @@ assert(isset($likes));
                 <div class="page-title">
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Quản lí bài viết</h3>
-                            <p class="text-subtitle text-muted">Quản lí bài viết và bình luận</p>
+                            <h3>Blog management</h3>
+                            <p class="text-subtitle text-muted">Manage blog and its comments</p>
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">News Management</li>
+                                    <li class="breadcrumb-item">Dashboard</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Blog Management</li>
                                 </ol>
                             </nav>
                         </div>
@@ -72,8 +72,8 @@ assert(isset($likes));
                                     <div class="row search-container">
                                         <div class="col-md-6">
                                             <form class="input-group" action="/admin/blog/search">
-                                                <input type="text" class="form-control" name="term" placeholder="Tìm kiếm bài viết...">
-                                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+                                                <input type="text" class="form-control" name="term" placeholder="Search blogs...">
+                                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
                                             </form>
                                         </div>
                                     </div>
@@ -85,12 +85,12 @@ assert(isset($likes));
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Tiêu đề</th>
-                                                    <th scope="col">Tác giả</th>
-                                                    <th scope="col">Ngày đăng</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Author</th>
+                                                    <th scope="col">Post date</th>
                                                     <th scope="col">Actions</th>
                                                     <th scope="col">Likes</th>
-                                                    <th scope="col">Bình luận</th>
+                                                    <th scope="col">Comment</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -165,14 +165,14 @@ assert(isset($likes));
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteArticleModalLabel">Xác nhận</h5>
+                    <h5 class="modal-title" id="deleteArticleModalLabel">Confirm Deletion</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.
+                    Are you sure you want to delete this article? This action cannot be undone.
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-danger" id="confirmDeleteArticle">Xóa</a>
+                    <a href="#" class="btn btn-danger" id="confirmDeleteArticle">Delete</a>
                 </div>
             </div>
         </div>
