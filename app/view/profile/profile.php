@@ -96,14 +96,21 @@ assert(isset($avatar));
                 <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-pink-500">
                     <!-- Image -->
                     <img class="avatar" src="/<?php echo $avatar?>" alt="Profile Picture" class="w-full h-full object-cover">
-                    <!-- Overlay for click -->
-                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-70 transition-opacity cursor-pointer z-10"
-                         onclick="document.getElementById('avatar-upload').click()">
-                        <span class="text-white font-bold">Click to change</span>
-                    </div>
 
-                    <!-- Hidden File Input -->
-                    <input type="file" id="avatar-upload" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="uploadAvatar(event)">
+                    <?php
+                    if (!$user->getIsadmin()) {
+                    ?>
+                        <!-- Overlay for click -->
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-70 transition-opacity cursor-pointer z-10"
+                             onclick="document.getElementById('avatar-upload').click()">
+                            <span class="text-white font-bold">Click to change</span>
+                        </div>
+
+                        <!-- Hidden File Input -->
+                        <input type="file" id="avatar-upload" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="uploadAvatar(event)">
+                    <?php
+                    }
+                    ?>
                 </div>
 
 

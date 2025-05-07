@@ -10,6 +10,22 @@ class AdminFAQController extends BaseController {
         $this->requireAuth(true);
         $data = [];
 
+        $edit_id = $this->get('edit');
+        $edit_faq_entry = null;
+        if ($edit_id != null){
+            $result = FaqService::findById($edit_id);
+            if (!$result['success']) {
+                Logger::log('Failed to fetch FAQ entry: ' . $result['message']);
+                $this->redirectWithMessage('admin/faq', [
+                    'error' => $result['message']
+                ]);
+            }
+            $edit_faq_entry = $result['data'];
+        }
+
+        if ($edit_faq_entry != null)
+            $data['edit_faq_entry'] = $edit_faq_entry;
+
         $result = FaqService::findAll();
         if (!$result['success']) {
             Logger::log('Failed to fetch FAQs: ' . $result['message']);
@@ -53,4 +69,65 @@ class AdminFAQController extends BaseController {
 
         $this->redirectWithMessage('/admin/faq', []);
     }
+
+    public function editFaq(){
+        $this->requireAuth(true);
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
+            $id = $this->post('id');
+            $question = $this->post('question');
+            $answer = $this->post('answer');
+
+            if (empty($question) || empty($answer)){
+                $this->redirectWithMessage('/admin/faq', [
+                    'error' => 'Please fill in all fields'
+                ]);
+            }
+
+            $model = new FAQEntryModel($id, $answer, $question);
+
+            $result = FaqService::save($model);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/admin/faq', [
+                    'error' => $result['message']
+                ]);
+            }
+
+            $this->redirectWithMessage('/admin/faq', [
+                'success' => 'FAQ updated successfully'
+            ]);
+        }
+
+        $this->redirectWithMessage('/admin/faq', []);
+    }
+
+    public function deleteFaq(){
+        $this->requireAuth(true);
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'GET'){
+            $id = $this->get('id');
+
+            if (empty($id)){
+                $this->redirectWithMessage('/admin/faq', [
+                    'error' => 'Please fill in all fields'
+                ]);
+            }
+
+            $result = FaqService::deleteById($id);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/admin/faq', [
+                    'error' => $result['message']
+                ]);
+            }
+
+            $this->redirectWithMessage('/admin/faq', [
+                'success' => 'FAQ deleted successfully'
+            ]);
+        }
+
+        $this->redirectWithMessage('/admin/faq', [
+            'error' => 'FAQ deletion fall-through'
+        ]);
+    }
+
 }
