@@ -102,6 +102,13 @@ assert(isset($header_username) && isset($header_logo));
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/qna" class='sidebar-link'>
+                        <i class="fa-solid fa-comments"></i>
+                        <span>QNA</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
                     <a href="/admin/blog" class='sidebar-link'>
                         <i class="fa-solid fa-newspaper"></i>
                         <span>Blogs</span>
