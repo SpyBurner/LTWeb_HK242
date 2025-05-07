@@ -2,7 +2,7 @@
 <html lang="en" data-theme="valentine">
 <head>
     <?php require_once __DIR__ . "/../common/head.php"; ?>
-    <title>CakeZone | Đơn hàng của tôi</title>
+    <title>CakeZone | My Orders</title>
 
     <style type="text/tailwindcss">
         .brand-name {
@@ -44,27 +44,27 @@
             </div>
         <?php endif; ?>
 
-        <h2 class="text-2xl font-bold mb-6">Đơn hàng của tôi</h2>
+        <h2 class="text-2xl font-bold mb-6">My Orders</h2>
 
         <!-- Filters -->
         <div class="card bg-base-100 shadow-sm mb-6">
             <div class="card-body">
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="form-control flex-1">
-                        <input type="text" name="search" placeholder="Tìm kiếm đơn hàng..." 
+                        <input type="text" name="search" placeholder="Search for orders..." 
                                class="input input-bordered w-full" 
                                value="<?= htmlspecialchars($filters['search'] ?? '') ?>">
                     </div>
                     <div class="form-control">
                         <select name="status" class="select select-bordered">
-                            <option value="">Tất cả trạng thái</option>
-                            <option value="Preparing" <?= $filters['status'] === 'Preparing' ? 'selected' : '' ?>>Đang chuẩn bị</option>
-                            <option value="Prepared" <?= $filters['status'] === 'Prepared' ? 'selected' : '' ?>>Đã chuẩn bị</option>
-                            <option value="Delivering" <?= $filters['status'] === 'Delivering' ? 'selected' : '' ?>>Đang giao</option>
-                            <option value="Delivered" <?= $filters['status'] === 'Delivered' ? 'selected' : '' ?>>Đã giao</option>
+                            <option value="">All statuses</option>
+                            <option value="Preparing" <?= $filters['status'] === 'Preparing' ? 'selected' : '' ?>>Preparing</option>
+                            <option value="Prepared" <?= $filters['status'] === 'Prepared' ? 'selected' : '' ?>>Prepared</option>
+                            <option value="Delivering" <?= $filters['status'] === 'Delivering' ? 'selected' : '' ?>>Delivering</option>
+                            <option value="Delivered" <?= $filters['status'] === 'Delivered' ? 'selected' : '' ?>>Delivered</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" onclick="applyFilters()">Lọc</button>
+                    <button class="btn btn-primary" onclick="applyFilters()">Filter</button>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="card bg-base-100 shadow-sm">
             <div class="card-body">
                 <?php if (empty($orders)): ?>
-                    <p class="text-gray-500">Không có đơn hàng nào.</p>
+                    <p class="text-gray-500">No orders found.</p>
                 <?php else: ?>
                     <div class="space-y-4">
                         <?php foreach ($orders as $order): ?>
@@ -81,13 +81,13 @@
                                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                     <div>
                                         <h3 class="text-lg font-semibold">
-                                            Đơn hàng #<?= htmlspecialchars($order->getOrderid()) ?>
+                                            Order #<?= htmlspecialchars($order->getOrderid()) ?>
                                         </h3>
                                         <p class="text-sm text-gray-500">
-                                            Ngày đặt: <?= date('d/m/Y', strtotime($order->getOrderdate())) ?>
+                                            Order date: <?= date('d/m/Y', strtotime($order->getOrderdate())) ?>
                                         </p>
                                         <p class="text-sm text-gray-500">
-                                            Tổng tiền: <?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?> VND
+                                            Total cost: <?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?> VND
                                         </p>
                                     </div>
                                     <div class="flex items-center gap-4">
@@ -95,7 +95,7 @@
                                             <?= htmlspecialchars($order->getStatus()) ?>
                                         </span>
                                         <a href="/orders/detail/<?= $order->getOrderid() ?>" 
-                                           class="btn btn-outline btn-sm">Xem chi tiết</a>
+                                           class="btn btn-outline btn-sm">View details</a>
                                     </div>
                                 </div>
                             </div>
