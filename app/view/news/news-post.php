@@ -62,22 +62,12 @@ assert(isset($isLiked));
 
 <body>
     <?php require_once __DIR__ . "/../common/header.php"; ?>
-    <div id="body" class="m-6 md:w-3/4 md:mx-auto">
-        <div class="flex gap-8">
-            <div class="w-1/4 flex-initial" id="related-posts">
-                <ul class="menu w-full bg-white p-3 rounded-lg">
-                    <li><a>Item 1</a></li>
-                    <li><a>Item 2</a></li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
-            <div class="flex-1">
-                <p class='italic font-semibold'>Bài viết</p>
-                <h1 class='text-2xl font-bold mt-4'><?= $blog_info->getTitle() ?></h1>
-                <p class='text-sm italic mt-2'><?= $blog_info->getPostdate() ?></p>
-                <div class='mt-10 blog-content'>
-                    <?= $blog_info->getContent() ?>
-                </div>
+    <div id="body" class="m-6 md:w-2/3 md:mx-auto">
+        <div class="flex-1">
+            <h1 class='text-2xl font-bold mt-8'><?= $blog_info->getTitle() ?></h1>
+            <p class='text-sm italic mt-2'><?= $blog_info->getPostdate() ?></p>
+            <div class='mt-10 blog-content'>
+                <?= $blog_info->getContent() ?>
             </div>
         </div>
         <div class="flex justify-end mt-8">
@@ -89,7 +79,7 @@ assert(isset($isLiked));
         <div class="mt-8 p-4 border rounded-md shadow-md bg-base-100 w-full">                
             <form method="post" action="/blog/view?id=<?= $blog_info->getBlogid() ?>" class="flex-1">
                 <!-- User Avatar -->
-                <textarea class="textarea px-4 w-full" name="content" placeholder="Viết bình luận"></textarea>
+                <textarea class="textarea px-4 w-full" name="content" placeholder="Write comment..."></textarea>
                     
                 <!-- Action Buttons -->
                 <div class="flex justify-end space-x-2 mt-2">
@@ -97,7 +87,7 @@ assert(isset($isLiked));
                     <button type="submit" class="btn btn-primary btn-md">Post</button>
                 </div>
             </form>
-            <h2 class="font-bold mt-6 text-2xl">Tất cả bình luận</h2>
+            <h2 class="font-bold mt-6 text-2xl">All Comments</h2>
             <?php 
             $i = 0;
             while ($i < count($comments)): 
@@ -127,7 +117,7 @@ assert(isset($isLiked));
             ?>
         </div>
         <div class="mt-8">
-            <h1 class="text-2xl text-center font-bold mt-4">Bài viết liên quan</h1>
+            <h1 class="text-2xl text-center font-bold mt-4">Related blogs</h1>
             <div class="flex items-center gap-4 mt-6 max-h-64 box-border" id="related-posts-container">
                 <button class="btn btn-circle" id="slider-left">❮</button>
                 <div class="flex flex-1 gap-4" id="container">

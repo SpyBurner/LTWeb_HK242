@@ -10,17 +10,10 @@ assert(isset($posts));
     <title>CakeZone Blog</title>
 </head>
 <body>
-    <div id="body" class="m-6 md:w-3/4 md:mx-auto flex gap-8">
-        <div class="w-1/4 flex-initial" id="related-posts">
-            <ul class="menu w-full bg-white p-3 rounded-lg">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-                <li><a>Item 3</a></li>
-            </ul>
-        </div>
+    <div id="body" class="m-6 md:w-3/4 md:mx-auto">
         <div class="flex-1">
             <form action="/news/search" class="flex justify-end">
-                <input type="text" name="keyword" placeholder="Tìm kiếm bài viết" class="input border-1 rounded-md"/>
+                <input type="text" name="keyword" placeholder="Search blogs..." class="input border-1 rounded-md"/>
                 <button type="submit" class="btn btn-primary rounded-lg px-6">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </button>

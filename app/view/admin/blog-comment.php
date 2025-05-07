@@ -47,13 +47,13 @@ assert($commentUser);
                     <div class="card">
                         <div class="card-body">
                             <div class="modal-header">
-                                <h5 class="modal-title">Tất cả bình luận của bài viết <?= $id?></h5>
+                                <h5 class="modal-title">Comments of blog id: <?= $id?></h5>
                             </div>
                             <div class="modal-body">
                                 <div class="comment-management">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h6 class="my-2">
-                                        <?= count($comments) && $comments[0] !== null ? count($comments) : 0 ?> Bình luận
+                                        <?= count($comments) && $comments[0] !== null ? count($comments) : 0 ?> Comments
                                     </h6>
                                         <!-- <div class="btn-group">
                                             <button class="btn btn-outline-secondary btn-sm">
@@ -111,7 +111,7 @@ assert($commentUser);
                                             else:
                                         ?>
                                             <div>
-                                                Chưa có bình luận nào cho bài viết này.
+                                                Don't have any comment for this blog.
                                             </div>
                                         <?php
                                             endif;
@@ -128,38 +128,19 @@ assert($commentUser);
         </div>
     </div>
     
-    <!-- Delete Article Confirmation Modal -->
-    <div class="modal fade" id="deleteArticleModal" tabindex="-1" aria-labelledby="deleteArticleModalLabel" aria-hidden="true">
+    <!-- Delete Comment Confirmation Modal -->
+    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteArticleModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteCommentModalLabel">Confirm Deletion</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Are you sure you want to delete this article? This action cannot be undone.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteArticle">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Delete Comment Confirmation Modal -->
-    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteCommentModalLabel">Xác nhận</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa bình luận này không? Hành động này không thể hoàn tác.
-                </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-danger" id="confirmDeleteComment">Xóa</a>
+                    <a href="#" class="btn btn-danger" id="confirmDeleteComment">Delete</a>
                 </div>
             </div>
         </div>
