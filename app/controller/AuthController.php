@@ -4,6 +4,7 @@ namespace controller;
 use core\Controller;
 use service\AuthService;
 use core\SessionHelper;
+use service\UserService;
 
 class AuthController extends BaseController {
 //    TESTING ZONE
@@ -136,5 +137,32 @@ class AuthController extends BaseController {
         $this->redirectWithMessage("/", [
             'success' => "Logout successful"
         ]);
+    }
+
+    public function forgetPassword(){
+        $data = [];
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
+            $email = $this->post('email');
+
+            $result = UserService::findByEmail($email);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/account/forget_password', [
+                    'error' => $result['message']
+                ]);
+            }
+
+            $user = $result['user'];
+
+
+
+            $resetLink = "http://yourdomain.com/account/reset_password.php?token=$token";
+            $subject = "CakeZone Password Reset";
+            $message = "Hi,\n\nClick this link to reset your password: $resetLink\n\nThis link will expire in 1 hour.";
+            $headers = "From: no-reply@cakezone.com";
+
+        }
+
+        $this->render('account/forget_password', $data);
     }
 }

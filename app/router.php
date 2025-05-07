@@ -64,6 +64,7 @@ $router->addRoute('profile/change_password', 'ProfileController', 'changePasswor
 $router->addRoute('account/login', 'AuthController', 'login');
 $router->addRoute('account/register', 'AuthController', 'register');
 $router->addRoute('account/logout', 'AuthController', 'logout');
+$router->addRoute('account/forget_password', 'AuthController', 'forgetPassword');
 
 $router->addRoute('products', 'ProductsController', 'index');
 $router->addRoute('products/detail/:id', 'ProductsController', 'detail');

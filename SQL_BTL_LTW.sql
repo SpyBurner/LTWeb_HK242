@@ -12,7 +12,9 @@ username varchar(255) NOT NULL,
 password varchar(100) NOT NULL,
 joindate DATETIME NOT NULL DEFAULT current_timestamp(),
 email varchar(255) NOT NULL UNIQUE,
-isadmin BOOLEAN DEFAULT FALSE
+isadmin BOOLEAN DEFAULT FALSE,
+token varchar(255) DEFAULT NULL,
+token_expiration DATETIME DEFAULT NULL
 );
 
 CREATE TABLE Admin (
@@ -217,39 +219,84 @@ INSERT INTO Contact (name, phone, address, customerid) VALUES
 
 -- Insert random data into the Order table
 INSERT INTO `Order` (status, totalcost, customerid, contactid) VALUES
-('Pending', 100, 4, 1),
-('Shipped', 200, 5, 2),
+('Delivered', 100, 4, 1),
+('Delivered', 200, 5, 2),
 ('Delivered', 300, 6, 3);
 
--- Insert random data into the Category table
 INSERT INTO Category (name) VALUES
-('Category 1'),
-('Category 2'),
-('Category 3');
+('Cake'),
+('Cookie'),
+('Pie'),
+('Tart'),
+('Muffin');
 
--- Insert random data into the Manufacturer table
+
 INSERT INTO Manufacturer (name, country) VALUES
-('Manufacturer 1', 'Country 1'),
-('Manufacturer 2', 'Country 2'),
-('Manufacturer 3', 'Country 3');
+('Sweet Treats Co.', 'USA'),
+("Baker\'s Delight", 'France'),
+('Golden Crust', 'Italy');
 
--- Insert random data into the Product table
+
 INSERT INTO Product (name, price, description, avgrating, bought, mfgid, stock, cateid) VALUES
-('Product 1', 100000, 'Description 1', 4.5, 100, 1, 'In Stock', 1),
-('Product 2', 200000, 'Description 2', 4.0, 200, 2, 'In Stock', 2),
-('Product 3', 300000, 'Description 3', 3.5, 300, 3, 'In Stock', 3);
+    ('Chocolate Cake', 150000, 'Rich chocolate layer cake', 4.6, 120, 1, 'In Stock', 1),
+    ('Vanilla Cake', 140000, 'Classic vanilla sponge cake', 4.3, 95, 1, 'In Stock', 1),
+    ('Strawberry Shortcake', 170000, 'Fresh strawberries and cream', 4.8, 80, 2, 'In Stock', 1),
+    ('Oatmeal Cookie', 50000, 'Crunchy and healthy', 4.2, 130, 2, 'In Stock', 2),
+    ('Chocolate Chip Cookie', 60000, 'Soft with gooey chips', 4.7, 200, 1, 'In Stock', 2),
+    ('Butter Cookie', 45000, 'Melts in your mouth', 4.0, 70, 3, 'In Stock', 2),
+    ('Apple Pie', 180000, 'Classic apple cinnamon pie', 4.4, 90, 3, 'In Stock', 3),
+    ('Cherry Pie', 185000, 'Tart cherry filling', 4.1, 65, 2, 'In Stock', 3),
+    ('Pumpkin Pie', 175000, 'Spiced pumpkin flavor', 4.5, 110, 1, 'In Stock', 3),
+    ('Lemon Tart', 160000, 'Tangy and sweet', 4.6, 75, 1, 'In Stock', 4),
+    ('Chocolate Tart', 165000, 'Dark chocolate ganache', 4.9, 88, 2, 'In Stock', 4),
+    ('Fruit Tart', 170000, 'Fresh fruit and custard', 4.2, 50, 3, 'In Stock', 4),
+    ('Blueberry Muffin', 80000, 'Soft muffin with blueberries', 4.0, 45, 2, 'In Stock', 5),
+    ('Banana Muffin', 75000, 'Banana flavored muffin', 3.8, 35, 1, 'In Stock', 5),
+    ('Chocolate Muffin', 85000, 'Rich chocolate muffin', 4.3, 70, 1, 'In Stock', 5),
+    ('Raspberry Tart', 175000, 'Tart with fresh raspberries', 4.1, 30, 2, 'In Stock', 4),
+    ('Mini Cheesecake', 120000, 'Creamy and sweet', 4.4, 55, 3, 'In Stock', 1),
+    ('Peanut Butter Cookie', 60000, 'Rich peanut butter flavor', 4.5, 80, 2, 'In Stock', 2),
+    ('Carrot Cake', 155000, 'Moist and spiced', 4.2, 65, 3, 'In Stock', 1),
+    ('Molten Lava Cake', 180000, 'Warm chocolate center', 4.9, 95, 1, 'In Stock', 1);
 
--- Insert random data into the HasProduct table
+INSERT INTO `Order` (status, totalcost, orderdate, customerid, contactid) VALUES
+('Delivered', 200000, '2025-05-01', 4, 1),
+('Delivered', 320000, '2025-05-02', 5, 2),
+('Delivered', 450000, '2025-05-03', 6, 3),
+('Delivered', 190000, '2025-05-04', 4, 1),
+('Delivered', 210000, '2025-05-05', 5, 2),
+('Delivered', 310000, '2025-05-06', 6, 3),
+('Delivered', 275000, '2025-05-07', 4, 1),
+('Delivered', 290000, '2025-05-08', 5, 2),
+('Delivered', 230000, '2025-05-09', 6, 3),
+('Delivered', 350000, '2025-05-10', 4, 1);
+
+
 INSERT INTO HasProduct (orderid, productid, amount) VALUES
-(1, 1, 2),
-(2, 2, 3),
-(3, 3, 1);
+(1, 1, 1), (1, 4, 2),
+(2, 2, 1), (2, 5, 1), (2, 6, 1),
+(3, 3, 1), (3, 7, 1),
+(4, 8, 2), (4, 9, 1),
+(5, 10, 1), (5, 11, 1),
+(6, 12, 1), (6, 13, 2),
+(7, 14, 2), (7, 15, 1),
+(8, 16, 1), (8, 17, 2),
+(9, 18, 1), (9, 19, 1),
+(10, 20, 2), (10, 1, 1);
 
--- Insert random data into the RateProduct table
+
+
 INSERT INTO RateProduct (orderid, productid, rating, comment) VALUES
-(1, 1, 5, 'Great product!'),
-(2, 2, 4, 'Good product!'),
-(3, 3, 3, 'Average product.');
+(1, 1, 5, 'Delicious!'),
+(2, 2, 4, 'Tasty but a bit dry.'),
+(3, 3, 5, 'Excellent dessert!'),
+(4, 8, 3, 'Too sour.'),
+(5, 10, 4, 'Tangy and fresh.'),
+(6, 13, 5, 'Loved the blueberries.'),
+(7, 14, 4, 'Rich chocolate flavor.'),
+(8, 16, 5, 'Perfect portion size.'),
+(9, 18, 4, 'Well-spiced.'),
+(10, 20, 5, 'Heavenly lava cake!');
 
 -- Insert meaningful FAQ entries
 INSERT INTO FaqEntry (answer, question) VALUES

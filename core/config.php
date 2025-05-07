@@ -30,6 +30,7 @@ define('USE_LOGGER', $conf['USE_LOGGER']);
 define('PAGINATION_SIZE', $conf['PAGINATION_SIZE']);
 define('PAGINATION_NUMBER', $conf['PAGINATION_NUMBER']);
 
+
 //Token lifetime calculation
 $lifetime_suffix = [
     's' => 1,
@@ -47,6 +48,8 @@ $token_lifetime_suffix = $lifetime_suffix[(substr($conf['TOKEN_LIFETIME'], -1))]
 define('TOKEN_LIFETIME', $token_lifetime_value * $token_lifetime_suffix);
 
 define('ENCRYPT_METHOD', $conf['ENCRYPT_METHOD']);
+
+define('RESET_PASSWORD_TOKEN_LIFETIME', $conf['RESET_PASSWORD_TOKEN_LIFETIME']);
 
 define('BASE_URL', 'http://localhost');
 const MAZER_BASE_URL = '/assets/mazer-template/assets';
