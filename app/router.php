@@ -37,6 +37,8 @@ $router->addRoute('admin/blog/comment/search', 'AdminBlogController', 'searchCom
 
 $router->addRoute('admin/faq', 'AdminFAQController', 'index');
 $router->addRoute('admin/faq/add_faq', 'AdminFAQController', 'addFaq');
+$router->addRoute('admin/faq/edit_faq', 'AdminFAQController', 'editFaq');
+$router->addRoute('admin/faq/delete_faq', 'AdminFAQController', 'deleteFaq');
 
 // Linh
 $router->addRoute('', 'UserHomeController', 'index');

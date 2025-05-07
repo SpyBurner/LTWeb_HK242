@@ -56,6 +56,8 @@ class FaqService implements IService
             $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM FaqEntry WHERE faqid = :faqid");
             $stmt->execute([':faqid' => $id]);
 
+            Logger::log("Fetching FAQ entry with ID: $id");
+
             $result = $stmt->fetch();
 
             if ($result) {
