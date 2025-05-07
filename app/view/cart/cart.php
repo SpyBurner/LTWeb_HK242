@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
-    <?php require_once __DIR__ . "/../common/head.php"; ?>
+    <?php require_once __DIR__ . "/../common/head.php"; 
+use const config\DEFAULT_PRODUCT_IMAGE_URL;
+?>
     <title>CakeZone | Cart</title>
-
     <style type="text/tailwindcss">
         .brand-name {
             @apply text-gray-500;
@@ -49,7 +50,7 @@
                     <div class="card bg-base-100 shadow-sm mb-4">
                         <div class="card-body flex flex-col md:flex-row items-center gap-4">
                             <img
-                                src="<?= htmlspecialchars($product['avatarurl']) ?>"
+                                src="/<?= htmlspecialchars($product['avatarurl'] == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product['avatarurl']) ?>"
                                 alt="<?= htmlspecialchars($product['name']) ?>"
                                 class="w-24 h-24 object-cover rounded-lg"
                             />

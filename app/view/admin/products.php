@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin | Product Management</title>
 
-    <?php require_once __DIR__ . "/../common/admin-link.php"; ?>
+    <?php require_once __DIR__ . "/../common/admin-link.php"; 
+    use const config\DEFAULT_PRODUCT_IMAGE_URL;?>
     <style>
         .product-image {
             max-width: 80px;
@@ -118,7 +119,7 @@
                                                 <tr>
                                                     <td><?= $product->getProductid() ?></td>
                                                     <td>
-                                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() ?: '/assets/repo/product/default-product.jpg') ?>" 
+                                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() ?: DEFAULT_PRODUCT_IMAGE_URL) ?>" 
                                                             alt="<?= htmlspecialchars($product->getName()) ?>" 
                                                             class="product-image rounded">
                                                     </td>
