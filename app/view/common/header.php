@@ -65,7 +65,7 @@ use const config\STATIC_IMAGE_URL;
         <div id="profile-cart" class="flex flex-col gap-4 items-center">
             <?php if ($header_isLoggedIn) { ?>
                 <!-- PROFILE -->
-                <div class="dropdown">
+                <div class="dropdown md max-md:hidden">
                     <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                         <div class="avatar">
                             <div class="w-12 rounded-full">
@@ -98,7 +98,7 @@ use const config\STATIC_IMAGE_URL;
                     </a>
 
                     <?php if ($header_isAdmin) { ?>
-                        <a href="/admin" class="btn btn-ghost btn-neutral rounded-full btn-lg">
+                        <a href="/admin" class="max-md:hidden btn btn-ghost btn-neutral rounded-full btn-lg">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
                         </a>
                     <?php } ?>
@@ -132,6 +132,9 @@ use const config\STATIC_IMAGE_URL;
         <?php if ($header_isLoggedIn) { ?>
             <a href="/profile" class="btn btn-ghost btn-primary rounded-none py-6">Profile</a>
             <a href="/orders/my-orders" class="btn btn-ghost btn-primary rounded-none py-6">My Orders</a>
+            <?php if ($header_isAdmin) { ?>
+                <a href="/admin" class="btn btn-soft btn-warning mx-4 my-2">Admin Mode</a>
+            <?php } ?>
             <a href="/account/logout" class="btn btn-soft btn-error mx-4 my-2">Logout</a>
         <?php } else { ?>
             <a href="/account/login" class="btn mx-4 my-2">Login</a>
