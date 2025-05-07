@@ -95,7 +95,7 @@ assert(isset($header_username) && isset($header_logo));
                 </li>
 
                 <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
-                    <a href="/admin" class='sidebar-link'>
+                    <a href="/admin/faq" class='sidebar-link'>
                         <i class="fa-solid fa-circle-question"></i>
                         <span>FAQ</span>
                     </a>

@@ -6,11 +6,6 @@ require_once __DIR__ . '/core/Router.php';
 
 $router = new Router();
 
-// Linh
-$router->addRoute('', 'UserHomeController', 'index');
-$router->addRoute('contact-message', 'ContactMessageController', 'submit');
-$router->addRoute('about', 'AboutController', 'index');
-
 $router->addRoute('admin/contact-message', 'ContactMessageController', 'index');
 $router->addRoute('admin', 'ContentManagerController', 'index');
 $router->addRoute('admin/contact-message/fetch', 'ContactMessageController', 'getMessages');
@@ -30,23 +25,28 @@ $router->addRoute('admin/products/delete/:id', 'AdminProductsController', 'delet
 
 $router->addRoute('admin/order', 'AdminOrderController', 'index');
 $router->addRoute('admin/order/update-status', 'AdminOrderController', 'updateStatus');
+
+$router->addRoute('admin/blog', 'AdminBlogController', 'getAllBlog');
+$router->addRoute('admin/blog/comment', 'AdminBlogController', 'getCommentsByBlogid');
+$router->addRoute('admin/blog/comment/delete', 'AdminBlogController', 'deleteComment');
+$router->addRoute('admin/blog/edit', 'AdminBlogController', 'getPostInfo');
+$router->addRoute('admin/blog/delete', 'AdminBlogController', 'deleteBlog');
+$router->addRoute('admin/blog/create', 'AdminBlogController', 'createBlog');
+$router->addRoute('admin/blog/search', 'AdminBlogController', 'searchBlog');
+$router->addRoute('admin/blog/comment/search', 'AdminBlogController', 'searchComment');
+
+$router->addRoute('admin/faq', 'AdminFAQController', 'index');
+$router->addRoute('admin/faq/add_faq', 'AdminFAQController', 'addFaq');
+
+// Linh
+$router->addRoute('', 'UserHomeController', 'index');
+$router->addRoute('contact-message', 'ContactMessageController', 'submit');
+$router->addRoute('about', 'AboutController', 'index');
 //Tài
 $router->addRoute('qna', 'QnaController', 'index');
 $router->addRoute('qna/add_question', 'QnaController', 'addQuestion');
 $router->addRoute('qna/qna_detail', 'QnaController', 'qnaDetail_API');
 $router->addRoute('qna/add_message' , 'QnaController', 'addMessage');
-
-
-//Chung
-$router->addRoute('admin/blog', 'AdminController', 'getAllBlog');
-$router->addRoute('admin/blog/comment', 'AdminController', 'getCommentsByBlogid');
-$router->addRoute('admin/blog/comment/delete', 'AdminController', 'deleteComment');
-$router->addRoute('admin/blog/edit', 'AdminController', 'getPostInfo');
-$router->addRoute('admin/blog/delete', 'AdminController', 'deleteBlog');
-$router->addRoute('admin/blog/create', 'AdminController', 'createBlog');
-$router->addRoute('admin/blog/search', 'AdminController', 'searchBlog');
-$router->addRoute('admin/blog/comment/search', 'AdminController', 'searchComment');
-
 
 // Minh
 $router->addRoute('news', 'BlogController', 'index');
