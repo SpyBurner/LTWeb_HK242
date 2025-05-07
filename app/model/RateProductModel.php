@@ -11,17 +11,21 @@ class RateProductModel implements IModel
     private int $rating;
     private string $comment;
     private string $ratingdate;
+    private string $avatarurl;
+    private string $username;
 
-    public function __construct($orderid, $productid, $rating, $comment, $ratingdate)
+    public function __construct($orderid, $productid, $rating, $comment, $ratingdate, $avatarurl = 'assets/img/avatar_male.png', $username = '')
     {
         $this->orderid = $orderid;
         $this->productid = $productid;
         $this->rating = $rating;
         $this->comment = $comment;
         $this->ratingdate = $ratingdate;
+        $this->avatarurl = $avatarurl;
+        $this->username = $username;
     }
 
-    // ✅ Getter & Setter
+    // Getter & Setter
     public function getOrderid(): int { return $this->orderid; }
     public function setOrderid(int $orderid): void { $this->orderid = $orderid; }
 
@@ -37,7 +41,13 @@ class RateProductModel implements IModel
     public function getRatingDate(): string { return $this->ratingdate; }
     public function setRatingDate(string $ratingdate): void { $this->ratingdate = $ratingdate; }
 
-    // ✅ Implement IModel
+    public function getAvatarurl(): string { return $this->avatarurl; }
+    public function setAvatarurl(string $avatarurl): void { $this->avatarurl = $avatarurl; }
+
+    public function getUsername(): string { return $this->username; }
+    public function setUsername(string $username): void { $this->username = $username; }
+
+    // Implement IModel
     public static function toObject($row): RateProductModel
     {
         return new RateProductModel(
@@ -45,7 +55,9 @@ class RateProductModel implements IModel
             $row['productid'],
             $row['rating'],
             $row['comment'],
-            $row['ratingdate']
+            $row['ratingdate'],
+            $row['avatarurl'] ?? 'assets/img/avatar_male.png',
+            $row['username'] ?? ''
         );
     }
 
@@ -56,12 +68,14 @@ class RateProductModel implements IModel
             'productid' => $obj->getProductid(),
             'rating' => $obj->getRating(),
             'comment' => $obj->getComment(),
-            'ratingdate' => $obj->getRatingDate()
+            'ratingdate' => $obj->getRatingDate(),
+            'avatarurl' => $obj->getAvatarurl(),
+            'username' => $obj->getUsername()
         ];
     }
 
     public function __toString(): string
     {
-        return "RateProductModel [orderid={$this->orderid}, productid={$this->productid}, rating={$this->rating}, comment={$this->comment}, ratingdate={$this->ratingdate}]";
+        return "RateProductModel [orderid={$this->orderid}, productid={$this->productid}, rating={$this->rating}, comment={$this->comment}, ratingdate={$this->ratingdate}, avatarurl={$this->avatarurl}, username={$this->username}]";
     }
 }

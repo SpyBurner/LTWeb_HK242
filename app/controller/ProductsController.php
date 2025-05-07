@@ -69,7 +69,7 @@ class ProductsController extends BaseController  {
                 
                 $avgRating = $totalRating / $ratingCount;
             }
-    
+            $product['data']->setAvgrating($avgRating);    
             $relatedProducts = ProductsService::getRelatedProducts($id, 4);
     
             $this->render('product-detail/product-detail', [

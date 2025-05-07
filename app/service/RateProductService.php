@@ -26,7 +26,12 @@ class RateProductService implements IService
     {
         try {
             $stmt = Database::getInstance()->getConnection()->prepare(
-                "SELECT * FROM RateProduct WHERE productid = :productid"
+                "SELECT rp.*, c.avatarurl, u.username
+                 FROM RateProduct rp
+                 JOIN `Order` o ON rp.orderid = o.orderid
+                 JOIN Customer c ON o.customerid = c.userid
+                 JOIN User u ON c.userid = u.userid
+                 WHERE rp.productid = :productid"
             );
             $stmt->execute(['productid' => $productid]);
 

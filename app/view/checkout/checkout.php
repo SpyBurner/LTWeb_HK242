@@ -40,7 +40,7 @@
         $contactResult = \service\ContactService::findAllByCustomerId($userId);
         if (!$contactResult['success'] || empty($contactResult['data'])): ?>
             <div class="alert alert-warning mb-4">
-                You have no contact information. Please <a href="/account/contacts" class="link link-primary">add contact</a> before checking out.
+                You have no contact information. Please <a href="/profile" class="link link-primary">add contact</a> before checking out.
             </div>
         <?php endif; ?>
 

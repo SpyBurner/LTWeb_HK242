@@ -135,9 +135,10 @@
                                         <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
                                             <?= htmlspecialchars($product->getManufacturerName() ?? 'Unknown') ?>
                                         </p>
-                                        <h2 class="text-xs font-bold text-gray-800 truncate">
-                                            <?= htmlspecialchars($product->getName()) ?>
-                                        </h2>
+                                        <p class="text-sm font-semibold text-gray-800 line-clamp-2 hover:text-primary">
+    <?= htmlspecialchars($product->getName()) ?>
+</p>
+</h2>
                                         <p class="text-base font-semibold text-primary">
                                             <?= number_format($product->getPrice(), 0, ',', '.') ?> VND
                                         </p>

@@ -249,59 +249,53 @@ use const config\MAZER_BASE_URL;
     }
 
     async function updateOrderStatus(selectElement, orderId) {
-    const newStatus = selectElement.value;
-    const row = selectElement.closest('tr');
-    const originalStatus = selectElement.dataset.status;
+        const newStatus = selectElement.value;
+        const originalStatus = selectElement.dataset.status;
+        const row = selectElement.closest('tr');
 
-    // Cập nhật giao diện ngay lập tức (tạm thời)
-    row.classList.remove(`status-${originalStatus.toLowerCase()}`);
-    row.classList.add(`status-${newStatus.toLowerCase()}`);
-
-    try {
-        // Gửi yêu cầu cập nhật trạng thái qua fetch
-        const response = await fetch('/admin/order/update-status', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                orderId: orderId,
-                status: newStatus
-            })
-        });
-
-        // Kiểm tra phản hồi từ server
-        if (!response.ok) {
-            throw new Error(`Server responded with status: ${response.status}`);
+        // Xác nhận trước khi thay đổi trạng thái
+        if (!confirm(`Are you sure you want to change the status to ${newStatus}?`)) {
+            selectElement.value = originalStatus; // Khôi phục trạng thái ban đầu
+            return;
         }
 
-        const result = await response.json();
+        try {
+            // Gửi yêu cầu cập nhật trạng thái qua fetch
+            const response = await fetch('/admin/order/update-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderId: orderId,
+                    status: newStatus
+                })
+            });
 
-        // Kiểm tra kết quả từ server
-        if (!result.success) {
-            throw new Error(result.message || 'Unknown error occurred');
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (!result.success) {
+                throw new Error(result.message || 'Unknown error occurred');
+            }
+
+            // Cập nhật UI trên client-side
+            selectElement.dataset.status = newStatus;
+            row.classList.remove(`status-${originalStatus.toLowerCase()}`);
+            row.classList.add(`status-${newStatus.toLowerCase()}`);
+        } catch (error) {
+            // Khôi phục trạng thái và ghi log lỗi
+            selectElement.value = originalStatus;
+            console.error('Failed to update order status:', error.message);
         }
-
-        // Cập nhật trạng thái gốc nếu thành công
-        selectElement.dataset.status = newStatus;
-        console.log(`Order ${orderId} status updated to ${newStatus}`);
-    } catch (error) {
-        // Xử lý lỗi: khôi phục trạng thái ban đầu
-        console.error('Failed to update order status:', error.message);
-        
-        // Hiển thị thông báo lỗi thân thiện hơn
-        alert(`Không thể cập nhật trạng thái: ${error.message}. Vui lòng thử lại.`);
-
-        // Khôi phục giao diện và giá trị select về trạng thái cũ
-        row.classList.remove(`status-${newStatus.toLowerCase()}`);
-        row.classList.add(`status-${originalStatus.toLowerCase()}`);
-        selectElement.value = originalStatus;
     }
-}
     </script>
 
     <!-- Mazer Scripts -->
     <?php require_once __DIR__ . "/../common/admin-script.php"; ?>
-</body>
 </html>
+</body>
