@@ -144,11 +144,11 @@
                 <button class="join-item btn" onclick="setQnaPage(1)">«</button>
                 <button class="join-item btn" onclick="setQnaPage(<?= ($qnaPage > 0)? $qnaPage - 1 : $qnaPage?>)">‹</button>
 
-                <button class="join-item btn btn-disabled <?php echo ($qnaPage <= PAGINATION_NUMBER)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
+                <button class="join-item btn btn-disabled <?php echo ($qnaPage <= (int) (PAGINATION_NUMBER/2))? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
 
                 <?php
-                    $pageMin = max(1, $qnaPage - PAGINATION_NUMBER);
-                    $pageMax = min($maxPage, $qnaPage + PAGINATION_NUMBER);
+                    $pageMin = max(1, $qnaPage - (int) (PAGINATION_NUMBER/2));
+                    $pageMax = min($maxPage, $qnaPage + (int) (PAGINATION_NUMBER/2));
                     for ($index = $pageMin; $index <= $pageMax; $index++) {
                 ?>
                     <button class="join-item btn <?php echo ($qnaPage == $index )? 'btn-primary' : '' ?>"
@@ -157,7 +157,7 @@
                     }
                 ?>
 
-                <button class="join-item btn btn-disabled <?php echo ($qnaPage >= $maxPage - PAGINATION_NUMBER)? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
+                <button class="join-item btn btn-disabled <?php echo ($qnaPage >= $maxPage - (int) (PAGINATION_NUMBER/2))? 'hidden' : '' ?>" onclick="setQnaPage()">...</button>
 
                 <button class="join-item btn" onclick="setQnaPage(<?= ($qnaPage < $maxPage)? $qnaPage + 1 : $qnaPage?>)">›</button>
                 <button class="join-item btn" onclick="setQnaPage(<?= $maxPage?>)">»</button>
