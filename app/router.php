@@ -40,6 +40,14 @@ $router->addRoute('admin/faq/add_faq', 'AdminFAQController', 'addFaq');
 $router->addRoute('admin/faq/edit_faq', 'AdminFAQController', 'editFaq');
 $router->addRoute('admin/faq/delete_faq', 'AdminFAQController', 'deleteFaq');
 
+$router->addRoute('admin/users', 'AdminUserController', 'index');
+$router->addRoute('admin/users/add_user', 'AdminUserController', 'addUser');
+$router->addRoute('admin/users/edit_user', 'AdminUserController', 'editUser');
+$router->addRoute('admin/users/delete_user', 'AdminUserController', 'deleteUser');
+$router->addRoute('admin/users/reset_password', 'AdminUserController', 'resetPassword');
+
+
+
 // Linh
 $router->addRoute('', 'UserHomeController', 'index');
 $router->addRoute('contact-message', 'ContactMessageController', 'submit');

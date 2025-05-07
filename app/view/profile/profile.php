@@ -231,47 +231,46 @@ assert(isset($avatar));
                         </form>
                     </div>
                 </dialog>
-
-                <!-- Change Password Modal -->
-                <dialog id="change-password" class="modal">
-                    <div class="modal-box">
-                        <h3 class="text-lg font-bold mb-4">Change Password</h3>
-
-                        <form action="/profile/change_password" method="post">
-                            <label class="block font-medium mb-1">Old Password
-                                <input type="password" name="old_password" class="input input-bordered w-full mb-3" placeholder="Enter old password" required />
-                            </label>
-
-                            <label class="block font-medium mb-1 validator">New Password
-                                <input name="new_password" type="password" required placeholder="Enter new password" minlength="8" class="input input-bordered w-full mb-3"
-                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                       title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"/>
-                            </label>
-                            <p class="validator-hint hidden">
-                                Must be more than 8 characters, including
-                                <br />At least one number
-                                <br />At least one lowercase letter
-                                <br />At least one uppercase letter
-                            </p>
-
-                            <label class="block font-medium mb-1">Confirm New Password
-                                <input type="password" name="confirm_password" class="input input-bordered w-full mb-3" placeholder="Confirm new password" required />
-                            </label>
-
-                            <div class="modal-action">
-                                <button type="submit" class="btn btn-primary">Change</button>
-                                <button type="button" class="btn" onclick="closeModal('change-password')">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                </dialog>
-
             </div>
 
         </section>
         <?php
             }
         ?>
+        <!-- Change Password Modal -->
+        <dialog id="change-password" class="modal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold mb-4">Change Password</h3>
+
+                <form action="/profile/change_password" method="post">
+                    <label class="block font-medium mb-1">Old Password
+                        <input type="password" name="old_password" class="input input-bordered w-full mb-3" placeholder="Enter old password" required />
+                    </label>
+
+                    <label class="block font-medium mb-1 validator">New Password
+                        <input name="new_password" type="password" required placeholder="Enter new password" minlength="8" class="input input-bordered w-full mb-3"
+                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"/>
+                    </label>
+                    <p class="validator-hint hidden">
+                        Must be more than 8 characters, including
+                        <br />At least one number
+                        <br />At least one lowercase letter
+                        <br />At least one uppercase letter
+                    </p>
+
+                    <label class="block font-medium mb-1">Confirm New Password
+                        <input type="password" name="confirm_password" class="input input-bordered w-full mb-3" placeholder="Confirm new password" required />
+                    </label>
+
+                    <div class="modal-action">
+                        <button type="submit" class="btn btn-primary">Change</button>
+                        <button type="button" class="btn" onclick="closeModal('change-password')">Close</button>
+                    </div>
+                </form>
+            </div>
+        </dialog>
+
     </main>
 
 

@@ -217,5 +217,17 @@ class UserService implements IService
         }
     }
 
+    public static function updatePassword($id, $hashedPassword) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("UPDATE user SET password = ? WHERE userid = ?");
+        $success = $stmt->execute([$hashedPassword, $id]);
+
+        if ($success) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'message' => 'Failed to update password'];
+        }
+    }
+
 
 }

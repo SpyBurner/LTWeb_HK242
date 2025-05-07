@@ -115,6 +115,13 @@ assert(isset($header_username) && isset($header_logo));
                     </a>
                 </li>
 
+                <li class="sidebar-item <?= ($current_page == 'content-manager.php') ? 'active' : '' ?>">
+                    <a href="/admin/users" class='sidebar-link'>
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Manage users</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-title">Setting</li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>

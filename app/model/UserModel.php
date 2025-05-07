@@ -85,6 +85,10 @@ class UserModel implements IModel{
         $this->userid = $userid;
     }
 
+    public function setUsername($username) {
+        $this->username = $username;
+    }
+
     public function setEmail($email) {
         $this->email = $email;
     }
