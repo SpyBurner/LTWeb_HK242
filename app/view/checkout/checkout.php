@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
-    <?php require_once __DIR__ . "/../common/head.php"; ?>
+    <?php require_once __DIR__ . "/../common/head.php"; 
+    use const config\DEFAULT_PRODUCT_IMAGE_URL;?>
     <title>CakeZone | Checkout</title>
 
     <style type="text/tailwindcss">
@@ -150,7 +151,7 @@
                         <div class="space-y-4">
                             <?php foreach ($cart->products as $product): ?>
                                 <div class="flex items-center gap-4">
-                                    <img src="<?= htmlspecialchars($product['avatarurl']) ?>" 
+                                    <img src="/<?= htmlspecialchars($product['avatarurl'] == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product['avatarurl']) ?>"
                                          alt="<?= htmlspecialchars($product['name']) ?>" 
                                          class="w-16 h-16 object-cover rounded-lg">
                                     <div class="flex-1">
