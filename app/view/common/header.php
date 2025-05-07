@@ -87,7 +87,7 @@ use const config\STATIC_IMAGE_URL;
                             <a href="/orders/my-orders">My Orders</a>
                         </li>
                         <!--                    <li><a>Settings</a></li>-->
-                        <li><a href="/account/logout">Logout</a></li>
+                        <li><a class="text-error" href="/account/logout">Logout</a></li>
                     </ul>
                 </div>
 
@@ -129,8 +129,14 @@ use const config\STATIC_IMAGE_URL;
         <a href="/about" class="btn btn-ghost rounded-none py-6">About</a>
         <a href="/qna" class="btn btn-ghost rounded-none py-6">QnA</a>
         <a href="/news" class="btn btn-ghost rounded-none py-6">News</a>
-        <a href="/account/login" class="btn btn-outline mx-4 my-2">Login</a>
-        <a href="/account/register" class="btn mx-4 my-2">Register</a>
+        <?php if ($header_isLoggedIn) { ?>
+            <a href="/profile" class="btn btn-ghost btn-primary rounded-none py-6">Profile</a>
+            <a href="/orders/my-orders" class="btn btn-ghost btn-primary rounded-none py-6">My Orders</a>
+            <a href="/account/logout" class="btn btn-soft btn-error mx-4 my-2">Logout</a>
+        <?php } else { ?>
+            <a href="/account/login" class="btn mx-4 my-2">Login</a>
+            <a href="/account/register" class="btn btn-ghost btn-primary rounded-none py-6">Register</a>
+        <?php } ?>
     </nav>
 </div>
 
