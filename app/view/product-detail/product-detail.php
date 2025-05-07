@@ -41,9 +41,9 @@
             <h1 class="text-3xl font-bold mb-4"><?= htmlspecialchars($product->getName()) ?></h1>
             <p class="text-gray-500 mb-4">Brand: <?= htmlspecialchars($product->getManufacturerName()) ?></p>
             <p class="text-2xl text-red-700 font-semibold mb-4"><?= number_format($product->getPrice(), 0, ',', '.') ?> VND</p>
-            <p class="text-gray-600 mb-6">
+            <!-- <p class="text-gray-600 mb-6">
                 <?= nl2br(htmlspecialchars($product->getDescription())) ?>
-            </p>
+            </p> -->
 
             <div class="flex items-center gap-4 mb-6">
                 <span class="text-gray-600">Quantity:</span>
@@ -70,6 +70,7 @@
         <h2 class="text-2xl font-bold mb-4">Detailed Information</h2>
         <ul class="list-disc list-inside text-gray-600">
             <li>Category: <?= htmlspecialchars($product->getCategoryName()) ?></li>
+            <li>Brand: <?= htmlspecialchars($product->getManufacturerName()) ?></li>
             <li>Description: <?= nl2br(htmlspecialchars($product->getDescription())) ?></li>
             <li>Average Rating: <?= number_format($product->getAvgrating(), 1) ?>/5</li>
             <li>Stock: <?= $product->getStock() ?> available</li>
@@ -123,10 +124,10 @@
                             <div class="flex items-center gap-2 mb-2">
                                 <div class="avatar">
                                     <div class="w-10 rounded-full">
-                                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                        <img src="/<?= htmlspecialchars($review->getAvatarurl()) ?>" alt="<?= htmlspecialchars($review->getUsername()) ?>" />
                                     </div>
                                 </div>
-                                <span class="font-semibold">User</span>
+                                <span class="font-semibold"><?= htmlspecialchars($review->getUsername()) ?></span>
                             </div>
                             <div class="rating rating-sm mb-2">
                                 <?php for ($i = 1; $i <= 5; $i++): ?>

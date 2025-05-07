@@ -37,26 +37,30 @@ class AdminOrderController extends BaseController  {
 
     public function updateStatus() {
         $this->requireAuth(true);
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $input = json_decode(file_get_contents('php://input'), true);
-            $orderId = $input['orderId'] ?? null;
-            $status = $input['status'] ?? null;
-
-            if (empty($orderId) || empty($status)) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Invalid order ID or status']);
-                exit;
-            }
-
-            $result = OrderService::updateStatus($orderId, $status);
-
-            header('Content-Type: application/json');
-            echo json_encode($result);
-            exit;
-        } else {
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Invalid request method']);
             exit;
         }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $orderId = $input['orderId'] ?? null;
+        $status = $input['status'] ?? null;
+
+        if (empty($orderId) || empty($status)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Invalid order ID or status']);
+            exit;
+        }
+
+        $result = OrderService::updateStatus($orderId, $status);
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => $result['success'],
+            'message' => $result['success'] ? 'Order status updated successfully' : $result['message']
+        ]);
+        exit;
     }
 }
