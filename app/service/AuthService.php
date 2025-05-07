@@ -4,6 +4,7 @@ namespace service;
 use Exception;
 use model\UserModel;
 use core\Logger;
+use function core\handleException;
 
 //Special service, no IService implementation
 class AuthService
@@ -161,6 +162,44 @@ class AuthService
         if (!$result['success']) return $result;
 
         return ['success' => true, 'user' => $result['data'], 'avatar' => $result['avatar']];
+    }
+
+    public static function generateResetToken($userModel){
+        if (!$userModel instanceof UserModel) {
+            return ['success' => false, 'message' => 'Invalid user model'];
+        }
+
+        try {
+            $token = random_bytes(16);
+        }
+        catch (Exception $e) {
+            return handleException($e);
+        }
+
+        $userModel->setToken($token);
+        $userModel->setTokenExpiration(time() + RESET_PASSWORD_TOKEN_LIFETIME);
+
+        $result = UserService::save($userModel);
+        if (!$result['success']) {
+            return ['success' => false, 'message' => $result['message']];
+        }
+
+        return ['success' => true, 'data' => $token];
+    }
+
+    public static function resetPassword($user, $password){
+        $hashedPassword = self::getPassword_hash($password);
+        $user->setPassword($hashedPassword);
+        $user->setToken(null);
+        $user->setTokenExpiration(null);
+
+        $result = UserService::save($user);
+
+        if (!$result['success']) {
+            return ['success' => false, 'message' => $result['message']];
+        }
+
+        return ['success' => true, 'message' => 'Password reset successfully'];
     }
 
 }

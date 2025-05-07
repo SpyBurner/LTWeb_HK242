@@ -38,7 +38,7 @@
                             <input name="password" type="password" required placeholder="Password" />
                         </label>
 
-<!--                        <div><a class="link link-hover" href="#">Forgot password?</a></div>-->
+                        <div><a class="link link-hover" href="/account/forget_password">Forgot password?</a></div>
                         <button class="btn btn-primary mt-6 w-1/2 mx-auto" name="submit" value="submit" type="submit">Login</button>
                     </fieldset>
                 </form>

@@ -2,6 +2,7 @@
 namespace controller;
 
 use core\Controller;
+use core\Logger;
 use service\AuthService;
 use core\SessionHelper;
 use service\UserService;
@@ -144,7 +145,7 @@ class AuthController extends BaseController {
 
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']  == 'POST'){
             $email = $this->post('email');
-
+            Logger::log("Forget password request for email: $email");
             $result = UserService::findByEmail($email);
             if (!$result['success']) {
                 $this->redirectWithMessage('/account/forget_password', [
@@ -152,17 +153,77 @@ class AuthController extends BaseController {
                 ]);
             }
 
-            $user = $result['user'];
+            $user = $result['data'];
 
+            $result = AuthService::generateResetToken($user);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/account/forget_password', [
+                    'error' => $result['message']
+                ]);
+            }
 
+            $token = $result['token'];
 
-            $resetLink = "http://yourdomain.com/account/reset_password.php?token=$token";
+            $resetLink = "http://localhost/account/reset_password?token=$token";
             $subject = "CakeZone Password Reset";
             $message = "Hi,\n\nClick this link to reset your password: $resetLink\n\nThis link will expire in 1 hour.";
             $headers = "From: no-reply@cakezone.com";
 
+            $result = mail($email, $subject, $message, $headers);
+            if (!$result) {
+                $this->redirectWithMessage('/account/forget_password', [
+                    'error' => "Failed to send email"
+                ]);
+            }
+            $this->redirectWithMessage('/account/login', [
+                'success' => "Password reset link sent to your email, please check within 1 hour."
+            ]);
+
         }
 
         $this->render('account/forget_password', $data);
+    }
+
+    public function resetPassword(){
+        $token = $this->get('token');
+
+        $result = UserService::findByToken($token);
+        if (!$result['success']) {
+            $this->redirectWithMessage('/account/login', [
+                'error' => $result['message']
+            ]);
+        }
+
+        $user = $result['data'];
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            $password = $this->post('new_password');
+            $password_confirm = $this->post('password_confirm');
+
+            if (empty($password) || empty($password_confirm)) {
+                $this->redirectWithMessage('/account/reset_password', [
+                    'error' => "Password and confirm password are required"
+                ]);
+            }
+
+            if ($password !== $password_confirm) {
+                $this->redirectWithMessage('/account/reset_password', [
+                    'error' => "Password and confirm password do not match"
+                ]);
+            }
+
+            $result = AuthService::resetPassword($user, $password);
+            if (!$result['success']) {
+                $this->redirectWithMessage('/account/login', [
+                    'error' => $result['message']
+                ]);
+            }
+
+            $this->redirectWithMessage('/account/login', [
+                'success' => "Password reset successfully. Please login."
+            ]);
+        }
+
+        $this->render('account/reset_password', []);
     }
 }

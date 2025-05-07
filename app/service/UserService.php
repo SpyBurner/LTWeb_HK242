@@ -152,6 +152,32 @@ class UserService implements IService
         }
     }
 
+    public static function findByToken($token)
+    {
+        try {
+            $stmt = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE token = :token");
+            $stmt->execute([':token' => $token]);
+            $result = $stmt->fetch();
+
+            if ($result){
+                $model = UserModel::toObject($result);
+
+                if ($model->getTokenExpiration() < time()) {
+                    return ['success' => false, 'message' => 'Token expired'];
+                }
+
+                $ret = ['success' => true, 'data' => $model];
+            }
+            else
+                $ret = ['success' => false, 'message' => 'No user found with this token'];
+
+            return $ret;
+        }
+        catch (Exception $e) {
+            return handleException($e);
+        }
+    }
+
     public static function findAll()
     {
         try {

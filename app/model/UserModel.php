@@ -10,14 +10,50 @@ class UserModel implements IModel{
     private $password;
     private $joindate;
     private $isadmin;
+    private $token;
+    private $token_expiration;
 
-    public function __construct($id, $username, $email, $password, $joindate = null, $isadmin = false) {
+    /**
+     * @return mixed
+     */
+    public function getTokenExpiration()
+    {
+        return $this->token_expiration;
+    }
+
+    /**
+     * @param mixed $token_expiration
+     */
+    public function setTokenExpiration($token_expiration): void
+    {
+        $this->token_expiration = $token_expiration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
+    }
+
+    public function __construct($id, $username, $email, $password, $joindate = null, $isadmin = false, $token = null, $token_expiration = null) {
         $this->userid = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->joindate = $joindate ?? date('Y-m-d H:i:s');
         $this->isadmin = $isadmin;
+        $this->token = $token;
+        $this->token_expiration = $token_expiration;
     }
 
     public function getUserid() {
@@ -69,7 +105,16 @@ class UserModel implements IModel{
         return "User ID: $this->userid, Name: $this->username, Email: $this->email, Password: $this->password, Join Date: $this->joindate, Is Admin: $this->isadmin";
     }
     public static function toObject($row){
-        return new UserModel($row['userid'], $row['username'], $row['email'], $row['password'], $row['joindate'], $row['isadmin']);
+        return new UserModel(
+            $row['userid'],
+            $row['username'],
+            $row['email'],
+            $row['password'],
+            $row['joindate'],
+            $row['isadmin'],
+            $row['token'],
+            $row['token_expiration']
+        );
     }
 
     public static function toArray($obj){
@@ -79,7 +124,9 @@ class UserModel implements IModel{
             'email' => $obj->getEmail(),
             'password' => $obj->getPassword(),
             'joindate' => $obj->getJoindate(),
-            'isAdmin' => $obj->getIsAdmin()
+            'isAdmin' => $obj->getIsAdmin(),
+            'token' => $obj->getToken(),
+            'token_expiration' => $obj->getTokenExpiration()
         ];
     }
 }

@@ -61,10 +61,12 @@ $router->addRoute('profile/delete_contact', 'ProfileController', 'deleteContact'
 $router->addRoute('profile/update_avatar', 'ProfileController', 'updateAvatar_API');
 $router->addRoute('profile/change_password', 'ProfileController', 'changePassword');
 
+
 $router->addRoute('account/login', 'AuthController', 'login');
 $router->addRoute('account/register', 'AuthController', 'register');
 $router->addRoute('account/logout', 'AuthController', 'logout');
 $router->addRoute('account/forget_password', 'AuthController', 'forgetPassword');
+$router->addRoute('account/reset_password', 'AuthController', 'resetPassword');
 
 $router->addRoute('products', 'ProductsController', 'index');
 $router->addRoute('products/detail/:id', 'ProductsController', 'detail');
