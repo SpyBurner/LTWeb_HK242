@@ -92,29 +92,38 @@ use model\FAQEntryModel;
                 </div>
             </section>
 
+            <!-- Admin faq add -->
             <div class="modal fade" id="faq-add" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog flex items-center justify-center min-h-screen">
-                    <div class="modal-content p-6 w-full max-w-xl">
-                        <h3 class="text-lg font-bold mb-6 text-center">Add FAQ</h3>
-
-                        <form method="post" action="/admin/faq/add_faq" class="space-y-4">
-                            <div class="flex items-center">
-                                <label for="faq-question" class="w-1/4 text-right font-medium pr-4">Question</label>
-                                <input name="question" id="faq-question" type="text" class="input input-bordered w-full" placeholder="Enter question" />
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add FAQ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="/admin/faq/add_faq">
+                            <div class="modal-body">
+                                <div class="mb-3 row">
+                                    <label for="faq-question" class="col-sm-3 col-form-label text-end">Question</label>
+                                    <div class="col-sm-9">
+                                        <input name="question" id="faq-question" type="text" class="form-control" placeholder="Enter question" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="faq-answer" class="col-sm-3 col-form-label text-end">Answer</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="answer" id="faq-answer" class="form-control" rows="5" placeholder="Enter answer" required></textarea>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="flex items-start">
-                                <label for="faq-answer" class="w-1/4 text-right font-medium pr-4 pt-2">Answer</label>
-                                <textarea name="answer" id="faq-answer" class="textarea textarea-bordered w-full" placeholder="Enter answer"></textarea>
-                            </div>
-
-                            <div class="modal-action justify-end">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save FAQ</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
 
             <?php
                 if (isset($edit_faq_entry)){
@@ -123,35 +132,43 @@ use model\FAQEntryModel;
             ?>
             <!--Admin FAQ edit modal-->
                     <div class="modal fade" id="faq-edit" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog flex items-center justify-center min-h-screen">
-                            <div class="modal-content p-6 w-full max-w-xl">
-                                <h3 class="text-lg font-bold mb-6 text-center">Edit FAQ</h3>
-
-                                <form method="post" action="/admin/faq/edit_faq" class="space-y-4">
-                                    <div class="flex items-center">
-                                        <label for="faq-question" class="w-1/4 text-right font-medium pr-4">Id</label>
-                                        <input name="id" id="edit-faq-id" type="text" class="input input-bordered w-full" value="<?= $edit_faq_entry->getFaqid() ?>"  readonly/>
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit FAQ</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="post" action="/admin/faq/edit_faq">
+                                    <div class="modal-body">
+                                        <div class="mb-3 row">
+                                            <label for="edit-faq-id" class="col-sm-3 col-form-label text-end">ID</label>
+                                            <div class="col-sm-9">
+                                                <input name="id" id="edit-faq-id" type="text" class="form-control" value="<?= $edit_faq_entry->getFaqid() ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="edit-faq-question" class="col-sm-3 col-form-label text-end">Question</label>
+                                            <div class="col-sm-9">
+                                                <input name="question" id="edit-faq-question" type="text" class="form-control" value="<?= $edit_faq_entry->getQuestion() ?>">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="edit-faq-answer" class="col-sm-3 col-form-label text-end">Answer</label>
+                                            <div class="col-sm-9">
+                                                <textarea name="answer" id="edit-faq-answer" class="form-control" rows="5"><?= trim($edit_faq_entry->getAnswer()) ?></textarea>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div class="flex items-center">
-                                        <label for="faq-question" class="w-1/4 text-right font-medium pr-4">Question</label>
-                                        <input name="question" id="edit-faq-question" type="text" class="input input-bordered w-full" value="<?= $edit_faq_entry->getQuestion() ?>" />
-                                    </div>
-
-                                    <div class="flex items-start">
-                                        <label for="faq-answer" class="w-1/4 text-right font-medium pr-4 pt-2">Answer</label>
-                                        <textarea name="answer" id="edit-faq-answer" class="textarea textarea-bordered w-full" placeholder="Enter answer">
-                                            <?= $edit_faq_entry->getAnswer() ?>
-                                        </textarea>
-                                    </div>
-
-                                    <div class="modal-action justify-end">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
+
+
 
             <?php
                 }
