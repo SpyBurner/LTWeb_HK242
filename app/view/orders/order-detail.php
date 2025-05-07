@@ -2,7 +2,7 @@
 <html lang="en" data-theme="valentine">
 <head>
     <?php require_once __DIR__ . "/../common/head.php"; ?>
-    <title>CakeZone | Chi tiết đơn hàng</title>
+    <title>CakeZone | Order Details</title>
 
     <style type="text/tailwindcss">
         .brand-name {
@@ -41,24 +41,24 @@
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Left Column - Order Details -->
             <div class="w-full md:w-2/3">
-                <h2 class="text-2xl font-bold mb-6">Chi tiết đơn hàng #<?= htmlspecialchars($order->getOrderid()) ?></h2>
+                <h2 class="text-2xl font-bold mb-6">Order Details #<?= htmlspecialchars($order->getOrderid()) ?></h2>
 
                 <!-- Order Information -->
                 <div class="card bg-base-100 shadow-sm mb-6">
                     <div class="card-body">
-                        <h3 class="text-lg font-semibold mb-4">Thông tin đơn hàng</h3>
+                        <h3 class="text-lg font-semibold mb-4">Order Information</h3>
                         <div class="space-y-2">
-                            <p><strong>Ngày đặt hàng:</strong> <?= date('d/m/Y H:i:s', strtotime($order->getOrderdate())) ?></p>
-                            <p><strong>Trạng thái:</strong> <?= htmlspecialchars($order->getStatus()) ?></p>
-                            <p><strong>Tổng tiền:</strong> <?= number_format($order->getTotalcost(), 0, ',', '.') ?> VND</p>
+                            <p><strong>Order Date:</strong> <?= date('d/m/Y H:i:s', strtotime($order->getOrderdate())) ?></p>
+                            <p><strong>Status:</strong> <?= htmlspecialchars($order->getStatus()) ?></p>
+                            <p><strong>Total Cost:</strong> <?= number_format($order->getTotalcost(), 0, ',', '.') ?> VND</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Products -->
-                <div class="card bg-base-100 shadow-sm mb-6">
+                <div class="card bg-base-100 shadow-sm mb SMOOTHIES6">
                     <div class="card-body">
-                        <h3 class="text-lg font-semibold mb-4">Sản phẩm trong đơn hàng</h3>
+                        <h3 class="text-lg font-semibold mb-4">Products in Order</h3>
                         <div class="space-y-4">
                             <?php foreach ($order->products as $product): ?>
                                 <div class="flex items-center gap-4">
@@ -74,7 +74,7 @@
 
                                 <?php if ($order->getStatus() === 'Delivered'): ?>
                                     <div class="mt-4">
-                                        <h4 class="font-medium mb-2">Đánh giá sản phẩm</h4>
+                                        <h4 class="font-medium mb-2">Product Review</h4>
                                         <form method="POST" action="/orders/detail/<?= $order->getOrderid() ?>">
                                             <input type="hidden" name="product_id" value="<?= $product['productid'] ?>">
                                             <div class="flex items-center gap-2 mb-2">
@@ -88,10 +88,10 @@
                                                 </div>
                                             </div>
                                             <textarea name="comment" class="textarea textarea-bordered w-full mb-2" 
-                                                      placeholder="Viết đánh giá của bạn..." 
+                                                      placeholder="Write your review..." 
                                                       rows="3"><?= isset($existingRatings[$product['productid']]) ? htmlspecialchars($existingRatings[$product['productid']]->getComment()) : '' ?></textarea>
                                             <button type="submit" class="btn btn-primary btn-sm">
-                                                <?= isset($existingRatings[$product['productid']]) ? 'Cập nhật đánh giá' : 'Gửi đánh giá' ?>
+                                                <?= isset($existingRatings[$product['productid']]) ? 'Update Review' : 'Submit Review' ?>
                                             </button>
                                         </form>
                                     </div>
@@ -104,14 +104,14 @@
                 <!-- Contact Information -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
-                        <h3 class="text-lg font-semibold mb-4">Thông tin liên hệ</h3>
+                        <h3 class="text-lg font-semibold mb-4">Contact Information</h3>
                         <div class="space-y-2">
                             <?php if ($contact): ?>
-                                <p><strong>Họ và tên:</strong> <?= htmlspecialchars($contact->getName()) ?></p>
-                                <p><strong>Số điện thoại:</strong> <?= htmlspecialchars($contact->getPhone()) ?></p>
-                                <p><strong>Địa chỉ:</strong> <?= htmlspecialchars($contact->getAddress()) ?></p>
+                                <p><strong>Full Name:</strong> <?= htmlspecialchars($contact->getName()) ?></p>
+                                <p><strong>Phone Number:</strong> <?= htmlspecialchars($contact->getPhone()) ?></p>
+                                <p><strong>Address:</strong> <?= htmlspecialchars($contact->getAddress()) ?></p>
                             <?php else: ?>
-                                <p>Không có thông tin liên hệ.</p>
+                                <p>No contact information available.</p>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -121,26 +121,26 @@
             <!-- Right Column - Order Summary -->
             <div class="w-full md:w-1/3">
                 <div class="card bg-base-100 shadow-sm p-6 sticky top-6">
-                    <h2 class="text-2xl font-bold mb-6">Tóm tắt đơn hàng</h2>
+                    <h2 class="text-2xl font-bold mb-6">Order Summary</h2>
 
                     <div class="space-y-4 mb-6">
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Tạm tính:</span>
+                            <span class="text-gray-600">Subtotal:</span>
                             <span class="font-semibold"><?= number_format($order->getTotalcost(), 0, ',', '.') ?> VND</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Phí vận chuyển:</span>
+                            <span class="text-gray-600">Shipping Fee:</span>
                             <span class="font-semibold">30,000 VND</span>
                         </div>
                         <div class="flex justify-between border-t pt-4">
-                            <span class="text-gray-600">Tổng cộng:</span>
+                            <span class="text-gray-600">Total:</span>
                             <span class="text-xl font-bold text-red-700"><?= number_format($order->getTotalcost() + 30000, 0, ',', '.') ?> VND</span>
                         </div>
                     </div>
 
                     <a href="/orders/my-orders" class="btn btn-primary w-full">
                         <i class="fas fa-arrow-left"></i>
-                        Quay lại danh sách đơn hàng
+                        Back to Order List
                     </a>
                 </div>
             </div>
