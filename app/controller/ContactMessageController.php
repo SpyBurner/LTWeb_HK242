@@ -9,43 +9,41 @@ class ContactMessageController extends BaseController
 {
     public function submit(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Submitted a contact message
-            $name = $this->post('name'); // required
-            $email = $this->post('email'); // required
-            $title = $this->post('title', 'No title');
-            $message = $this->post('message', 'No message');
+        header("Content-Type: application/json");
+        // Submitted a contact message
+        $name = $this->post('name'); // required
+        $email = $this->post('email'); // required
+        $title = $this->post('title', 'No title');
+        $message = $this->post('message', 'No message');
 
-            // Validate the input
-            if (empty($name) || empty($email)) {
-                $this->redirectWithMessage('/', [
-                    'error' => 'Name and email are required.'
-                ]);
-            }
+        // Validate the input
+        if (empty($name) || empty($email)) {
+            echo json_encode(['success' => false, 'message' => 'Name and email are required.']);
+            // $this->redirectWithMessage('/', [
+            //     'error' => 'Name and email are required.'
+            // ]);
+            return;
+        }
 
-            // Save the contact message
-            $contactMessage = new ContactMessageModel(
-                $name,
-                $email,
-                $title,
-                $message,
-            );
+        // Save the contact message
+        $contactMessage = new ContactMessageModel(
+            $name,
+            $email,
+            $title,
+            $message,
+        );
 
-            $result = ContactMessageService::save($contactMessage);
-            if ($result['success']) {
-//                return json_encode(['success' => true], ['message' => 'Your message has been sent successfully.']);
-                $this->redirectWithMessage('/', [
-                    'success' => 'Your message has been sent successfully.'
-                ]);
-            } else {
-//                return json_encode(['success' => false, 'message' => 'Failed to send your message. Please try again later.']);
-                $this->redirectWithMessage('/', [
-                    'error' => 'Failed to send your message. Please try again later.'
-                ]);
-            }
+        $result = ContactMessageService::save($contactMessage);
+        if ($result['success']) {
+            echo json_encode(['success' => true, 'message' => 'Your message has been sent successfully.']);
+            // $this->redirectWithMessage('/', [
+            //     'success' => 'Your message has been sent successfully.'
+            // ]);
         } else {
-//            return json_encode(['success' => false, 'message' => 'Invalid request method.']);
-            $this->render('error/not-found-404');
+            echo json_encode(['success' => false, 'message' => 'Failed to send your message. Please try again later.']);
+            // $this->redirectWithMessage('/', [
+            //     'error' => 'Failed to send your message. Please try again later.'
+            // ]);
         }
     }
 

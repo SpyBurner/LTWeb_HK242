@@ -1,5 +1,6 @@
 <?php
 
+use const config\DEFAULT_PRODUCT_IMAGE_URL;
 use const config\STATIC_IMAGE_URL;
 
 assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers) && isset($address) && isset($carousel1) && isset($carousel2) && isset($carousel3) && isset($phone) && isset($header_logo));
@@ -129,30 +130,30 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                         <?php foreach ($newestProducts as $product): ?>
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
-    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
-        <div class="image-container relative w-full h-[200px]">
-            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
-                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
-                 class="absolute inset-0 w-full h-full object-cover" />
-        </div>
-        <div class="card-body">
-            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
-            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
-            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
+                                <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+                                    <div class="image-container relative w-full h-[200px]">
+                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product->getAvatarurl()) ?>"
+                                            alt="Cake - <?= htmlspecialchars($product->getName()) ?>"
+                                            class="absolute inset-0 w-full h-full object-cover" />
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+                                        <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+                                        <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-            <div class="flex items-center">
-                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
-                <button
-                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
-                    class="btn btn-soft add-to-cart"
-                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
-                    data-amount="1">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-    </a>
-</div>
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                                            <button
+                                                aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
@@ -168,30 +169,30 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                         <?php foreach ($topRatedProducts as $product): ?>
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
-    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
-        <div class="image-container relative w-full h-[200px]">
-            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
-                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
-                 class="absolute inset-0 w-full h-full object-cover" />
-        </div>
-        <div class="card-body">
-            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
-            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
-            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
+                                <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+                                    <div class="image-container relative w-full h-[200px]">
+                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product->getAvatarurl()) ?>"
+                                            alt="Cake - <?= htmlspecialchars($product->getName()) ?>"
+                                            class="absolute inset-0 w-full h-full object-cover" />
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+                                        <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+                                        <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-            <div class="flex items-center">
-                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
-                <button
-                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
-                    class="btn btn-soft add-to-cart"
-                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
-                    data-amount="1">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-    </a>
-</div>
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                                            <button
+                                                aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
@@ -207,30 +208,30 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                         <?php foreach ($bestSellers as $product): ?>
                             <!-- product card -->
                             <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
-    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
-        <div class="image-container relative w-full h-[200px]">
-            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
-                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
-                 class="absolute inset-0 w-full h-full object-cover" />
-        </div>
-        <div class="card-body">
-            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
-            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
-            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
+                                <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+                                    <div class="image-container relative w-full h-[200px]">
+                                        <img src="/<?= htmlspecialchars($product->getAvatarurl() == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product->getAvatarurl()) ?>"
+                                            alt="Cake - <?= htmlspecialchars($product->getName()) ?>"
+                                            class="absolute inset-0 w-full h-full object-cover" />
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+                                        <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+                                        <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-            <div class="flex items-center">
-                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
-                <button
-                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
-                    class="btn btn-soft add-to-cart"
-                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
-                    data-amount="1">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-            </div>
-        </div>
-    </a>
-</div>
+                                        <div class="flex items-center">
+                                            <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                                            <button
+                                                aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                                                class="btn btn-soft add-to-cart"
+                                                data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                                                data-amount="1">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
@@ -255,7 +256,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                     </p>
                 </div>
                 <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                    <form method="POST" action="/contact-message">
+                    <form id="contact-form">
                         <div class="card-body">
                             <fieldset class="fieldset">
                                 <label class="input rounded-md w-full">
@@ -342,6 +343,34 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
             });
         });
 
+
+        // send contact message using AJAX
+        document.getElementById("contact-form").addEventListener("submit", function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+
+            fetch("/contact-message", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert("Message sent successfully!", "success");
+                        this.reset(); // Reset the form
+                    } else {
+                        showAlert(data.message || "Failed to send message.", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    showAlert("An error occurred while sending the message.", "error");
+                });
+        });
+
+
+
         function addToCart(productId, amount = 1) {
             console.log(`Adding product ${productId} with amount ${amount} to cart`);
 
@@ -354,14 +383,14 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Product added to cart!');
+                        showAlert('Product added to cart successfully!', 'success');
                     } else {
-                        alert('Error: ' + data.message);
+                        showAlert(data.message || 'Failed to add product to cart.', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while adding to cart');
+                    showAlert('An error occurred while adding the product to cart.', 'error');
                 });
         }
     </script>

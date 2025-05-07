@@ -43,7 +43,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
                 <div class="timeline-middle">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="timeline-end timeline-box">Dropped out</div>
+                <div class="timeline-end timeline-box">Opened the first branch at Los Angeles</div>
                 <hr />
             </li>
             <li>
@@ -52,7 +52,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
                 <div class="timeline-middle">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="timeline-end timeline-box">Borrowed money</div>
+                <div class="timeline-end timeline-box">Opened 3 more branches at UK</div>
                 <hr />
             </li>
             <li>
@@ -61,7 +61,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
                 <div class="timeline-middle">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="timeline-end timeline-box">Opened CakeZone</div>
+                <div class="timeline-end timeline-box">Extend working online via Website</div>
                 <hr />
             </li>
             <li>
@@ -70,7 +70,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
                 <div class="timeline-middle">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="timeline-end timeline-box">Closed CakeZone</div>
+                <div class="timeline-end timeline-box">Cooperate with 3 other big brands</div>
                 <hr />
             </li>
             <li>
@@ -79,7 +79,7 @@ assert(isset($title) && isset($slogan) && isset($aboutUs) && isset($partners) &&
                 <div class="timeline-middle">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="timeline-end timeline-box">Returned to HCMUT</div>
+                <div class="timeline-end timeline-box">Have 4000+ quality products</div>
             </li>
         </ul>
     </section>

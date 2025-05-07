@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="valentine">
 <head>
-    <?php require_once __DIR__ . "/../common/head.php"; ?>
+    <?php
+
+use const config\DEFAULT_AVATAR_URL;
+use const config\DEFAULT_PRODUCT_IMAGE_URL;
+
+ require_once __DIR__ . "/../common/head.php"; ?>
     <title>CakeZone | <?= htmlspecialchars($product->getName()) ?></title>
 
     <style type="text/tailwindcss">
@@ -29,7 +34,7 @@
             <div class="carousel rounded-box">
                 <div class="carousel-item w-full">
                     <img
-                        src="/<?= htmlspecialchars($product->getAvatarurl()) ?>"
+                        src="/<?= htmlspecialchars($product->getAvatarurl() == '' ? DEFAULT_PRODUCT_IMAGE_URL : $product->getAvatarurl()) ?>"
                         class="w-full"
                         alt="<?= htmlspecialchars($product->getName()) ?>"
                     />
@@ -124,7 +129,7 @@
                             <div class="flex items-center gap-2 mb-2">
                                 <div class="avatar">
                                     <div class="w-10 rounded-full">
-                                        <img src="/<?= htmlspecialchars($review->getAvatarurl()) ?>" alt="<?= htmlspecialchars($review->getUsername()) ?>" />
+                                        <img src="/<?= htmlspecialchars($review->getAvatarurl() == '' ? DEFAULT_AVATAR_URL : $review->getAvatarurl()) ?>" alt="<?= htmlspecialchars($review->getUsername()) ?>" />
                                     </div>
                                 </div>
                                 <span class="font-semibold"><?= htmlspecialchars($review->getUsername()) ?></span>
@@ -160,7 +165,7 @@
                 <div class="card bg-base-100 shadow-sm relative w-full">
                     <a href="/products/detail/<?= $related->getProductid() ?>">
                         <img
-                            src="/<?= htmlspecialchars($related->getAvatarurl()) ?>"
+                            src="/<?= htmlspecialchars($related->getAvatarurl() == '' ? DEFAULT_PRODUCT_IMAGE_URL : $related->getAvatarurl()) ?>"
                             alt="<?= htmlspecialchars($related->getName()) ?>"
                             class="w-full h-32 object-cover"
                         />

@@ -17,7 +17,7 @@ class ContactMessageService implements IService {
                 // Update an existing contact message
                 $stmt = $pdo->prepare("
                     UPDATE contactmessage 
-                    SET name = :name, email = :email, title = :title, message = :message, created_at = :created_at 
+                    SET name = :name, email = :email, title = :title, message = :message
                     WHERE contactid = :id
                 ");
                 $params = [
@@ -25,22 +25,22 @@ class ContactMessageService implements IService {
                     ':email' => $model->getEmail(),
                     ':title' => $model->getTitle(),
                     ':message' => $model->getMessage(),
-                    ':created_at' => $model->getCreatedAt(),
+                    // ':created_at' => $model->getCreatedAt(),
                     ':id' => $model->getId() // Only used for updates
                 ];
 
             } else {
                 // Insert a new contact message
                 $stmt = $pdo->prepare("
-                    INSERT INTO contactmessage (name, email, title, message, created_at) 
-                    VALUES (:name, :email, :title, :message, :created_at)
+                    INSERT INTO contactmessage (name, email, title, message) 
+                    VALUES (:name, :email, :title, :message)
                 ");
                 $params = [
                     ':name' => $model->getName(),
                     ':email' => $model->getEmail(),
                     ':title' => $model->getTitle(),
                     ':message' => $model->getMessage(),
-                    ':created_at' => $model->getCreatedAt()
+                    // ':created_at' => $model->getCreatedAt()
                 ];
             }
             $stmt->execute($params);

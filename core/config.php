@@ -70,3 +70,5 @@ const STATIC_IMAGE_URL = '/assets/img/';
 const ADMIN_CONFIG_URL = __DIR__ . '/admin-config.json';
 
 const DEFAULT_IMAGE_NAME = 'No_Image_Available.jpg';
+
+const DEFAULT_PRODUCT_IMAGE_URL = 'assets/img/cake_placeholder.jpg';
