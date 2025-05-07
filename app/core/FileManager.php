@@ -81,6 +81,15 @@ class FileManager
      */
     public function Save($file, $id, $category, $overwrite = false)
     {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($file['tmp_name']);
+
+        $allowedMimeTypes = ['image/jpeg', 'image/png'];
+        if (!in_array($mimeType, $allowedMimeTypes)) {
+            return ['success' => false, 'message' => 'Invalid file type. Only JPEG and PNG are allowed.'];
+        }
+
+
         $dirPath = IMAGE_UPLOAD_URL . '/' . $category . '/' . $id;
         Logger::log("Saving file to: $dirPath");
         // Make sure the directory exists
