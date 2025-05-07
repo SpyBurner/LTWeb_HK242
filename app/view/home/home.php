@@ -128,27 +128,31 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <?php foreach ($newestProducts as $product): ?>
                             <!-- product card -->
-                            <div class="card bg-base-100 shadow-sm relative w-full">
-                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
-                                    <div class="card-body">
-                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name"><?= $product->getName() ?></h2>
-                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+                            <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
+    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+        <div class="image-container relative w-full h-[200px]">
+            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
+                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
+                 class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="card-body">
+            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-                                        <div class="flex items-center">
-                                            <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
-                                            <button
-                                                aria-label="Add <?= $product->getName() ?> to cart"
-                                                class="btn btn-soft add-to-cart"
-                                                data-product-id="<?= $product->getProductid() ?>"
-                                                data-amount="1">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+            <div class="flex items-center">
+                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                <button
+                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                    class="btn btn-soft add-to-cart"
+                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                    data-amount="1">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </a>
+</div>
                         <?php endforeach; ?>
                     </div>
 
@@ -163,27 +167,31 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <?php foreach ($topRatedProducts as $product): ?>
                             <!-- product card -->
-                            <div class="card bg-base-100 shadow-sm relative w-full">
-                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
-                                    <div class="card-body">
-                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name"><?= $product->getName() ?></h2>
-                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+                            <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
+    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+        <div class="image-container relative w-full h-[200px]">
+            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
+                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
+                 class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="card-body">
+            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-                                        <div class="flex items-center">
-                                            <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
-                                            <button
-                                            aria-label="Add <?= $product->getName() ?> to cart"
-                                                class="btn btn-soft add-to-cart"
-                                                data-product-id="<?= $product->getProductid() ?>"
-                                                data-amount="1">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+            <div class="flex items-center">
+                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                <button
+                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                    class="btn btn-soft add-to-cart"
+                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                    data-amount="1">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </a>
+</div>
                         <?php endforeach; ?>
                     </div>
 
@@ -198,27 +206,31 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <?php foreach ($bestSellers as $product): ?>
                             <!-- product card -->
-                            <div class="card bg-base-100 shadow-sm relative w-full">
-                                <a href="<?= "/products/detail/" . $product->getProductid() ?>">
-                                    <img src="<?= $product->getAvatarurl() ?>" alt="Cake - <?= $product->getName() ?>" />
-                                    <div class="card-body">
-                                        <p class="brand-name"><?= $product->getManufacturerName() ?></p>
-                                        <h2 class="product-name"><?= $product->getName() ?></h2>
-                                        <p class="price text-error"><?= $product->getPrice() ?> VND</p>
+                            <div class="card bg-base-100 shadow-sm relative w-full rounded-lg overflow-hidden">
+    <a href="/products/detail/<?= $product->getProductid() ?>" class="block">
+        <div class="image-container relative w-full h-[200px]">
+            <img src="/<?= htmlspecialchars($product->getAvatarurl()) ?>" 
+                 alt="Cake - <?= htmlspecialchars($product->getName()) ?>" 
+                 class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="card-body">
+            <p class="brand-name"><?= htmlspecialchars($product->getManufacturerName()) ?></p>
+            <h2 class="product-name"><?= htmlspecialchars($product->getName()) ?></h2>
+            <p class="price text-error"><?= htmlspecialchars(number_format($product->getPrice(), 0, ',', '.')) ?> VND</p>
 
-                                        <div class="flex items-center">
-                                            <p class="sold-amt">Sold: <?= $product->getBought() ?></p>
-                                            <button
-                                            aria-label="Add <?= $product->getName() ?> to cart"
-                                                class="btn btn-soft add-to-cart"
-                                                data-product-id="<?= $product->getProductid() ?>"
-                                                data-amount="1">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+            <div class="flex items-center">
+                <p class="sold-amt">Sold: <?= htmlspecialchars($product->getBought()) ?></p>
+                <button
+                    aria-label="Add <?= htmlspecialchars($product->getName()) ?> to cart"
+                    class="btn btn-soft add-to-cart"
+                    data-product-id="<?= htmlspecialchars($product->getProductid()) ?>"
+                    data-amount="1">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </a>
+</div>
                         <?php endforeach; ?>
                     </div>
 
