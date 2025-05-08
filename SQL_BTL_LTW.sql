@@ -172,9 +172,14 @@ INSERT INTO Admin (userid)
 SELECT userid FROM User WHERE isadmin = TRUE;
 
 -- Insert customers into the Customer table
-INSERT INTO Customer (userid)
-SELECT userid
-FROM User WHERE isadmin = FALSE;
+INSERT INTO `customer` (`userid`, `avatarurl`) VALUES
+(4, 'assets/repo/avatar/4/anh-mo-ta.jpg'),
+(5, 'assets/repo/avatar/5/1.jpg'),
+(6, 'assets/repo/avatar/6/2.jpg'),
+(7, 'assets/repo/avatar/7/3.jpg'),
+(8, 'assets/repo/avatar/8/4.jpg'),
+(9, 'assets/repo/avatar/9/5.jpg'),
+(10, 'assets/repo/avatar/10/6.jpg');
 
 -- Insert random data into the BlogPost table
 INSERT INTO BlogPost (adminid, content, title) VALUES
@@ -237,27 +242,28 @@ INSERT INTO Manufacturer (name, country) VALUES
 ('Golden Crust', 'Italy');
 
 
-INSERT INTO Product (name, price, description, avgrating, bought, mfgid, stock, cateid) VALUES
-    ('Chocolate Cake', 150000, 'Rich chocolate layer cake', 4.6, 120, 1, '500', 1),
-    ('Vanilla Cake', 140000, 'Classic vanilla sponge cake', 4.3, 95, 1, '500', 1),
-    ('Strawberry Shortcake', 170000, 'Fresh strawberries and cream', 4.8, 80, 2, '500', 1),
-    ('Oatmeal Cookie', 50000, 'Crunchy and healthy', 4.2, 130, 2, '500', 2),
-    ('Chocolate Chip Cookie', 60000, 'Soft with gooey chips', 4.7, 200, 1, '500', 2),
-    ('Butter Cookie', 45000, 'Melts in your mouth', 4.0, 70, 3, '500', 2),
-    ('Apple Pie', 180000, 'Classic apple cinnamon pie', 4.4, 90, 3, '500', 3),
-    ('Cherry Pie', 185000, 'Tart cherry filling', 4.1, 65, 2, '500', 3),
-    ('Pumpkin Pie', 175000, 'Spiced pumpkin flavor', 4.5, 110, 1, '500', 3),
-    ('Lemon Tart', 160000, 'Tangy and sweet', 4.6, 75, 1, '500', 4),
-    ('Chocolate Tart', 165000, 'Dark chocolate ganache', 4.9, 88, 2, '500', 4),
-    ('Fruit Tart', 170000, 'Fresh fruit and custard', 4.2, 50, 3, '500', 4),
-    ('Blueberry Muffin', 80000, 'Soft muffin with blueberries', 4.0, 45, 2, '500', 5),
-    ('Banana Muffin', 75000, 'Banana flavored muffin', 3.8, 35, 1, '500', 5),
-    ('Chocolate Muffin', 85000, 'Rich chocolate muffin', 4.3, 70, 1, '500', 5),
-    ('Raspberry Tart', 175000, 'Tart with fresh raspberries', 4.1, 30, 2, '500', 4),
-    ('Mini Cheesecake', 120000, 'Creamy and sweet', 4.4, 55, 3, '500', 1),
-    ('Peanut Butter Cookie', 60000, 'Rich peanut butter flavor', 4.5, 80, 2, '500', 2),
-    ('Carrot Cake', 155000, 'Moist and spiced', 4.2, 65, 3, '500', 1),
-    ('Molten Lava Cake', 180000, 'Warm chocolate center', 4.9, 95, 1, '500', 1);
+INSERT INTO `product` (`productid`, `name`, `price`, `description`, `avgrating`, `bought`, `mfgid`, `stock`, `cateid`, `avatarurl`) VALUES
+(1, 'Chocolate Cake', 150000, 'Rich chocolate layer cake', 4.6, 120, 1, '500', 1, 'assets/repo/product/1/20.jpg'),
+(2, 'Vanilla Cake', 140000, 'Classic vanilla sponge cake', 4.3, 95, 1, '500', 1, 'assets/repo/product/2/19.jpg'),
+(3, 'Strawberry Shortcake', 170000, 'Fresh strawberries and cream', 4.8, 80, 2, '500', 1, 'assets/repo/product/3/18.jpg'),
+(4, 'Oatmeal Cookie', 50000, 'Crunchy and healthy', 4.2, 130, 2, '500', 2, 'assets/repo/product/4/17.jpg'),
+(5, 'Chocolate Chip Cookie', 60000, 'Soft with gooey chips', 4.7, 200, 1, '500', 2, 'assets/repo/product/5/chocolate-chip-cookie-recipe.jpg'),
+(6, 'Butter Cookie', 45000, 'Melts in your mouth', 4.0, 70, 3, '500', 2, 'assets/repo/product/6/15.jpg'),
+(7, 'Apple Pie', 180000, 'Classic apple cinnamon pie', 4.4, 90, 3, '500', 3, 'assets/repo/product/7/14.jpg'),
+(8, 'Cherry Pie', 185000, 'Tart cherry filling', 4.1, 65, 2, '500', 3, 'assets/repo/product/8/13.jpg'),
+(9, 'Pumpkin Pie', 175000, 'Spiced pumpkin flavor', 4.5, 110, 1, '500', 3, 'assets/repo/product/9/12.jpg'),
+(10, 'Lemon Tart', 160000, 'Tangy and sweet', 4.6, 75, 1, '500', 4, 'assets/repo/product/10/11.jpg'),
+(11, 'Chocolate Tart', 165000, 'Dark chocolate ganache', 4.9, 88, 2, '500', 4, 'assets/repo/product/11/10.jpg'),
+(12, 'Fruit Tart', 170000, 'Fresh fruit and custard', 4.2, 50, 3, '500', 4, 'assets/repo/product/12/9.jpg'),
+(13, 'Blueberry Muffin', 80000, 'Soft muffin with blueberries', 4.0, 45, 2, '500', 5, 'assets/repo/product/13/8.jpg'),
+(14, 'Banana Muffin', 75000, 'Banana flavored muffin', 3.8, 35, 1, '500', 5, 'assets/repo/product/14/7.jpg'),
+(15, 'Chocolate Muffin', 85000, 'Rich chocolate muffin', 4.3, 70, 1, '500', 5, 'assets/repo/product/15/6.jpg'),
+(16, 'Raspberry Tart', 175000, 'Tart with fresh raspberries', 4.1, 30, 2, '500', 4, 'assets/repo/product/16/Raspberry-Tart-Feature.jpg'),
+(17, 'Mini Cheesecake', 120000, 'Creamy and sweet', 4.4, 55, 3, '500', 1, 'assets/repo/product/17/images.jpg'),
+(18, 'Peanut Butter Cookie', 60000, 'Rich peanut butter flavor', 4.5, 82, 2, '498', 2, 'assets/repo/product/18/peanut-butter-cookies.jpg'),
+(19, 'Carrot Cake', 155000, 'Moist and spiced', 4.2, 66, 3, '499', 1, 'assets/repo/product/19/Carrot-Cake-textless-videoSixteenByNineJumbo1600.jpg'),
+(20, 'Molten Lava Cake', 180000, 'Warm chocolate center', 4.9, 97, 1, '498', 1, 'assets/repo/product/20/download (1).jpg');
+
 
 INSERT INTO `Order` (status, totalcost, orderdate, customerid, contactid) VALUES
 ('Delivered', 200000, '2025-05-01', 4, 1),
