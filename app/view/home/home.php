@@ -390,7 +390,7 @@ assert(isset($newestProducts) && isset($topRatedProducts) && isset($bestSellers)
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showAlert('An error occurred while adding the product to cart.', 'error');
+                    showAlert('Cannot add product to cart!. Please login or try again later.', 'error');
                 });
         }
     </script>

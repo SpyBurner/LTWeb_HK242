@@ -177,7 +177,8 @@ use const config\DEFAULT_PRODUCT_IMAGE_URL;
                                                             })
                                                             .catch(error => {
                                                                 console.error('Error:', error);
-                                                                alert('An error occurred while adding to cart');
+                                                                alert('Cannot add product to cart!. Please login or try again later.');
+
                                                             });
                                                     }
                                                 </script>
