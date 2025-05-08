@@ -181,25 +181,83 @@ INSERT INTO `customer` (`userid`, `avatarurl`) VALUES
 (9, 'assets/repo/avatar/9/5.jpg'),
 (10, 'assets/repo/avatar/10/6.jpg');
 
--- Insert random data into the BlogPost table
 INSERT INTO BlogPost (adminid, content, title) VALUES
-(1, 'Content for blog post 1', 'Title 1'),
-(2, 'Content for blog post 2', 'Title 2'),
-(3, 'Content for blog post 3', 'Title 3');
+(1, 'Learn how to make a classic vanilla sponge cake with fluffy texture and rich flavor.', 'Perfect Vanilla Sponge Cake'),
+(2, 'These moist and fudgy brownies are packed with chocolate and topped with a shiny crust.', 'Ultimate Chocolate Brownies'),
+(3, 'A step-by-step guide to baking buttery sugar cookies with decorative icing.', 'Decorated Sugar Cookies'),
+(1, 'Make macarons like a pro with this foolproof recipe and troubleshooting tips.', 'Mastering French Macarons'),
+(2, 'Whip up a batch of chewy, gooey caramel candies with this simple stovetop method.', 'Homemade Caramel Candy'),
+(3, 'This red velvet cake recipe is moist, flavorful, and topped with rich cream cheese frosting.', 'Classic Red Velvet Cake'),
+(1, 'Create a stunning multi-layer birthday cake with vibrant colors and smooth buttercream.', 'Layered Birthday Cake Tutorial'),
+(2, 'Learn the basics of tempering chocolate to make elegant chocolate truffles.', 'Tempering Chocolate 101'),
+(3, 'These fun and colorful cake pops are perfect for parties and bake sales.', 'Cake Pops for Beginners'),
+(1, 'A beginner’s guide to making candy apples with a glossy, sweet coating.', 'Easy Candy Apples'),
+(2, 'This lemon drizzle cake has a moist crumb and tangy lemon glaze that everyone will love.', 'Zesty Lemon Drizzle Cake'),
+(3, 'Make soft, fluffy cinnamon rolls with a gooey brown sugar filling and cream cheese glaze.', 'Homemade Cinnamon Rolls'),
+(1, 'Try these peanut butter fudge squares for a creamy, melt-in-your-mouth treat.', 'No-Bake Peanut Butter Fudge'),
+(2, 'Use royal icing and food coloring to decorate cookies with precision and creativity.', 'Royal Icing Cookie Designs'),
+(3, 'These bite-sized chocolate-covered strawberries are a romantic and easy dessert.', 'Chocolate-Dipped Strawberries'),
+(1, 'A soft, moist carrot cake recipe packed with spices and topped with rich frosting.', 'Moist Carrot Cake Recipe'),
+(2, 'Make buttery shortbread cookies with only 3 ingredients and a tender crumb.', 'Classic Shortbread Cookies'),
+(3, 'Try your hand at making honeycomb candy with this crunchy and fun recipe.', 'Golden Honeycomb Candy'),
+(1, 'This chocolate lava cake has a gooey center and is best served warm with ice cream.', 'Molten Chocolate Lava Cake'),
+(2, 'Turn leftover cake scraps into fun and easy-to-make cake truffles.', 'Cake Truffles from Leftovers'),
+(3, 'This banana bread is soft, moist, and full of flavor—perfect for breakfast or dessert.', 'Best Banana Bread Ever'),
+(1, 'Bake these sweet and tangy raspberry bars with a buttery crumble topping.', 'Raspberry Crumble Bars'),
+(2, 'Try this marshmallow recipe for light, fluffy homemade marshmallows with no corn syrup.', 'DIY Fluffy Marshmallows'),
+(3, 'Decorate cupcakes with buttercream flowers using just a few piping tips.', 'Buttercream Flower Cupcakes'),
+(1, 'Make crunchy brittle filled with roasted nuts and a touch of sea salt.', 'Nutty Candy Brittle'),
+(2, 'This no-bake cheesecake has a creamy filling and graham cracker crust.', 'Easy No-Bake Cheesecake'),
+(3, 'Learn how to flavor and color fondant to decorate cakes with style.', 'Working with Fondant'),
+(1, 'These sugar-dusted snowball cookies are a festive holiday treat.', 'Holiday Snowball Cookies'),
+(2, 'Try these chocolate bark recipes with toppings like nuts, pretzels, and dried fruit.', 'Creative Chocolate Bark Ideas'),
+(3, 'Get inspired with these cupcake designs for birthdays, holidays, and more.', 'Cupcake Decoration Ideas');
 
--- Insert random data into the Like table
+
 INSERT INTO `Like` (blogid, userid) VALUES
-(1, 4),
-(1, 5),
-(2, 6),
-(3, 7);
+(1, 2), (1, 5), (2, 3), (2, 7), (3, 1),
+(4, 4), (4, 6), (5, 2), (5, 9), (6, 8),
+(7, 1), (7, 3), (8, 4), (9, 6), (9, 10),
+(10, 5), (10, 7), (11, 2), (11, 9), (12, 6),
+(13, 1), (13, 8), (14, 3), (15, 7), (16, 2),
+(17, 5), (18, 9), (18, 10), (19, 4), (20, 6),
+(21, 3), (21, 7), (22, 1), (23, 2), (24, 5),
+(25, 6), (25, 8), (26, 10), (27, 3), (28, 4),
+(29, 7), (30, 1), (30, 9);
 
--- Insert random data into the BlogComment table
+
 INSERT INTO BlogComment (blogid, userid, content) VALUES
-(1, 4, 'Comment 1 on blog post 1'),
-(1, 5, 'Comment 2 on blog post 1'),
-(2, 6, 'Comment 1 on blog post 2'),
-(3, 7, 'Comment 1 on blog post 3');
+(1, 5, 'Love this cake recipe! Turned out amazing.'),
+(2, 3, 'Thanks for the brownie tips, super helpful.'),
+(3, 1, 'These cookies are perfect for holidays.'),
+(4, 6, 'Macaron guide was so clear and easy to follow!'),
+(5, 2, 'Caramel turned out just right. Thanks!'),
+(6, 9, 'This red velvet cake was a hit at my party.'),
+(7, 4, 'Awesome decorating ideas.'),
+(8, 8, 'Finally learned how to temper chocolate.'),
+(9, 10, 'Kids loved the cake pops!'),
+(10, 7, 'Candy apples worked great for Halloween.'),
+(11, 3, 'Zesty and moist, loved it!'),
+(12, 6, 'These cinnamon rolls are addictive.'),
+(13, 1, 'Fudge was creamy and perfect.'),
+(14, 5, 'Love your cookie decoration tips.'),
+(15, 4, 'So easy and tasty!'),
+(16, 2, 'Best carrot cake I’ve ever made.'),
+(17, 8, 'Shortbread was buttery and simple.'),
+(18, 9, 'Never thought I could make honeycomb!'),
+(19, 7, 'Lava cake center was perfect.'),
+(20, 3, 'Nice way to reuse cake scraps!'),
+(21, 10, 'Banana bread was moist and delicious.'),
+(22, 5, 'These raspberry bars are so good.'),
+(23, 1, 'My marshmallows turned out great!'),
+(24, 6, 'Beautiful cupcakes, thanks!'),
+(25, 2, 'Brittle was fun to make.'),
+(26, 4, 'Loved the cheesecake recipe.'),
+(27, 9, 'Fondant tips saved my cake!'),
+(28, 3, 'Snowballs were a hit at Christmas.'),
+(29, 7, 'Great bark ideas!'),
+(30, 1, 'Cupcake designs were really helpful.');
+
 
 -- Insert initial QnaEntry records
 INSERT INTO QnaEntry (qnaid) VALUES
