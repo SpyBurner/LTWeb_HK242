@@ -22,7 +22,7 @@ assert(isset($posts));
             <?php
                 $count = 1;
                 foreach ($posts as $row):
-                    $url = "blog/view?id=" . htmlspecialchars($row->getBlogid());
+                    $url = "/blog/view?id=" . htmlspecialchars($row->getBlogid());
 
                     // Thêm class "hidden" nếu số bài viết >= 4
                     $hiddenClass = ($count >= 4) ? 'hidden' : '';
