@@ -22,7 +22,7 @@ assert(isset($qna_list)); // $qna_list is an array of QnaModel
         }
 
         function deleteMessage(id) {
-            if (confirm("Are you sure you want to delete this Q&A entry?")) {
+            if (confirm("Are you sure you want to delete this message entry?")) {
                 window.location.href = "/admin/qna/delete_message?id=" + id;
             }
         }
